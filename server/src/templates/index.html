@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test/Survey</title>
+    <link rel="stylesheet" href="styles/style.css">
+</head>
+
+<body>
+    <h1>Take a Test</h1>
+    <form id="test-form" method="POST">
+        <div>
+            <label name='question-name'>Question:</label>
+            <input type="text" id="question" placeholder="Question">
+        </div>
+        <br>
+        <div>
+            <label name="answer-options">Options:</label>
+            <br>
+            <input type="checkbox" class="choice">A</input>
+            <input type="checkbox" class="choice">B</input>
+            <input type="checkbox" class="choice">C</input>
+            <input type="checkbox" class="choice">D</input>
+        </div>
+        <br>
+        <button type="submit" id="submit" name="submit">Submit</button>
+    </form>
+</body>
+
+</html>
