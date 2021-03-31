@@ -5,12 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Test/Survey</title>
-    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" type="text/css" href="/./Flask/static/style.css">
 </head>
 
 <body>
     <h1>Take a Test</h1>
-    <form id="test-form" method="POST">
+    <form id="test-form" action="/test" method="POST">
         <div>
             <label name='question-name'>Question:</label>
             <input type="text" id="question" placeholder="Question">
