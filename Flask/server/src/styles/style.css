@@ -2,9 +2,7 @@ html{
     background-color: white;
 }
 
-/* For Survey/Test Creation */
-
-body{
+.main-box{
     background-color: #8AC7FF;
     margin: auto;
     margin-top: 2%;
@@ -19,7 +17,7 @@ body{
     margin-top: 34em;
 }
 
-/* For Button Pages */
+/* Button Page Styles */
 
 .logo-button-pages{
     position: relative;
@@ -71,3 +69,35 @@ body{
     margin-bottom: 1em;
 }
 
+/* Survey Creation Styles */
+
+.finished-questions{
+    background-color: #61B3FF;
+    margin-left: 3%;
+    margin-top: 3%;
+    text-align: center;
+    width: 20%;
+    color: white;
+    padding: 1em;
+    border-radius: 15px;
+    height: 50em;
+    float: left;
+}
+
+hr{
+    border-style: solid;
+    width: 70%;
+    border-top: 1px;
+}
+
+.next-question{
+    background-color: #8AC7FF;
+    color: white;
+    float: right;
+    overflow: hidden;
+    width: 70%;
+    height: 52em;
+    margin-top: 3%;
+    margin-right: 3%;
+    border-radius: 15px;
+}
