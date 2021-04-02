@@ -13,7 +13,7 @@ html{
 }
 
 .logo{
-    margin-left: 75em;
+    float: right;
     margin-top: 34em;
 }
 
@@ -54,7 +54,6 @@ html{
     border-style: solid;
     font-size: 24px;
     margin-bottom: 2em;
-
 }
 
 .button-two{
@@ -114,3 +113,51 @@ hr{
     margin-right: 3%;
     border-radius: 15px;
 }
+
+/* Login Form Styles */
+
+.small-blue-square{
+    background-color: #A3D3FF;
+    margin: auto;
+    margin-top: 15%;
+    margin-bottom: 15%;
+    padding: 1.5em;
+    width: 40%;
+    height: 20em;
+    color: white;
+    border-radius: 15px;
+    text-align: center;
+    border-style: 2px solid;
+    border-color: white;
+}
+
+#submit{
+    margin-top: 2em;
+    color: #A3D3FF;
+    border-color: white; 
+    border-radius: 10px;
+    background-color: white;
+    width: 4em;
+    height: 1.5em;
+    border-style: solid;
+    font-size: 16px;
+    margin-bottom: 2em;
+}
+
+.login-username{
+    margin-top: 5em;
+}
+
+#username{
+    margin-top: 2em;
+}
+
+.link{
+    color: blue;
+}
+
+.logo-login{
+    float: right;
+    margin-top: -4em;
+}
+

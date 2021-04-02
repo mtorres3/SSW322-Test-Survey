@@ -1,6 +1,9 @@
 from flask import Flask, render_template, request, sessions
 app = Flask(__name__)
 
+@app.route('/')
+def login():
+    return render_template('login.html')
 
 @app.route('/taker_or_creator')
 def taker_or_creator():
@@ -26,7 +29,5 @@ def test_creation():
 def upload_or_grade():
     return render_template('upload_or_grade.html')
 
-
-
 if __name__ == "__main__":
-    app.run(port=5001, debug=True)
+    app.run(port=5018, debug=True)
