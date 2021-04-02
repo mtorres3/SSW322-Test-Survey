@@ -69,6 +69,18 @@ html{
     margin-bottom: 1em;
 }
 
+.button-three{
+    color: white;
+    border-color: white;
+    border-radius: 15px;
+    background-color: #ffa3a3;
+    width: 20em;
+    height: 4em;
+    border-style: solid;
+    font-size: 24px;
+    margin-bottom: 1em;
+}
+
 /* Survey Creation Styles */
 
 .finished-questions{
