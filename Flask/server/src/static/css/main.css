@@ -21,7 +21,7 @@ html{
 
 .logo-button-pages{
     position: relative;
-    margin-left: 75em;
+    float: right;
     margin-top: 10em;
 }
 
@@ -69,6 +69,19 @@ html{
     margin-bottom: 1em;
 }
 
+.button-three{
+    color: white;
+    border-color: white;
+    border-radius: 15px;
+    background-color: #ffa3a3;
+    width: 20em;
+    height: 4em;
+    border-style: solid;
+    font-size: 24px;
+    margin-bottom: 1em;
+}
+
+
 /* Survey Creation Styles */
 
 .finished-questions{
@@ -95,7 +108,7 @@ hr{
     color: white;
     float: right;
     overflow: hidden;
-    width: 70%;
+    width: 71%;
     height: 52em;
     margin-top: 3%;
     margin-right: 3%;

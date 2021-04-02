@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test/Survey</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+ 
+<body>
+    <div class='main-box'>
+        <h1>Take a Test</h1>
+
+        <form id="test-form" action="/test" method="POST">
+            <div>
+                <label name='question-name'>Question:</label>
+                <input type="text" name='question-name' id="question" placeholder="Question">
+            </div>
+            <br>
+            <div>
+                <label name="answer-options">Answer:</label>
+                <input type="text" class="short-answer" placeholder="Enter Answer">
+            </div>
+            <br>
+            <button type="submit" id="submit" name="submit">Submit</button>
+        </form>
+
+        <img class="logo" width='300' height='75' src="{{url_for('static', filename='greggs_a-team.png')}}">
+    </div>
+</body>
+
+</html>

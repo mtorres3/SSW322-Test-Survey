@@ -4,17 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create or Open</title>
+    <title>Taker or Creator</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
-
+ 
 <body>
     <div class='main-box'>
-        <a class='back-button' href="taker_or_creator"><img src="{{url_for('static', filename='images/back-button.png')}}" width='50' height='50'></a>
-        <div class='button-div-2'>
-            <a href='survey_or_test'><button class='button-one'>Create New File</button></a>
+        <div class='button-div-first-page'>
+            <!-- Still needs a page-->
+            <button class='button-three'>I'm a Taker</button>
             <br>
-            <a href='upload_or_grade'><button class='button-one'>Open/Load</button></a>
+            <a href='create_or_open'><button class='button-one'>I'm a Creator</button></a>
         </div>
         <img class="logo-button-pages" width='300' height='75' src="{{url_for('static', filename='images/greggs_a-team.png')}}">
     </div>
