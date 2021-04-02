@@ -11,9 +11,9 @@
 <body>
     <div class='main-box'>
         <div class='small-blue-square'>
-            <h1>Login</h1>
+            <h1>Create Account</h1>
             <hr>
-            <form id='login-form' action='/taker_or_creator' method='GET'>
+            <form id='register-form' action='/taker_or_creator' method='GET'>
                 <label name='username' class="username">Username:
                 <input name='username' id='username' type='text'>
                 </label>
@@ -23,10 +23,8 @@
                 <input type='password' id='password' name='password'>
                 </label>
                 <br>
-                <button type='submit' id='submit'>Login</button>
+                <button type='submit' id='submit'>Submit</button>
             </form>
-            <hr>
-            <p id='new-user'>New User? Register <a href='/register' class='link'>here</a></p>
         </div>
 
         <img class="logo-login" width='300' height='75' src="{{url_for('static', filename='images/greggs_a-team.png')}}">
