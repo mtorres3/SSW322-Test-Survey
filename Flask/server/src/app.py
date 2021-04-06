@@ -33,5 +33,9 @@ def test_creation():
 def upload_or_grade():
     return render_template('upload_or_grade.html')
 
+@app.route('/open_file')
+def open_file():
+    return render_template('open_file.html')
+
 if __name__ == "__main__":
-    app.run(port=5029, debug=True)
+    app.run(port=5036)

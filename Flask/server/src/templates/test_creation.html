@@ -4,29 +4,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test/Survey</title>
+    <title>Create a Test</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
  
 <body>
-    <div class='main-box'>
-        <h1>Take a Test</h1>
+    <div class='finished-questions'>
+        <h2>Questions</h2>
+        <hr>
+    </div>
+    <div class='next-question'>
+        <h1>Create Test</h1>
+        <a href='/survey_or_test'><img src="{{url_for('static', filename='images/back-button.png')}}" height='50' width='50' class='back'></a>
 
-        <form id="test-form" action="/test" method="POST">
-            <div>
-                <label name='question-name'>Question:</label>
-                <input type="text" name='question-name' id="question" placeholder="Question">
+        <div class='question-type-div'>
+            <form id='question-type-form' method='POST'>
+                <label for='multiple-choice'>
+                    <input type='radio' name='question-type' id='multiple-choice' value='multiple-choice'> Multiple Choice
+                </label>
+                <label for='true-false'>
+                    <input type='radio' name='question-type' id='true-false' value="true-false"> True/False
+                </label>
+                <label for='short-answer'>
+                    <input type='radio' name='question-type' id='short-answer' value='short-answer'> Short Answer
+                </label>
+                <label for='ranking'>
+                    <input type='radio' name='question-type' id='ranking' value='ranking'> Ranking
+                </label>
+            </form>
+        </div>
+
+        <form id='question-input-form' methodd='post'>
+            <label for='question'>Question:
+                <input type='text' id='question'>
+            </label>
+            <div class='correct-answer'>
+                <label for='choice-a'>
+                    A. <input type='text' id='choice-a'><input type='radio' class='correct' name='correct-answer' value='choice-a'>
+                </label>
+                <label for='choice-b'>
+                    B. <input type='text' id='choice-b'><input type='radio' class='correct' name='correct-answer' value='choice-b'>
+                </label>
+                <label for='choice-c'>
+                    C. <input type='text' id='choice-c'><input type='radio' class='correct' name='correct-answer' value='choice-c'>
+                </label>
+                <label for='choice-d'>
+                   D. <input type='text' id='choice-d'><input type='radio' class='correct' name='correct-answer' value='choice-d'>
+                </label>
             </div>
-            <br>
-            <div>
-                <label name="answer-options">Answer:</label>
-                <input type="text" class="short-answer" placeholder="Enter Answer">
-            </div>
-            <br>
-            <button type="submit" id="submit" name="submit">Submit</button>
+            <button type='submit' id='question-submit'>Next Question</button>
         </form>
-
-        <img class="logo" width='300' height='75' src="{{url_for('static', filename='greggs_a-team.png')}}">
+        <button type='submit' id='creation-submit'>Save Test</button>
     </div>
 </body>
 

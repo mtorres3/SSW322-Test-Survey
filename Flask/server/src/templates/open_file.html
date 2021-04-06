@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open a File</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+ 
+<body>
+    <div class='main-box'>
+        <a href='/upload_or_grade'><img height='50' width='50' src="{{url_for('static', filename='images/back-button.png')}}" class='open-back'></a>
+        <h1 class='open-h1-survey'>Surveys</h1><h1 class='open-h1-test'>Tests</h1>
+        <hr class='open-hr'>
+        <div class='open-div-survey'>
+            <p>Survey_1</p>
+        </div>
+        <div class='open-div-test'>
+            <p>Test_1</p>
+        </div>
+        
+    </div>
+</body>
+
+</html>

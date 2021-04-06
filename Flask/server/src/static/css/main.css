@@ -88,7 +88,7 @@ html{
 }
 
 
-/* Survey Creation Styles */
+/* Survey/Test Creation Styles */
 
 .finished-questions{
     background-color: #61B3FF;
@@ -109,6 +109,12 @@ hr{
     border-top: 1px;
 }
 
+.back{
+    float: right;
+    margin-top: -5em;
+    margin-right: 3em;
+}
+
 .next-question{
     background-color: #8AC7FF;
     color: white;
@@ -121,7 +127,119 @@ hr{
     border-radius: 15px;
 }
 
-/* Login Form Styles */
+.next-question h1{
+    margin-left: 1.5em;
+    font-size: 42px;
+    margin-top: 1.5em;
+}
+
+.question-type-div{
+    background-color: #A3D3FF;
+    margin-left: 2em;
+    margin-bottom: 2em;
+    margin-top: 5em;
+    width: 20%;
+    height: 15em;
+    font-size: 24px;
+    padding: 1.5em;
+    border-color: white;
+    border-radius: 10px;
+}
+
+#question-type-form{
+    margin-top: 2em;
+}
+#question-type-form label{
+    display: block;
+    margin-top: 2em;
+}
+
+#question-input-form{
+    margin-top: -29em;
+    margin-left: 38%;
+}
+#question-input-form label{
+    font-size: 24px;
+    float: left;
+}
+
+#choice-a{
+    display: block;
+    width: 42em;
+    height: 3em;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: white;
+}
+#choice-b{
+    display: block;
+    width: 42em;
+    height: 3em;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: white;
+}
+#choice-c{
+    display: block;
+    width: 42em;
+    height: 3em;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: white;
+}
+#choice-d{
+    display: block;
+    width: 42em;
+    height: 3em;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: white;
+}
+.correct{
+    float: right;
+    margin-right: -3.5em;
+    margin-top: -3.5em;
+    width: 3em;
+    height: 3em;
+    border-color: white;
+    border-style: solid;
+}
+#question{
+    margin-bottom: 2em;
+    display: block;
+    width: 45em;
+    height: 3em;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: white;
+}
+
+#question-submit{
+    float: right;
+    margin-right: 5em;
+    margin-top: 5em;
+    color: #61B3FF;
+    background-color: white;
+    border-radius: 15px;
+    border-color: white;
+    border-style: solid;
+    font-size: 16px;
+    padding: 1em 2em;
+}
+#creation-submit{
+    float: left;
+    margin-left: 5em;
+    margin-top: 5em;
+    color: #61B3FF;
+    background-color: white;
+    border-radius: 15px;
+    border-color: white;
+    border-style: solid;
+    font-size: 16px;
+    padding: 1em 2em;
+}
+
+/* Login/Register Form Styles */
 
 .small-blue-square{
     background-color: #A3D3FF;
@@ -136,6 +254,11 @@ hr{
     text-align: center;
     border-style: 2px solid;
     border-color: white;
+}
+
+.small-blue-square input{
+    border-color: white;
+    border-style: solid;
 }
 
 #submit{
@@ -169,3 +292,55 @@ hr{
     margin-top: -5em;
 }
 
+/* Open/Load Page Styles */
+
+.open-back{
+    float: right;
+    margin-top: 1em;
+}
+.open-h1-survey{
+    display: inline;
+    float: left;
+    margin-left: 20%;
+    margin-top: 5%;
+}
+.open-h1-test{
+    display: inline;
+    float: right;
+    margin-right: 19%;
+    margin-top: 5%;
+}
+.open-hr{
+    margin-top: 5%;
+    width: 95%;
+}
+.open-div-test{
+    background-color: #A3D3FF;
+    float: left;
+    margin-top: 5%;
+    margin-bottom: 15%;
+    margin-left: 12.5%;
+    padding: 1.5em;
+    width: 20%;
+    height: 30em;
+    color: white;
+    border-radius: 15px;
+    text-align: center;
+    border-style: 2px solid;
+    border-color: white;
+}
+.open-div-survey{
+    background-color: #A3D3FF;
+    float: right;
+    margin-top: 5%;
+    margin-bottom: 15%;
+    margin-right: 12.5%;
+    padding: 1.5em;
+    width: 20%;
+    height: 30em;
+    color: white;
+    border-radius: 15px;
+    text-align: center;
+    border-style: 2px solid;
+    border-color: white;
+}
