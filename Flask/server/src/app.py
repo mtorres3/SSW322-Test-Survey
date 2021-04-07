@@ -1,42 +1,6 @@
 from flask import Flask, render_template, request, session, redirect, url_for, g, abort
 import sqlite3
 
-#Joe has no idea what he is doing
-#-------------------------------------------------------
-#Connecting firebase
-import firebase_admin
-from firebase_admin import credentials
-
-cred = credentials.Certificate("../servicekey.json")
-firebase_admin.initialize_app(cred)
-
-# firebaseConfig = {
-#   apiKey: "AIzaSyBsWy4rYZQb02aQxzDqPtGUf7_F1BUPK1Q",
-#   authDomain: "test-and-survey-platform.firebaseapp.com",
-#   databaseURL: "https://test-and-survey-platform-default-rtdb.firebaseio.com",
-#   projectId: "test-and-survey-platform",
-#   storageBucket: "test-and-survey-platform.appspot.com",
-#   messagingSenderId: "878819315112",
-#   appId: "1:878819315112:web:69ceda37e317e5f62ce19d",
-#   measurementId: "G-DD4JZ25R0B"
-# }
-
-#Initialization was done on Google Cloud Platform
-
-#No idea what these two do
-# import firebase_admin.auth as auth
-# import firebase_admin.credentials as credentials
-
-# from firebase_admin import credentials
-# from firebase_admin import firestore
-
-# #Default Creds for Firebase
-# cred = credentials.ApplicationDefault()
-# default_app = firebase_admin.initialize_app()
-# db = firestore.client()
-#-------------------------------------------------------
-
-
 app = Flask(__name__)
 app.secret_key = 'okay'
 
@@ -48,15 +12,6 @@ class User:
 
     def __repr__(self):
         return f'<User: {self.username}>'
-
-
-# #Firebase db test
-# doc_ref = db.collection(u'LOGINS').document(u'users')
-# doc_ref.set({
-#     u'ID':u'2',
-#     u'password':u'testing',
-#     u'username':u'testuser'
-# })
 
 conn = sqlite3.connect('LOGINS.db', check_same_thread=False)
 c = conn.cursor()
