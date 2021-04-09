@@ -344,3 +344,36 @@ hr{
     border-style: 2px solid;
     border-color: white;
 }
+
+/* Load Survey/Test Page */
+.question-block{
+    margin-top: 10%;
+    margin-left:20%;
+    font-size: 28px;
+}
+#question-of-block{
+    position: relative;
+    font-size: 24px;
+    font-weight: normal;    
+}
+
+#logo-load{
+    position:relative;
+    margin-top: 15%;
+    margin-bottom: 10%;
+    margin-left: 5%;
+}
+
+#question-submit-load{
+    float: right;
+    margin-right: 10%;
+    margin-top: 15%;
+    margin-bottom: 10%;
+    color: #61B3FF;
+    background-color: white;
+    border-radius: 15px;
+    border-color: white;
+    border-style: solid;
+    font-size: 16px;
+    padding: 1em 2em;
+}
