@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey Name -- input here</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+ 
+<body>
+    <div class='finished-questions'>
+        <h2>Questions</h2>
+        <hr>
+        <h3> Question # -- input here</h3>
+        <p> Statement 1, test test test test test test test test test test test test test test</p>
+        <hr>
+        <h3> Question # -- input here</h3>
+        <p> Statement 2, test test test test test test test test test test test test test test</p>
+        <hr>
+        <h3> Question # -- input here</h3>
+        <p> Statement 3, test test test test test test test test test test test test test test</p>
+        <hr>
+        <h3> Question # -- input here</h3>
+        <p> Statement 4, test test test test test test test test test test test test test test</p>
+        <hr>
+        <h3> Question # -- input here</h3>
+        <p> Statement 5, test test test test test test test test test test test test test test</p>
+        <hr>
+        <h3> Question # -- input here</h3>
+        <p> Statement 6, test test test test test test test test test test test test test test</p>
+        <hr>
+        
+        
+    </div>
+    <div class='next-question'> <!-- Light blue square -->
+        <h1 id = 'test-survey-name'>Test Name -- Input here</h1>
+        
+        <a href='/survey_or_test'><img src="{{url_for('static', filename='images/back-button.png')}}" height='50' width='50' class='back'></a>
+        <div class = 'question-block'>
+            <h2 > Question # -- input here</h2>
+            <h3 id = 'question-of-block'> 1. -- Statement goes in here -- </h3>
+            <h3 id = 'question-of-block'> 2. -- Statement goes in here -- </h3>
+            <h3 id = 'question-of-block'> 3. -- Statement goes in here -- </h3>
+            <h3 id = 'question-of-block'> 4. -- Statement goes in here -- </h3>
+        </div>
+        
+        <button type='submit' id='question-submit-load'>Next Question</button>
+        <img id= 'logo-load' width='300' height='75' src="{{url_for('static', filename='iimages/greggs_a-team.png')}}">
+    </div>
+    
+
+</body>
+
+</html>
