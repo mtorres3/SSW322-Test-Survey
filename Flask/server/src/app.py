@@ -45,7 +45,7 @@ def before_request():
     g.user = None
 
     if 'user_id' in session:
-        user = [x for x in users if x.username == session['user_id']][0]
+        user = [x for x in users if x.username == session['user_id']]
         g.user = user
         print(g.user)
 
@@ -70,7 +70,7 @@ def list(user) :
     except Exception as e:
         return f"An Error Occured: {e}"
 
-@app.route('/')
+@app.route('/', methods = ['GET', 'POST'])
 @app.route('/login', methods = ['GET', 'POST'])
 def login():
     if request.method == 'POST':
