@@ -1,60 +1,82 @@
-from flask import Flask, render_template, request, session, redirect, url_for, g, abort
-import sqlite3
+import os
+from flask import Flask, render_template, request, session, redirect, url_for, g, abort, jsonify
 
 app = Flask(__name__)
 app.secret_key = 'okay'
 
+import firebase_admin
+from firebase_admin import credentials, firestore, initialize_app
+
+cred = credentials.Certificate('key.json')
+firebase_admin.initialize_app(cred)
+db = firestore.client()
+ref = db.collection('Users')
+
+global users, usernames
+
 class User:
-    def __init__(self, id, username, password):
-        self.id = id
+    def __init__(self, username, password):
         self.username = username
         self.password = password
 
     def __repr__(self):
         return f'<User: {self.username}>'
 
-conn = sqlite3.connect('LOGINS.db', check_same_thread=False)
-c = conn.cursor()
-
-# Deletes all previous login information
-
-# c.execute("DROP TABLE IF EXISTS INFORMATION")
-# c.execute(''' CREATE TABLE INFORMATION (
-#                 [ID] TEXT PRIMARY KEY,
-#                 [username] TEXT,
-#                 [password] TEXT
-#         )''')
-# users = [User(-1, 'Jon', '123'), User(-2, 'Joe', '123'), User(-3, 'Will', '123'), User(-4, 'Marky', '123')]
-
+# Redefines list of users
 def redefine():
-    #users = [User(-1, 'Jon', '123'), User(-2, 'Joe', '123'), User(-3, 'Will', '123'), User(-4, 'Marky', '123')]
-    c.execute('SELECT ID, username, password FROM INFORMATION')
-    s = len(c.fetchall())
 
-    u = []
-    c.execute('SELECT ID, username, password FROM INFORMATION')
-    for row in c.fetchall():
-        u = u + [User(row[0], row[1], row[2])]
+    global users, usernames
+    ref = db.collection('Users')
+    stream = ref.stream()
+    users = []
+    usernames = []
 
-    return u, s
+    for i in stream:
+        users = users + [User(i.to_dict()['username'], i.to_dict()['password'])]
+        usernames = usernames + [i.to_dict()['username']]
 
-users = redefine()[0]
-size = redefine()[1]
+redefine()
+print(usernames)
 
 @app.before_request
 def before_request():
+
     redefine()
     g.user = None
-    if 'user_id' in session:
-        user = [x for x in users if x.id == session['user_id']][0]
-        g.user = user
 
+    if 'user_id' in session:
+        user = [x for x in users if x.username == session['user_id']][0]
+        g.user = user
+        print(g.user)
+
+
+@app.route('/list_all_user_data/<user>', methods = ['GET', 'POST'])
+def list(user) :
+
+    ref = db.collection('Users')
+    ref = ref.where(u'username', u'==', user)
+
+    try:
+        # Check if ID was passed to URL query
+        todo_id = request.args.get('ID')
+
+        if todo_id:
+            todo = ref.document(todo_id).get()
+            return jsonify(todo.to_dict()), 200
+        else:
+            all_todos = [doc.to_dict() for doc in ref.stream()]
+            return jsonify(all_todos), 200
+
+    except Exception as e:
+        return f"An Error Occured: {e}"
+
+@app.route('/')
 @app.route('/login', methods = ['GET', 'POST'])
 def login():
     if request.method == 'POST':
 
+        redefine()
         session.pop('user_id', None)
-
         username = request.form['username']
         password = request.form['password']
 
@@ -64,24 +86,27 @@ def login():
             return redirect(url_for('login'))
 
         if user and user.password == password:
-            session['user_id'] = user.id
+            session['user_id'] = user.username
             return redirect(url_for('taker_or_creator'))
 
         return redirect(url_for('login'))
-
     return render_template('login.html')
 
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        new_id = size + 1
+        redefine()
         username = request.form['username']
         password = request.form['password']
 
-        sql = '''INSERT INTO INFORMATION (ID, username, password)
-                VALUES(?,?,?)'''
-        c.execute(sql, [new_id, username, password])
-        conn.commit()
+        if username in usernames:
+            return redirect(url_for('register'))
+        else:
+            ref.document(username).set({
+                'username': username,
+                'password': password
+            })
+
         return redirect(url_for('login'))
 
     return render_template('register.html')
@@ -121,6 +146,7 @@ def upload_or_grade():
     if not g.user:
         return redirect(url_for('login'))
     return render_template('upload_or_grade.html')
+
 
 if __name__ == "__main__":
     app.run(port=5029, debug=True)
