@@ -4,22 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Open a File</title>
+    <title>Create or Open</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
  
 <body>
     <div class='main-box'>
-        <a href='/upload_or_grade'><img height='50' width='50' src="{{url_for('static', filename='images/back-button.png')}}" class='open-back'></a>
-        <h1 class='open-h1-survey'>Surveys</h1><h1 class='open-h1-test'>Tests</h1>
-        <hr class='open-hr'>
-        <div class='open-div-survey'>
-            <p>Survey_1</p>
+        <a class='back-button' href="create_or_open"><img src="{{url_for('static', filename='images/back-button.png')}}" width='50' height='50'></a>
+        <div class='button-div-2'>
+            <a href='/test_open'><button class='button-one'>Open Test</button></a>
+            <br>
+            <a href='/survey-open'><button class='button-one'>Open Survey</button></a>
         </div>
-        <div class='open-div-test'>
-            <p>Test_1</p>
-        </div>
-        
+        <img class="logo-button-pages" width='300' height='75' src="{{url_for('static', filename='images/greggs_a-team.png')}}">
     </div>
 </body>
 
