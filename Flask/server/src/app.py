@@ -147,6 +147,25 @@ def upload_or_grade():
         return redirect(url_for('login'))
     return render_template('upload_or_grade.html')
 
+@app.route('/open_file')
+def open_file():
+    if not g.user:
+        return redirect(url_for('login'))
+    return render_template('open_file.html')
+
+@app.route('/test_open')
+def test_open():
+    if not g.user:
+        return redirect(url_for('login'))
+    return render_template('test_open.html')
+
+@app.route('/survey-open')
+def survey_open():
+    if not g.user:
+        return redirect(url_for('login'))
+    return render_template('survey-open.html')
+
+
 
 if __name__ == "__main__":
     app.run(port=5029, debug=True)
