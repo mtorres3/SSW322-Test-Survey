@@ -143,25 +143,29 @@ def test_creation():
 
 #Still being Developed
 #Trying to save question and answer choices to database
-def question_saved():
-    Firebase.firestore().collection("Tests/".get())
-    if request.method == 'POST':
-        q_type = request.form['question-type-form']
-        q = request.form['question']
-        a = request.form['choice-a']
-        b = request.form['choice-b']
-        c = request.form['choice-c']
-        d = request.form['choice-d']
+# def question_saved():
+#     Firebase.firestore().collection("Tests/".get())
+    
+# #Needs: User Reference, allowing for placing | Unique ID for 
+#     if not g.user:
+#         return redirect(url_for('login'))
+#     else request.method == 'POST':
+#         q_type = request.form['question-type-form']
+#         q = request.form['question']
+#         a = request.form['choice-a']
+#         b = request.form['choice-b']
+#         c = request.form['choice-c']
+#         d = request.form['choice-d']
 
-        ref.document(question).set({
-            'type': q_type,
-            'question': q,
-            'choice-a': a,
-            'choice-b': b,
-            'choice-c': c,
-            'choice-d': d
-        })
-        return render_template('test_creation.html')
+#         ref.document(question).set({
+#             'type': q_type,
+#             'question': q,
+#             'choice-a': a,
+#             'choice-b': b,
+#             'choice-c': c,
+#             'choice-d': d
+#         })
+#         return render_template('test_creation.html')
 
 def submit_test_creation():
     text = request.form['choice-a']
