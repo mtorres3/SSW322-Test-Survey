@@ -7,7 +7,7 @@ app.secret_key = 'okay'
 import firebase_admin
 from firebase_admin import credentials, firestore, initialize_app
 
-cred = credentials.Certificate('../../../key.json')
+cred = credentials.Certificate('key.json')
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 ref = db.collection('Users')
@@ -123,11 +123,25 @@ def create_or_open():
         return redirect(url_for('login'))
     return render_template('create_or_open.html')
 
-@app.route('/survey_creation')
+@app.route('/survey_creation', methods=['GET','POST'])
 def survey_creation():
     if not g.user:
-        return redirect(url_for('login'))    
-    return render_template('survey_creation.html')
+        return redirect(url_for('login')) 
+
+    if request.method == "GET":
+        return render_template('survey_creation.html', qSubmit="question-submit-0", cSubmit='creation-submit-0')
+
+    elif request.method == 'POST':
+        qType = request.form.get('question-type')
+        if qType == 'multiple-choice':
+            return render_template('survey_creation.html', questionType="text", questionClass="multiple-choice", my_list=[1,2,3,4], 
+            qSubmit="question-submit-1", cSubmit='creation-submit-1', radioChoices=True)
+        elif qType == 'true-false':
+            return render_template('survey_creation.html', questionType="radio", questionClass="true-false", my_list=[1,2], 
+            correctAnswer='correct-answer', qSubmit="question-submit-2", cSubmit='creation-submit-2')
+        elif qType == 'short-answer':
+            return render_template('survey_creation.html', questionType="text", questionClass="short-answer", my_list=[1], 
+            qSubmit="question-submit-3", cSubmit='creation-submit-3')
 
 @app.route('/survey_or_test')
 def survey_or_test():
@@ -139,7 +153,22 @@ def survey_or_test():
 def test_creation():
     if not g.user:
         return redirect(url_for('login'))
-    return render_template('test_creation.html')
+
+    if request.method == "GET":
+        return render_template('test_creation.html', qSubmit="question-submit-0", cSubmit='creation-submit-0')
+
+    elif request.method == 'POST':
+        qType = request.form.get('question-type')
+        if qType == 'multiple-choice':
+            return render_template('test_creation.html', questionType="text", questionClass="multiple-choice", my_list=[1,2,3,4], 
+            qSubmit="question-submit-1", cSubmit='creation-submit-1', radioChoices=True)
+        elif qType == 'true-false':
+            return render_template('test_creation.html', questionType="radio", questionClass="true-false", my_list=[1,2], 
+            correctAnswer='correct-answer', qSubmit="question-submit-2", cSubmit='creation-submit-2')
+        elif qType == 'short-answer':
+            return render_template('test_creation.html', questionType="text", questionClass="short-answer", my_list=[1], 
+            qSubmit="question-submit-3", cSubmit='creation-submit-3')
+         
 
 #Still being Developed
 #Trying to save question and answer choices to database
@@ -196,7 +225,7 @@ def survey_open():
         return redirect(url_for('login'))
     return render_template('survey-open.html')
 
-
+ 
 
 if __name__ == "__main__":
-    app.run(port=5029, debug=True)
+    app.run(port=5047, debug=True)
