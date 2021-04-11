@@ -12,8 +12,8 @@
     <div class='finished-questions'>
         <h2>Questions</h2>
         <hr>
-        {% for n in questions %}
-        <p>{{questionInfo}}</p>
+        {% for n in amount_of_questions %}
+        <p> Q{{n[-1]}}:</p>
         <hr>
         {% endfor %}
     </div>
@@ -38,19 +38,25 @@
 
         <form id='question-input-form' method='POST'>
             <label for='question'>Question:
-                <input type='text' id='question'>
+                <input type='text' name = "question" id='question'>
             </label>
             <div class={{correctAnswer}}>
                 <!-- Add correct answer radios... -->
                 {% for n in my_list %}
-                    <input type={{questionType}} class={{questionClass}}>{% if radioChoices==True %} <input type='radio' class='correct' name='correct-answer'> {% endif %}
+                    <label name="{{n}}" class="username">
+                    {% if radioChoices==True %}
+                        <input type={{questionType}} name = "{{n}}" class={{questionClass}}> <input type='radio' class='correct' name='correct-answer' value = "{{n}}">
+                    {% else %}
+                        <input type={{questionType}} name = 'correct-answer' value = "{{n}}" class={{questionClass}}>
+                    {% endif %}
+                    </label>
                 {% endfor %}
             </div>
-            <button type='submit' id={{qSubmit}}>Next Question</button>
+            <button type='submit' id={{qSubmit}} name = 'submit' value = 'next-question'>Next Question</button>
         </form>
 
         <form id='test-submit' method='POST'>
-            <button type='submit' id={{cSubmit}}>Save Test</button>
+            <button type='submit' id={{cSubmit}} name = 'submit' value = 'save-test'>Save Test</button>
         </form>
 
     </div>
