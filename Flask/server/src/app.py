@@ -167,7 +167,7 @@ def test_creation():
             return render_template('test_creation.html', questionType="radio", questionClass="true-false", my_list=['True', 'False'], 
             correctAnswer='correct-answer', qSubmit="question-submit-2", cSubmit='creation-submit-2', amount_of_questions = sorted(curr.get().to_dict()))
         elif qType == 'short-answer':
-            return render_template('test_creation.html', questionType="text", questionClass="short-answer", my_list=[1], 
+            return render_template('test_creation.html', questionType="text", questionClass="short-answer", my_list=[''], 
             qSubmit="question-submit-3", cSubmit='creation-submit-3', amount_of_questions = sorted(curr.get().to_dict()))
 
         if request.form['submit'] == 'next-question':
@@ -226,4 +226,4 @@ def survey_open():
 
 
 if __name__ == "__main__":
-    app.run(port=5048, debug=True)
+    app.run(port=5015, debug=True)

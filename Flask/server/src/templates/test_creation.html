@@ -45,9 +45,9 @@
                 {% for n in my_list %}
                     <label name="{{n}}" class="username">
                     {% if radioChoices==True %}
-                        <input type={{questionType}} name = "{{n}}" class={{questionClass}}> <input type='radio' class='correct' name='correct-answer' value = "{{n}}">
+                        {{n}}<input type={{questionType}} name = "{{n}}" class={{questionClass}}> <input type='radio' class='correct' name='correct-answer' value = "{{n}}">
                     {% else %}
-                        <input type={{questionType}} name = 'correct-answer' value = "{{n}}" class={{questionClass}}>
+                        <input type={{questionType}} name = 'correct-answer' value = "{{n}}" class={{questionClass}}><p class='tf-text'></p>{{n}}</p>
                     {% endif %}
                     </label>
                 {% endfor %}
