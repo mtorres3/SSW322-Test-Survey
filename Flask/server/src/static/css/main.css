@@ -99,7 +99,7 @@ html{
     color: white;
     padding: 1em;
     border-radius: 15px;
-    height: 50em;
+    height: 86vh;
     float: left;
 }
 
@@ -121,7 +121,7 @@ hr{
     float: right;
     overflow: hidden;
     width: 71%;
-    height: 52em;
+    height: 90vh;
     margin-top: 3%;
     margin-right: 3%;
     border-radius: 15px;
