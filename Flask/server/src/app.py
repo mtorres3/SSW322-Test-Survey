@@ -37,6 +37,7 @@ def redefine():
 
 redefine()
 print(usernames)
+print(ref.document('test').collection('Tests').document('fuck this').get().to_dict()['question1']['answers'])
 
 @app.before_request
 def before_request():
@@ -47,7 +48,6 @@ def before_request():
     if 'user_id' in session:
         user = [x for x in users if x.username == session['user_id']]
         g.user = user
-        print(g.user)
 
 
 @app.route('/list_all_user_data/<user>', methods = ['GET', 'POST'])
@@ -130,7 +130,6 @@ def survey_creation():
 
     if request.method == "GET":
         return render_template('survey_creation.html', qSubmit="question-submit-0", cSubmit='creation-submit-0')
-
     elif request.method == 'POST':
         qType = request.form.get('question-type')
         if qType == 'multiple-choice':
@@ -143,6 +142,7 @@ def survey_creation():
             return render_template('survey_creation.html', questionType="text", questionClass="short-answer", my_list=[1], 
             qSubmit="question-submit-3", cSubmit='creation-submit-3')
 
+
 @app.route('/survey_or_test')
 def survey_or_test():
     if not g.user:
@@ -153,48 +153,46 @@ def survey_or_test():
 def test_creation():
     if not g.user:
         return redirect(url_for('login'))
-
+    curr = ref.document(session['user_id']).collection('Tests').document('fuck this')
     if request.method == "GET":
-        return render_template('test_creation.html', qSubmit="question-submit-0", cSubmit='creation-submit-0')
+        return render_template('test_creation.html', questionType="text", questionClass="multiple-choice", my_list=[1,2,3,4], 
+        qSubmit="question-submit-1", cSubmit='creation-submit-1', radioChoices=True, amount_of_questions = sorted(curr.get().to_dict()))
 
     elif request.method == 'POST':
         qType = request.form.get('question-type')
         if qType == 'multiple-choice':
-            return render_template('test_creation.html', questionType="text", questionClass="multiple-choice", my_list=[1,2,3,4], 
-            qSubmit="question-submit-1", cSubmit='creation-submit-1', radioChoices=True)
+            return render_template('test_creation.html', questionType="text", questionClass="multiple-choice", my_list=['A', 'B', 'C', 'D'], 
+            qSubmit="question-submit-1", cSubmit='creation-submit-1', radioChoices=True, amount_of_questions = sorted(curr.get().to_dict()))
         elif qType == 'true-false':
-            return render_template('test_creation.html', questionType="radio", questionClass="true-false", my_list=[1,2], 
-            correctAnswer='correct-answer', qSubmit="question-submit-2", cSubmit='creation-submit-2')
+            return render_template('test_creation.html', questionType="radio", questionClass="true-false", my_list=['True', 'False'], 
+            correctAnswer='correct-answer', qSubmit="question-submit-2", cSubmit='creation-submit-2', amount_of_questions = sorted(curr.get().to_dict()))
         elif qType == 'short-answer':
             return render_template('test_creation.html', questionType="text", questionClass="short-answer", my_list=[1], 
-            qSubmit="question-submit-3", cSubmit='creation-submit-3')
-         
+            qSubmit="question-submit-3", cSubmit='creation-submit-3', amount_of_questions = sorted(curr.get().to_dict()))
 
-#Still being Developed
-#Trying to save question and answer choices to database
-# def question_saved():
-#     Firebase.firestore().collection("Tests/".get())
-    
-# #Needs: User Reference, allowing for placing | Unique ID for 
-#     if not g.user:
-#         return redirect(url_for('login'))
-#     else request.method == 'POST':
-#         q_type = request.form['question-type-form']
-#         q = request.form['question']
-#         a = request.form['choice-a']
-#         b = request.form['choice-b']
-#         c = request.form['choice-c']
-#         d = request.form['choice-d']
-
-#         ref.document(question).set({
-#             'type': q_type,
-#             'question': q,
-#             'choice-a': a,
-#             'choice-b': b,
-#             'choice-c': c,
-#             'choice-d': d
-#         })
-#         return render_template('test_creation.html')
+        if request.form['submit'] == 'next-question':
+            info = request.form 
+            answers = []
+            for i in ['A', 'B', 'C', 'D']:
+                try:
+                    if len(info[i]) > 0:
+                        answers = answers + [info[i]]
+                except KeyError:
+                    break
+            try:
+                curr.update({
+                    'question' + str(len(curr.get().to_dict()) + 1): {
+                        'question' : info['question'],
+                        'answers' : answers,
+                        'correct_answer' : info['correct-answer']
+                        }
+                    })
+            except KeyError:
+                pass
+            return redirect(url_for('test_creation'))
+        
+        if request.form['submit'] == 'save-test':
+            return redirect(url_for('create_or_open'))
 
 def submit_test_creation():
     text = request.form['choice-a']
@@ -225,7 +223,7 @@ def survey_open():
         return redirect(url_for('login'))
     return render_template('survey-open.html')
 
- 
+
 
 if __name__ == "__main__":
-    app.run(port=5047, debug=True)
+    app.run(port=5048, debug=True)
