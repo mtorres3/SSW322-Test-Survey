@@ -155,7 +155,7 @@ def test_creation():
         return redirect(url_for('login'))
     curr = ref.document(session['user_id']).collection('Tests').document('fuck this')
     if request.method == "GET":
-        return render_template('test_creation.html', questionType="text", questionClass="multiple-choice", my_list=[1,2,3,4], 
+        return render_template('test_creation.html', questionType="text", questionClass="multiple-choice", my_list=['A', 'B', 'C', 'D'], 
         qSubmit="question-submit-1", cSubmit='creation-submit-1', radioChoices=True, amount_of_questions = sorted(curr.get().to_dict()))
 
     elif request.method == 'POST':
@@ -167,7 +167,7 @@ def test_creation():
             return render_template('test_creation.html', questionType="radio", questionClass="true-false", my_list=['True', 'False'], 
             correctAnswer='correct-answer', qSubmit="question-submit-2", cSubmit='creation-submit-2', amount_of_questions = sorted(curr.get().to_dict()))
         elif qType == 'short-answer':
-            return render_template('test_creation.html', questionType="text", questionClass="short-answer", my_list=[''], 
+            return render_template('test_creation.html', questionType="text", questionClass="short-answer", my_list=[], 
             qSubmit="question-submit-3", cSubmit='creation-submit-3', amount_of_questions = sorted(curr.get().to_dict()))
 
         if request.form['submit'] == 'next-question':
@@ -226,4 +226,4 @@ def survey_open():
 
 
 if __name__ == "__main__":
-    app.run(port=5015, debug=True)
+    app.run(port=5019, debug=True)

@@ -42,7 +42,9 @@
             </label>
             <div class={{correctAnswer}}>
                 {% for n in my_list %}
+                    <label>{{n}}
                     <input type={{questionType}} class={{questionClass}}>
+                    </label>
                 {% endfor %}
             </div>
             <button type='submit' id={{qSubmit}}>Next Question</button>

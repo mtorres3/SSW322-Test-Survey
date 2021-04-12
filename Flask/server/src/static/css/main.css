@@ -229,7 +229,7 @@ hr{
     padding: 1em 2em;
 }
 #creation-submit-0{
-    float: left;
+    float: right;
     margin-left: 5em;
     margin-top: 25em;
     color: #61B3FF;
@@ -243,7 +243,8 @@ hr{
 #question-submit-1{
     float: right;
     margin-right: 5em;
-    margin-top: 9em;
+    margin-top: 9.5em;
+    margin-left: 1em;
     color: #61B3FF;
     background-color: white;
     border-radius: 15px;
@@ -253,7 +254,7 @@ hr{
     padding: 1em 2em;
 }
 #creation-submit-1{
-    float: left;
+    float: right;
     margin-left: 5em;
     margin-top: 2em;
     color: #61B3FF;
@@ -267,7 +268,8 @@ hr{
 #question-submit-2{
     float: right;
     margin-right: 5em;
-    margin-top: 31em;
+    margin-top: 32em;
+    margin-left: 1em;
     color: #61B3FF;
     background-color: white;
     border-radius: 15px;
@@ -278,7 +280,7 @@ hr{
 }
 #creation-submit-2{
     position: relative;
-    float: left;
+    float: right;
     margin-left: -43.5em;
     margin-top: 32em;
     color: #61B3FF;
@@ -292,7 +294,8 @@ hr{
 #question-submit-3{
     float: right;
     margin-right: 5em;
-    margin-top: 30.5em;
+    margin-top: 32.5em;
+    margin-left: 1em;
     color: #61B3FF;
     background-color: white;
     border-radius: 15px;
@@ -302,9 +305,9 @@ hr{
     padding: 1em 2em;
 }
 #creation-submit-3{
-    float: left;
+    float: right;
     margin-left: 5em;
-    margin-top: 24em;
+    margin-top: 32.5em;
     color: #61B3FF;
     background-color: white;
     border-radius: 15px;
