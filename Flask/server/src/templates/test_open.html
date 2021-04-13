@@ -12,43 +12,26 @@
     <div class='finished-questions'>
         <h2>Questions</h2>
         <hr>
-        <h3> Question # -- input here</h3>
-        <p> Statement 1, test test test test test test test test test test test test test test</p>
+        {% for n in range (1,question_amount + 1) %} <!-- Displays all Q #'s-->
+        <p> Q {{n}}:</p>
         <hr>
-        <h3> Question # -- input here</h3>
-        <p> Statement 2, test test test test test test test test test test test test test test</p>
-        <hr>
-        <h3> Question # -- input here</h3>
-        <p> Statement 3, test test test test test test test test test test test test test test</p>
-        <hr>
-        <h3> Question # -- input here</h3>
-        <p> Statement 4, test test test test test test test test test test test test test test</p>
-        <hr>
-        <h3> Question # -- input here</h3>
-        <p> Statement 5, test test test test test test test test test test test test test test</p>
-        <hr>
-        <h3> Question # -- input here</h3>
-        <p> Statement 6, test test test test test test test test test test test test test test</p>
-        <hr>
-        
-        
+        {% endfor %}
     </div>
+
     <div class='next-question'> <!-- Light blue square -->
-        <h1 id = 'test-survey-name'>Test Name -- Input here</h1>
-        
-        <a href='/open_file'><img src="{{url_for('static', filename='images/back-button.png')}}" height='50' width='50' class='back'></a>
+        <h1 class = 'header-list'>{{Name}}</h1>
+        <hr>        
+        <a href='/open_file'><img src="images/back-button.png" height='50' width='50' class='back'></a>
         <div class = 'question-block'>
-            <h2 > Question # -- input here</h2>
-            <h3 id = 'question-of-block'> 1. -- Statement goes in here -- </h3>
-            <h3 id = 'question-of-block'> 2. -- Statement goes in here -- </h3>
-            <h3 id = 'question-of-block'> 3. -- Statement goes in here -- </h3>
-            <h3 id = 'question-of-block'> 4. -- Statement goes in here -- </h3>
+            <h2 > Question: {{question1}} </h2> <!-- Feed question(number) here to display question name-->
+            {% for n in answers1 %} <!-- Feed answer array here to display the questions and their respective number-->
+                 <h3 id = 'question-of-block'>{{loop.index}} {{n}} </h3>
+            {% endfor %}  
         </div>
         
         <button type='submit' id='question-submit-load'>Next Question</button>
-        <img id= 'logo-load' width='300' height='75' src="{{url_for('static', filename='images/back-button.png')}}">
-    </div>
-    
+        <img id= 'logo-load' width='300' height='75' src="images/greggs_a-team.png">
+    </div>   
 
 </body>
 
