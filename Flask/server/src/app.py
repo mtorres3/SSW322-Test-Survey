@@ -271,7 +271,12 @@ def open_file():
 def test_list():
     if not g.user:
         return redirect(url_for('login'))
-    return render_template('test_list.html')
+    testListings = []
+    tests = ref.document('Joe').collection('Tests').stream()
+    for test in tests:
+        testListings.append(f'{test.id}')
+    print(testListings)
+    return render_template('test_list.html', testListings = testListings)
 
 @app.route('/survey_list')
 def survey_list():
