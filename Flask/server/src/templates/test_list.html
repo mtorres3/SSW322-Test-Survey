@@ -4,26 +4,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test List</title>
+    <title>Test List</title>/
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
  
 <body>
-
-    <div class='main-box'>
+    <div class='main-box'>        
         <h1 class = 'header-list'>Select Test</h1>
         <a href = '/test_open'> Go to Test</a>
         <hr>
-        <a href='/open_file'><img src="{{url_for('static', filename='images/back-button.png')}}" height='50' width='50' class='back'></a>
-        
-        <div class='list-div'>
+        <a href='/survey_or_test'><img src="{{ url_for('static', filename='images/back-button.png') }}" height='50' width='50' class='back'></a>
+        <label>Tests</label>
+        <form>
+            <select name="test-list" form="test-dropdown">
+                {% for test in testListings %}
+                    <option value={{test}}>{{test}}</option>
+                {% endfor %}
+            </select>
+        </form>
+
+        <!--<div class='list-div'>
             {% for n in questions %}
         <p>{{questionInfo}}</p>
         <hr>
-        {% endfor %}
-        </div>
-
-
+        {% endfor %}-->
+    
     </div>
 </body>
 
