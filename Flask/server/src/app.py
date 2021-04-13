@@ -266,6 +266,19 @@ def open_file():
         return redirect(url_for('login'))
     return render_template('open_file.html')
 
+@app.route('/test_list')
+def test_list():
+    if not g.user:
+        return redirect(url_for('login'))
+    return render_template('test_list.html')
+
+@app.route('/survey_list')
+def survey_list():
+    if not g.user:
+        return redirect(url_for('login'))
+    return render_template('survey_list.html')
+
+
 @app.route('/test_open')
 def test_open():
     if not g.user:
