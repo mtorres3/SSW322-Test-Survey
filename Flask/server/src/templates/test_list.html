@@ -5,16 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Test List</title>
-    <link rel="stylesheet" href="/main.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
  
 <body>
 
-    <div class='next-question'>
+    <div class='main-box'>
         <h1 class = 'header-list'>Select Test</h1>
         <a href = '/test_open'> Go to Test</a>
         <hr>
-        <a href='/survey_or_test'><img src="/back-button.png" height='50' width='50' class='back'></a>
+        <a href='/open_file'><img src="{{url_for('static', filename='images/back-button.png')}}" height='50' width='50' class='back'></a>
         
         <div class='list-div'>
             {% for n in questions %}

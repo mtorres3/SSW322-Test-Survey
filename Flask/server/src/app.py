@@ -299,16 +299,16 @@ def test_open():
     print(answers1)
     return render_template('test_open.html', Name = testName, question1 = question1, answers1 = answers1, question_amount = length, answerLength = answerLength)
 
-@app.route('/survey-open')
+@app.route('/survey_open')
 def survey_open():
     if not g.user:
         return redirect(url_for('login'))
     
     #surveyName = ref.document(session['user_id']).collection('Surveys').document('NameOfDocumentGoesHere').get().to_dict()['Name']#collection of Tests
     #surveyQuestions = ref.document('test').collection('Surveys').document('NameOfDocumentGoesHere').get().to_dict()['Questions']['question01']['question']
-    return render_template('survey-open.html') # Name = surveyName
+    return render_template('survey_open.html') # Name = surveyName
 
 
 
 if __name__ == "__main__":
-    app.run(port=5005, debug=True)
+    app.run(port=5006, debug=True)
