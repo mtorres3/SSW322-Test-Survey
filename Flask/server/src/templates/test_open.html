@@ -4,32 +4,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test List</title>/
+    <title>Test Name -- input here</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
  
 <body>
-    <div class='main-box'>        
-        <h1 class = 'header-list'>Select Test</h1>
-        <a href = '/test_open'> Go to Test</a>
+    <div class='finished-questions'>
+        <h2>Questions</h2>
         <hr>
-        <a href='/survey_or_test'><img src="{{ url_for('static', filename='images/back-button.png') }}" height='50' width='50' class='back'></a>
-        <label>Tests</label>
-        <form>
-            <select name="test-list" form="test-dropdown">
-                {% for test in testListings %}
-                    <option value={{test}}>{{test}}</option>
-                {% endfor %}
-            </select>
+        <form id='questions-list-form' method='POST'>
+            {% for n in range (1,question_amount + 1) %}<!-- Displays all Q #'s-->
+            <button type='submit' class='question-link' name='submit' value='{{n}}'><p> Q{{n}}: {{question}}</p></button>
+            <hr>
+            {% endfor %}
         </form>
-
-        <!--<div class='list-div'>
-            {% for n in questions %}
-        <p>{{questionInfo}}</p>
-        <hr>
-        {% endfor %}-->
-    
     </div>
+
+    <div class='next-question'> <!-- Light blue square -->
+        <h1 class = 'header-list'>{{Name}}</h1>
+        <hr>        
+        <a href='/open_file'><img src="{{url_for('static', filename='images/back-button.png')}}" height='50' width='50' class='back'></a>
+        <div class = 'question-block'>
+            <h2 > Question: {{question1}} </h2> <!-- Feed question(number) here to display question name-->
+            {% for n in answers1 %} <!-- Feed answer array here to display the questions and their respective number-->
+                 <h3 id = 'question-of-block'>{{loop.index}} {{n}} </h3>
+            {% endfor %}  
+        </div>
+        
+        <button type='submit' id='question-submit-load'>Next Question</button>
+        <img id= 'logo-load' width='300' height='75' src="{{url_for('static', filename='images/greggs_a-team.png')}}">
+    </div>   
+
 </body>
 
 </html>
