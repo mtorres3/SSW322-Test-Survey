@@ -272,7 +272,7 @@ def test_list():
     if not g.user:
         return redirect(url_for('login'))
     testListings = []
-    tests = ref.document('Joe').collection('Tests').stream()
+    tests = ref.document(session.'user_id').collection('Tests').stream()
     for test in tests:
         testListings.append(f'{test.id}')
     print(testListings)
