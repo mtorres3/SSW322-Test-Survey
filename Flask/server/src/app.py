@@ -273,7 +273,7 @@ def test_list():
         return redirect(url_for('login'))
     if request.method == 'GET':
         testListings = [] 
-        tests = ref.document('Joe').collection('Tests').stream()
+        tests = ref.document(session['user_id']).collection('Tests').stream()
         for test in tests:
             testListings.append(f'{test.id}')
         print(testListings)
@@ -295,14 +295,15 @@ def test_open():
     if not g.user:
         return redirect(url_for('login'))
     
-    valueReceived = session.get('test-name', None) #receive test Name from Test_List
-    print(valueReceived)
-    testName = ref.document(session['user_id']).collection('Tests').document('fuck this').get().to_dict()['Name']#Test Name
-    length = (len(ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions']))
+    testName = session.get('test-name') #receive test Name from Test_List
+    print(testName)
+    print(type(testName))
+    #testName = ref.document(session['user_id']).collection('Tests').document('fuck this').get().to_dict()['Name']#Test Name
+    length = (len(ref.document('test').collection('Tests').document(testName).get().to_dict()['Questions']))
 
     if request.method == 'GET':
-        question = ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions']['question01']['question']
-        answers = ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions']['question01']['answers']
+        question = ref.document('test').collection('Tests').document(testName).get().to_dict()['Questions']['question01']['question']
+        answers = ref.document('test').collection('Tests').document(testName).get().to_dict()['Questions']['question01']['answers']
         answerLength = len(answers)
         return render_template('test_open.html', Name = testName, question = question, answers = answers, question_amount = length, answerLength = answerLength)
 
@@ -314,8 +315,8 @@ def test_open():
         string = "question0" + str(number)
         #print(question)
         #print(answers) 
-        question = ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions'][string]['question']
-        answers = ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions'][string]['answers']
+        question = ref.document('test').collection('Tests').document(testName).get().to_dict()['Questions'][string]['question']
+        answers = ref.document('test').collection('Tests').document(testName).get().to_dict()['Questions'][string]['answers']
         answerLength = len(answers)
         print(request.form.get('submit-test'))
         print(request.form.get('submit'))
