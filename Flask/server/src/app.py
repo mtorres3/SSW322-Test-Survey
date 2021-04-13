@@ -283,21 +283,12 @@ def test_list():
         session['test-name'] = request.form.get('test-list')
         return redirect(url_for('test_open')) 
 
-@app.route('/survey_list', methods=['GET','POST'])
+@app.route('/survey_list')
 def survey_list():
     if not g.user:
         return redirect(url_for('login'))
-    if request.method == 'GET':
-        surveyListings = []
-        surveys = ref.document(session['user_id']).collection('Surveys').stream()
-        for survey in surveys:
-            surveyListings.append(f'{survey.id}')
-        print(surveyListings)
-        return render_template('survey_list.html', surveyListings = surveyListings)
-    elif request.method == 'POST':
-        print(request.form.get('survey-list'))
-        session['survey-name'] = request.form.get('survey-list')
-        return redirect(url_for('survey_open'))
+    return render_template('survey_list.html')
+
 
 @app.route('/test_open', methods=['GET','POST'])
 def test_open():
@@ -308,13 +299,26 @@ def test_open():
     print(testName)
     print(type(testName))
     #testName = ref.document(session['user_id']).collection('Tests').document('fuck this').get().to_dict()['Name']#Test Name
-    length = (len(ref.document('test').collection('Tests').document(testName).get().to_dict()['Questions']))
+    length = (len(ref.document(session['user_id']).collection('Tests').document(testName).get().to_dict()['Questions'])) #amt of questions
+    counter = 1
+    questionArray = []
+    for counter in range (1, length + 1):
+        string = "question0" + str(counter)
+        if(counter >= 10):
+            string = "question" + str(counter)
+        counter = counter + 1
+        questionArray.append(ref.document(session['user_id']).collection('Tests').document(testName).get().to_dict()['Questions'][string]['question'])
+    print(questionArray)
+
 
     if request.method == 'GET':
-        question = ref.document('test').collection('Tests').document(testName).get().to_dict()['Questions']['question01']['question']
-        answers = ref.document('test').collection('Tests').document(testName).get().to_dict()['Questions']['question01']['answers']
+        question = ref.document(session['user_id']).collection('Tests').document(testName).get().to_dict()['Questions']['question01']['question']
+        answers = ref.document(session['user_id']).collection('Tests').document(testName).get().to_dict()['Questions']['question01']['answers']
+        correct = ref.document(session['user_id']).collection('Tests').document(testName).get().to_dict()['Questions']['question01']['correct_answer']
         answerLength = len(answers)
-        return render_template('test_open.html', Name = testName, question = question, answers = answers, question_amount = length, answerLength = answerLength)
+        return render_template('test_open.html', Name = testName, question = question, 
+        answers = answers, question_amount = length, answerLength = answerLength, 
+        questionArray = questionArray, correct = correct)
 
     elif request.method == 'POST':
         #get question0# or question# from button
@@ -324,12 +328,15 @@ def test_open():
         string = "question0" + str(number)
         #print(question)
         #print(answers) 
-        question = ref.document('test').collection('Tests').document(testName).get().to_dict()['Questions'][string]['question']
-        answers = ref.document('test').collection('Tests').document(testName).get().to_dict()['Questions'][string]['answers']
+        question = ref.document(session['user_id']).collection('Tests').document(testName).get().to_dict()['Questions'][string]['question']
+        answers = ref.document(session['user_id']).collection('Tests').document(testName).get().to_dict()['Questions'][string]['answers']
+        correct = ref.document(session['user_id']).collection('Tests').document(testName).get().to_dict()['Questions'][string]['correct_answer']
         answerLength = len(answers)
-        print(request.form.get('submit-test'))
-        print(request.form.get('submit'))
-        return render_template('test_open.html', Name = testName, question = question, answers = answers, question_amount = length, answerLength = answerLength)
+        #print(request.form.get('submit-test'))
+        #print(request.form.get('submit'))
+        return render_template('test_open.html', Name = testName, question = question,
+        answers = answers, question_amount = length, answerLength = answerLength,
+        questionArray = questionArray, correct = correct)
 
 
 
