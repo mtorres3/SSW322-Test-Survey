@@ -29,13 +29,25 @@
             {% if correct == 'True' %}
             <h3 id = 'question-of-block'>1. True </h3>
             <h3 id = 'question-of-block'>2. False </h3>
+            <h3 id = 'question-of-block'> Correct Answer: {{correct}} </h3>
             {% elif correct == 'False' %}
             <h3 id = 'question-of-block'>1. True </h3>
             <h3 id = 'question-of-block'>2. False </h3>
+            <h3 id = 'question-of-block'> Correct Answer: {{correct}} </h3>
             {%else %}
                 {% for n in answers %} <!-- Feed answer array here to display the questions and their respective number-->
                  <h3 id = 'question-of-block'>{{loop.index}} {{n}} </h3>
                 {% endfor %}  
+                {% if correct == 'A' %}
+                    <h3 id = 'question-of-block'> Correct Answer: 1 </h3>
+                {% elif correct == 'B' %}
+                    <h3 id = 'question-of-block'> Correct Answer: 2 </h3>
+                {% elif correct == 'C' %}
+                    <h3 id = 'question-of-block'> Correct Answer: 3 </h3>
+                {% elif correct == 'D' %}
+                    <h3 id = 'question-of-block'> Correct Answer: 4 </h3>
+                {%endif%}
+
             {%endif%}
         </div>
         
@@ -46,4 +58,3 @@
 </body>
 
 </html>
-
