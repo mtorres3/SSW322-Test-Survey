@@ -289,31 +289,33 @@ def survey_list():
 def test_open():
     if not g.user:
         return redirect(url_for('login'))
+    
+    valueReceived = session.get('valuePass', None) #receive test Name from Test_List
+    print(valueReceived)
     testName = ref.document(session['user_id']).collection('Tests').document('fuck this').get().to_dict()['Name']#Test Name
     length = (len(ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions']))
-    counter = 1
-    questionsArray = []
-    for n in range (1, length + 1):
-        string = "question0" + str(counter)
-        if(counter >= 10):
-            string = "question" + str(counter)
-        #ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions'][string]
-        counter = counter + 1
-        questionsArray.append(ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions'][string]['question'])
-    #print(question)
-    #print(answers) 
+
     if request.method == 'GET':
         question = ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions']['question01']['question']
         answers = ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions']['question01']['answers']
         answerLength = len(answers)
         return render_template('test_open.html', Name = testName, question = question, answers = answers, question_amount = length, answerLength = answerLength)
+
     elif request.method == 'POST':
-        question = ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions']['question01']['question']
-        answers = ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions']['question01']['answers']
+        #get question0# or question# from button
+        number = int(request.form.get('submit')) 
+        if(number >= 10):
+            string = "question" + str(number)
+        string = "question0" + str(number)
+        #print(question)
+        #print(answers) 
+        question = ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions'][string]['question']
+        answers = ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions'][string]['answers']
         answerLength = len(answers)
         print(request.form.get('submit-test'))
         print(request.form.get('submit'))
         return render_template('test_open.html', Name = testName, question = question, answers = answers, question_amount = length, answerLength = answerLength)
+
 
 
 @app.route('/survey_open')
