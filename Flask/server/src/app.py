@@ -295,14 +295,17 @@ def test_open():
         #ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions'][string]
         counter = counter + 1
         questionsArray.append(ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions'][string]['question'])
-    question = ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions']['question01']['question']
-    answers = ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions']['question01']['answers']
-    answerLength = len(answers1)
-    print(question1)
-    print(answers1) 
+    #print(question)
+    #print(answers) 
     if request.method == 'GET':
+        question = ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions']['question01']['question']
+        answers = ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions']['question01']['answers']
+        answerLength = len(answers)
         return render_template('test_open.html', Name = testName, question = question, answers = answers, question_amount = length, answerLength = answerLength)
     elif request.method == 'POST':
+        question = ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions']['question01']['question']
+        answers = ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions']['question01']['answers']
+        answerLength = len(answers)
         print(request.form.get('submit'))
         return render_template('test_open.html', Name = testName, question = question, answers = answers, question_amount = length, answerLength = answerLength)
 
