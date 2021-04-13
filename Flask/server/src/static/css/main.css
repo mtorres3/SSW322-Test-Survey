@@ -426,11 +426,11 @@ hr{
 /* Load Survey/Test Page */
 .question-block{
     margin-top: 10%;
-    margin-left:20%;
+    margin-left: 40%;
     font-size: 28px;
 }
 #question-of-block{
-    position: relative;
+    margin:auto;
     font-size: 24px;
     font-weight: normal;    
 }
@@ -455,3 +455,40 @@ hr{
     font-size: 16px;
     padding: 1em 2em;
 }
+
+.survey-list-div{
+    background-color: #A3D3FF;
+    margin: auto;
+    margin-top: 15%;
+    width: 20%;
+    height: 15em;
+    font-size: 24px;
+    padding: 1.5em;
+    border-color: white;
+    border-radius: 10px;
+}
+
+/*Survey and Test List CSS
+ * places light blue rectangle in center
+ * places h1 in center above it
+ * thas it
+*/
+
+.list-div{
+    background-color: #A3D3FF;
+    margin: auto;
+    margin-left: 35%;
+    margin-top: 5%;
+    width: 30%;
+    height: 50%;
+    font-size: 18px;
+    padding: 1.5%;
+    border-color: white;
+    border-radius: 1%;
+}
+
+
+.header-list {
+    text-align: center;
+}
+
