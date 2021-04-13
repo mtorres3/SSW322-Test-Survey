@@ -283,12 +283,21 @@ def test_list():
         session['test-name'] = request.form.get('test-list')
         return redirect(url_for('test_open')) 
 
-@app.route('/survey_list')
+@app.route('/survey_list', methods=['GET','POST'])
 def survey_list():
     if not g.user:
         return redirect(url_for('login'))
-    return render_template('survey_list.html')
-
+    if request.method == 'GET':
+        surveyListings = []
+        surveys = ref.document(session['user_id']).collection('Surveys').stream()
+        for survey in surveys:
+            surveyListings.append(f'{survey.id}')
+        print(surveyListings)
+        return render_template('survey_list.html', surveyListings = surveyListings)
+    elif request.method == 'POST':
+        print(request.form.get('survey-list'))
+        session['survey-name'] = request.form.get('survey-list')
+        return redirect(url_for('survey_open'))
 
 @app.route('/test_open', methods=['GET','POST'])
 def test_open():
