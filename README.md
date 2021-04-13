@@ -3,7 +3,7 @@
  
   In order to run, clone repository. 
   Open the folder in your IDE of choice or go to console
-  Go to '''app.py
+  Go to app.py
   **Run app.py**
   Open in browser on localhost: http://127.0.0.1:5014/
   Login or Register
