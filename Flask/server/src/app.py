@@ -297,9 +297,9 @@ def test_open():
         questionsArray.append(ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions'][string]['question'])
     question = ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions']['question01']['question']
     answers = ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions']['question01']['answers']
-    answerLength = len(answers1)
-    print(question1)
-    print(answers1) 
+    answerLength = len(answers)
+    print(question)
+    print(answers) 
     if request.method == 'GET':
         return render_template('test_open.html', Name = testName, question = question, answers = answers, question_amount = length, answerLength = answerLength)
     elif request.method == 'POST':
