@@ -468,7 +468,7 @@ hr{
     border-radius: 10px;
 }
 
-/*Survey and Test List CSS
+/* Survey/Test List Styles
  * places light blue rectangle in center
  * places h1 in center above it
  * thas it
@@ -497,4 +497,30 @@ hr{
     border-style: solid;
     padding: 0.5em;
     color: white;
+}
+
+.test-selection{
+    display: block;
+    margin: auto;
+    margin-top: 40%;
+    width: 5em;
+    font-size: 18px;
+    padding: 1em;
+}
+.test-selection-submit{
+    display: block;
+    font-size: 16px;
+    padding: 1em;
+    border-color: white;
+    border-style: solid; 
+    color: #61B3FF;
+    background-color: white;
+    margin: auto;
+    border-radius: 15px;
+    margin-top: 1.5em;
+}
+.test-selection-label{
+    display: block;
+    font-size: 24px;
+    margin: auto;
 }

@@ -311,6 +311,7 @@ def test_open():
         question = ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions']['question01']['question']
         answers = ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions']['question01']['answers']
         answerLength = len(answers)
+        print(request.form.get('submit-test'))
         print(request.form.get('submit'))
         return render_template('test_open.html', Name = testName, question = question, answers = answers, question_amount = length, answerLength = answerLength)
 
@@ -326,4 +327,4 @@ def survey_open():
 
 
 if __name__ == "__main__":
-    app.run(port=5009, debug=True)
+    app.run(port=5012, debug=True)
