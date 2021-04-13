@@ -12,16 +12,16 @@
     <div class='main-box'>        
         <h1 class = 'header-list'>Select Test</h1>
         <hr>
-        <a href='/survey_or_test'><img src="{{ url_for('static', filename='images/back-button.png') }}" height='50' width='50' class='back'></a>
+        <a href='/open_file'><img src="{{ url_for('static', filename='images/back-button.png') }}" height='50' width='50' class='back'></a>
 
         <div class='list-div'>
-        <form id='test-list-form' action='/test_open' method='POST'>
-            <select class='test-selection' name="test-list" form="test-dropdown">
+        <form id='test-list-form' method='POST'>
+            <select class='test-selection' name="test-list" id='test-list' form="test-list-form">
                 {% for test in testListings %}
                     <option value={{test}}>{{test}}</option>
                 {% endfor %}
             </select>
-            <button type='submit' class='test-selection-submit' name='submit-test' value={{test}}>Select Test</button>
+            <button type='submit' class='test-selection-submit'>Select Test</button>
         </form>
         </div>
 

@@ -502,8 +502,8 @@ hr{
 .test-selection{
     display: block;
     margin: auto;
-    margin-top: 40%;
-    width: 5em;
+    margin-top: 25%;
+    width: 10em;
     font-size: 18px;
     padding: 1em;
 }
@@ -517,7 +517,7 @@ hr{
     background-color: white;
     margin: auto;
     border-radius: 15px;
-    margin-top: 1.5em;
+    margin-top: 4em;
 }
 .test-selection-label{
     display: block;

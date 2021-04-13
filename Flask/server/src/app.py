@@ -267,16 +267,21 @@ def open_file():
         return redirect(url_for('login'))
     return render_template('open_file.html')
 
-@app.route('/test_list')
+@app.route('/test_list', methods=['GET', 'POST'])
 def test_list():
     if not g.user:
         return redirect(url_for('login'))
-    testListings = []
-    tests = ref.document(session['user_id']).collection('Tests').stream()
-    for test in tests:
-        testListings.append(f'{test.id}')
-    print(testListings)
-    return render_template('test_list.html', testListings = testListings)
+    if request.method == 'GET':
+        testListings = [] 
+        tests = ref.document('Joe').collection('Tests').stream()
+        for test in tests:
+            testListings.append(f'{test.id}')
+        print(testListings)
+        return render_template('test_list.html', testListings = testListings)
+    elif request.method == "POST":
+        print(request.form.get('test-list'))
+        session['test-name'] = request.form.get('test-list')
+        return redirect(url_for('test_open')) 
 
 @app.route('/survey_list')
 def survey_list():
@@ -290,7 +295,7 @@ def test_open():
     if not g.user:
         return redirect(url_for('login'))
     
-    valueReceived = session.get('valuePass', None) #receive test Name from Test_List
+    valueReceived = session.get('test-name', None) #receive test Name from Test_List
     print(valueReceived)
     testName = ref.document(session['user_id']).collection('Tests').document('fuck this').get().to_dict()['Name']#Test Name
     length = (len(ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions']))
@@ -329,4 +334,4 @@ def survey_open():
 
 
 if __name__ == "__main__":
-    app.run(port=5012, debug=True)
+    app.run(port=5014, debug=True)
