@@ -39,6 +39,24 @@ redefine()
 print(usernames)
 #print(ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Name'])
 #print(ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions']['question01'])
+#print(ref.document('test').collection('Tests').document('fuck this').get().to_dict()['question1']['answers'])
+#print(ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions']['question01']['question'])
+#length = (len(ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions']))
+#get all of the questions values from from Question array
+#counter = 1
+#questionArray = []
+#for n in range (1, length + 1):
+ #   string = "question0" + str(counter)
+  #  if(counter >= 10):
+   #     string = "question" + str(counter)
+    #print(ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions'][string])
+    #print(ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions'][string]['answers'])
+    #print(string)
+    #print(ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions'][string]['question'])
+    #counter = counter + 1
+    #questionArray.append(ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions'][string]['question'])
+    
+#print(questionArray)
 
 @app.before_request
 def before_request():
@@ -252,13 +270,30 @@ def open_file():
 def test_open():
     if not g.user:
         return redirect(url_for('login'))
-    return render_template('test_open.html')
+    testName = ref.document(session['user_id']).collection('Tests').document('fuck this').get().to_dict()['Name']#Test Name
+    length = (len(ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions']))
+    counter = 1
+    questionsArray = []
+    for n in range (1, length + 1):
+        string = "question0" + str(counter)
+        #ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions'][string]
+        counter = counter + 1
+        questionsArray.append(ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions'][string]['question'])
+    question1 = ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions']['question01']['question']
+    answers1 = ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions']['question01']['answers']
+    answerLength = len(answers1)
+    print(question1)
+    print(answers1)
+    return render_template('test_open.html', Name = testName, question1 = question1, answers1 = answers1, question_amount = length, answerLength = answerLength)
 
 @app.route('/survey-open')
 def survey_open():
     if not g.user:
         return redirect(url_for('login'))
-    return render_template('survey-open.html')
+    
+    #surveyName = ref.document(session['user_id']).collection('Surveys').document('NameOfDocumentGoesHere').get().to_dict()['Name']#collection of Tests
+    #surveyQuestions = ref.document('test').collection('Surveys').document('NameOfDocumentGoesHere').get().to_dict()['Questions']['question01']['question']
+    return render_template('survey-open.html') # Name = surveyName
 
 
 
