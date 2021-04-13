@@ -198,6 +198,7 @@ def test_creation():
     if request.method == "GET":
         return render_template('test_creation.html', questionType="text", questionClass="multiple-choice", my_list=['A', 'B', 'C', 'D'], 
         qSubmit="question-submit-1", cSubmit='creation-submit-1', radioChoices=True, amount_of_questions = amount_of_questions)
+
     elif request.method == 'POST':
         qType = request.form.get('question-type')
         if qType == 'multiple-choice':
@@ -279,7 +280,7 @@ def survey_list():
     return render_template('survey_list.html')
 
 
-@app.route('/test_open')
+@app.route('/test_open', methods=['GET','POST'])
 def test_open():
     if not g.user:
         return redirect(url_for('login'))
@@ -289,6 +290,8 @@ def test_open():
     questionsArray = []
     for n in range (1, length + 1):
         string = "question0" + str(counter)
+        if(counter >= 10):
+            string = "question" + str(counter)
         #ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions'][string]
         counter = counter + 1
         questionsArray.append(ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions'][string]['question'])
@@ -296,8 +299,13 @@ def test_open():
     answers1 = ref.document('test').collection('Tests').document('fuck this').get().to_dict()['Questions']['question01']['answers']
     answerLength = len(answers1)
     print(question1)
-    print(answers1)
-    return render_template('test_open.html', Name = testName, question1 = question1, answers1 = answers1, question_amount = length, answerLength = answerLength)
+    print(answers1) 
+    if request.method == 'GET':
+        return render_template('test_open.html', Name = testName, question1 = question1, answers1 = answers1, question_amount = length, answerLength = answerLength)
+    elif request.method == 'POST':
+        print(request.form.get('submit'))
+        return render_template('test_open.html', Name = testName, question1 = question1, answers1 = answers1, question_amount = length, answerLength = answerLength)
+
 
 @app.route('/survey_open')
 def survey_open():
@@ -309,6 +317,5 @@ def survey_open():
     return render_template('survey_open.html') # Name = surveyName
 
 
-
 if __name__ == "__main__":
-    app.run(port=5006, debug=True)
+    app.run(port=5009, debug=True)

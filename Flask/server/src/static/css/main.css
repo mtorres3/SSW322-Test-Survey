@@ -491,4 +491,10 @@ hr{
     text-align: center;
 }
 
-
+.question-link{
+    border-color: #61B3FF;
+    background-color: #61B3FF;
+    border-style: solid;
+    padding: 0.5em;
+    color: white;
+}
