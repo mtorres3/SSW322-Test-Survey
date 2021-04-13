@@ -425,8 +425,8 @@ hr{
 
 /* Load Survey/Test Page */
 .question-block{
+    margin: auto;
     margin-top: 10%;
-    margin-left: 40%;
     font-size: 28px;
 }
 #question-of-block{
