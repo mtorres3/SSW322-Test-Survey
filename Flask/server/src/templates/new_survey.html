@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create or Open</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+ 
+<body>
+    <div class='main-box'>
+        <div class='small-blue-square'>
+            <h1>Create Survey</h1>
+            <hr>
+            <form id='register-form' method='POST'>
+                <label name='name' class="username">Survey Name:
+                <input name='name' id='username' type='text'>
+                </label>
+                <br>
+                <br>
+                <br>
+                <button type='submit' id='submit'>Submit</button>
+            </form>
+        </div>
+
+        <img class="logo-login" width='300' height='75' src="{{url_for('static', filename='images/greggs_a-team.png')}}">
+
+    </div>
+</body>
+
+</html>

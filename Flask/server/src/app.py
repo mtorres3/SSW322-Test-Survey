@@ -147,20 +147,61 @@ def survey_creation():
     if not g.user:
         return redirect(url_for('login')) 
 
+    curr = ref.document(session['user_id']).collection('Surveys').document(session['survey_name'])
+    try:
+        amount_of_questions = curr.get().to_dict()['Questions']
+    except KeyError:
+        amount_of_questions = []
+
     if request.method == "GET":
         return render_template('survey_creation.html', questionType="text", questionClass="multiple-choice", my_list=['A','B','C','D'], 
-            qSubmit="question-submit-1", cSubmit='creation-submit-1', radioChoices=True)
+            qSubmit="question-submit-1", cSubmit='creation-submit-1', radioChoices=True, amount_of_questions = amount_of_questions)
     elif request.method == 'POST':
         qType = request.form.get('question-type')
         if qType == 'multiple-choice':
-            return render_template('survey_creation.html', questionType="text", questionClass="multiple-choice", my_list=['A','B','C','D'], 
-            qSubmit="question-submit-1", cSubmit='creation-submit-1', radioChoices=True)
+            return render_template('survey_creation.html', questionType="text", questionClass="multiple-choice", my_list=['A', 'B', 'C', 'D'], 
+            qSubmit="question-submit-1", cSubmit='creation-submit-1', radioChoices=True, amount_of_questions = amount_of_questions)
+        
         elif qType == 'true-false':
             return render_template('survey_creation.html', questionType="radio", questionClass="true-false", my_list=['True', 'False'], 
-            correctAnswer='correct-answer', qSubmit="question-submit-2", cSubmit='creation-submit-2')
+            correctAnswer='correct-answer', qSubmit="question-submit-2", cSubmit='creation-submit-2', amount_of_questions = amount_of_questions)
+        
         elif qType == 'short-answer':
             return render_template('survey_creation.html', questionType="text", questionClass="short-answer", my_list=[], 
-            qSubmit="question-submit-3", cSubmit='creation-submit-3')
+            qSubmit="question-submit-3", cSubmit='creation-submit-3', amount_of_questions = amount_of_questions)
+        
+        if request.form['submit'] == 'next-question':
+
+            info = request.form
+            answers = []
+
+            for i in ['A', 'B', 'C', 'D']:
+                try:
+                    if len(info[i]) > 0:
+                        answers = answers + [info[i]]
+                except KeyError:
+                    break
+
+            try:
+                question_num = str(len(amount_of_questions) + 1)
+                if len(question_num) == 1:
+                    question_num = '0' + question_num
+
+                curr.set({
+                    'Questions': {
+                        'question' + question_num: {
+                            'question' : info['question'],
+                            'answers' : answers,
+                        }
+                    }
+                }, merge = True)
+
+            except KeyError:
+                pass
+            return redirect(url_for('survey_creation'))
+
+        if request.form['submit'] == 'save-survey':
+            return redirect(url_for('create_or_open'))
 
 
 @app.route('/survey_or_test')
@@ -184,6 +225,22 @@ def new_test():
         return(redirect(url_for('test_creation')))
 
     return render_template('new_test.html')
+
+@app.route('/new_survey', methods = ['GET', 'POST'])
+def new_survey():
+    if not g.user:
+        return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        name = request.form['name']
+        session['survey_name'] = name
+        ref.document(session['user_id']).collection('Surveys').document(session['survey_name']).set(
+            {
+                'Name' : name
+            })
+        return(redirect(url_for('survey_creation')))
+
+    return render_template('new_survey.html')
 
 @app.route('/test_creation', methods=['GET','POST'])
 def test_creation():
