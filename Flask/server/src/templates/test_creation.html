@@ -12,8 +12,9 @@
     <div class='finished-questions'>
         <h2>Questions</h2>
         <hr>
-        {% for n in range(amount_of_questions|length) %}
-        <p> Q{{n+1}}:</p>
+        {% for questions in questionArray %}
+        <p> Q{{loop.index}}:</p>
+        <p> {{questions}}</p>
         <hr>
         {% endfor %}
     </div>
