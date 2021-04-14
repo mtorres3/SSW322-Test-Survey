@@ -13,7 +13,7 @@
         <h2>Questions</h2>
         <hr>
         {% for n in range(amount_of_questions|length) %}
-        <p> Q{{n+1}}:</p>
+        <p> Q{{n+1}}</p>
         <hr>
         {% endfor %}
     </div>
@@ -47,7 +47,7 @@
                     {% if radioChoices==True %}
                         {{n}}<input type={{questionType}} name = "{{n}}" class={{questionClass}}>
                     {% else %}
-                        <input type={{questionType}} name = 'correct-answer' value = "{{n}}" class={{questionClass}}><p class='tf-text'>{{n}}</p>
+                        <input type={{questionType}} name ='correct-answer' value = "{{n}}" class={{questionClass}}><p class='tf-text'>{{n}}</p>
                     {% endif %}
                     </label>
                 {% endfor %}

@@ -181,7 +181,13 @@ def survey_creation():
                         answers = answers + [info[i]]
                 except KeyError:
                     break
-
+            ''' 
+            try:
+                if info['answers'] in ['True', 'False']:
+                    answers = info['answers']
+            except KeyError:
+                pass
+            '''
             try:
                 question_num = str(len(amount_of_questions) + 1)
                 if len(question_num) == 1:
@@ -280,7 +286,7 @@ def test_creation():
                         answers = answers + [info[i]]
                 except KeyError:
                     break
-
+            
             try:
                 question_num = str(len(amount_of_questions) + 1)
                 if len(question_num) == 1:
@@ -409,7 +415,7 @@ def test_open():
 
 
 
-@app.route('/survey_open')
+@app.route('/survey_open', methods=['GET','POST'])
 def survey_open():
     if not g.user:
         return redirect(url_for('login'))
