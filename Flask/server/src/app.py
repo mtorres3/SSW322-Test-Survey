@@ -148,17 +148,18 @@ def survey_creation():
         return redirect(url_for('login')) 
 
     if request.method == "GET":
-        return render_template('survey_creation.html', qSubmit="question-submit-0", cSubmit='creation-submit-0')
+        return render_template('survey_creation.html', questionType="text", questionClass="multiple-choice", my_list=['A','B','C','D'], 
+            qSubmit="question-submit-1", cSubmit='creation-submit-1', radioChoices=True)
     elif request.method == 'POST':
         qType = request.form.get('question-type')
         if qType == 'multiple-choice':
-            return render_template('survey_creation.html', questionType="text", questionClass="multiple-choice", my_list=[1,2,3,4], 
+            return render_template('survey_creation.html', questionType="text", questionClass="multiple-choice", my_list=['A','B','C','D'], 
             qSubmit="question-submit-1", cSubmit='creation-submit-1', radioChoices=True)
         elif qType == 'true-false':
-            return render_template('survey_creation.html', questionType="radio", questionClass="true-false", my_list=[1,2], 
+            return render_template('survey_creation.html', questionType="radio", questionClass="true-false", my_list=['True', 'False'], 
             correctAnswer='correct-answer', qSubmit="question-submit-2", cSubmit='creation-submit-2')
         elif qType == 'short-answer':
-            return render_template('survey_creation.html', questionType="text", questionClass="short-answer", my_list=[1], 
+            return render_template('survey_creation.html', questionType="text", questionClass="short-answer", my_list=[], 
             qSubmit="question-submit-3", cSubmit='creation-submit-3')
 
 
