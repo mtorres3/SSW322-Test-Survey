@@ -194,23 +194,24 @@ def test_creation():
         amount_of_questions = curr.get().to_dict()['Questions']
     except KeyError:
         amount_of_questions = []
-    
-    
+
+    counter = 1
+    questionArray = []
+    string = ''
     
     if request.method == "GET":
         return render_template('test_creation.html', questionType="text", questionClass="multiple-choice", my_list=['A', 'B', 'C', 'D'], 
-        qSubmit="question-submit-1", cSubmit='creation-submit-1', radioChoices=True, amount_of_questions = amount_of_questions)
+        qSubmit="question-submit-1", cSubmit='creation-submit-1', radioChoices=True, amount_of_questions = amount_of_questions, questionArray = questionArray)
 
     elif request.method == 'POST':
         #get all the questions available in test 
-        counter = 1
-        questionArray = []
         for counter in range (1, len(amount_of_questions) + 1):
             string = "question0" + str(counter)
             if(counter >= 10):
-                string = "question" + str(counter)
-        counter = counter + 1
-        questionArray.append(amount_of_questions[string]['question'])
+                string = "question" + str(counter) 
+            counter = counter + 1 
+            questionArray.append(amount_of_questions[string]['question']) 
+        #print(amount_of_questions)
         qType = request.form.get('question-type')
         if qType == 'multiple-choice':
             return render_template('test_creation.html', questionType="text", questionClass="multiple-choice", my_list=['A', 'B', 'C', 'D'], 
@@ -362,4 +363,4 @@ def survey_open():
 
 
 if __name__ == "__main__":
-    app.run(port=5014, debug=True)
+    app.run(port=5015, debug=True)
