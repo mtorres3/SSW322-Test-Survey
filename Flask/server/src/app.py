@@ -154,19 +154,23 @@ def survey_creation():
         amount_of_questions = []
 
     if request.method == "GET":
+        session['question_type'] = 'multiple-choice'
         return render_template('survey_creation.html', questionType="text", questionClass="multiple-choice", my_list=['A','B','C','D'], 
-            qSubmit="question-submit-1", cSubmit='creation-submit-1', radioChoices=True, amount_of_questions = amount_of_questions)
+        qSubmit="question-submit-1", cSubmit='creation-submit-1', radioChoices=True, amount_of_questions = amount_of_questions)
     elif request.method == 'POST':
         qType = request.form.get('question-type')
         if qType == 'multiple-choice':
+            session['question_type'] = 'multiple-choice'
             return render_template('survey_creation.html', questionType="text", questionClass="multiple-choice", my_list=['A', 'B', 'C', 'D'], 
             qSubmit="question-submit-1", cSubmit='creation-submit-1', radioChoices=True, amount_of_questions = amount_of_questions)
         
         elif qType == 'true-false':
+            session['question_type'] = 'true-false'
             return render_template('survey_creation.html', questionType="radio", questionClass="true-false", my_list=['True', 'False'], 
             correctAnswer='correct-answer', qSubmit="question-submit-2", cSubmit='creation-submit-2', amount_of_questions = amount_of_questions)
         
         elif qType == 'short-answer':
+            session['question_type'] = 'short-answer'
             return render_template('survey_creation.html', questionType="text", questionClass="short-answer", my_list=[], 
             qSubmit="question-submit-3", cSubmit='creation-submit-3', amount_of_questions = amount_of_questions)
         
@@ -196,6 +200,7 @@ def survey_creation():
                 curr.set({
                     'Questions': {
                         'question' + question_num: {
+                            'question_type' : session['question_type'],
                             'question' : info['question'],
                             'answers' : answers,
                         }
@@ -208,7 +213,6 @@ def survey_creation():
 
         if request.form['submit'] == 'save-survey':
             return redirect(url_for('create_or_open'))
-
 
 @app.route('/survey_or_test')
 def survey_or_test():
@@ -260,20 +264,27 @@ def test_creation():
         amount_of_questions = []
     
     if request.method == "GET":
-        return render_template('test_creation.html', questionType="text", questionClass="multiple-choice", my_list=['A', 'B', 'C', 'D'], 
+        session['question_type'] = 'multiple-choice'
+        return render_template('test_creation.html', questionType="text", questionClass="multiple-choice", my_list=['A', 'B', 'C', 'D'],
         qSubmit="question-submit-1", cSubmit='creation-submit-1', radioChoices=True, amount_of_questions = amount_of_questions)
 
-    elif request.method == 'POST':  
+    elif request.method == 'POST':
         qType = request.form.get('question-type')
         if qType == 'multiple-choice':
-            return render_template('test_creation.html', questionType="text", questionClass="multiple-choice", my_list=['A', 'B', 'C', 'D'], 
+            session['question_type'] = 'multiple-choice'
+            return render_template('test_creation.html', questionType="text", questionClass="multiple-choice", my_list=['A', 'B', 'C', 'D'],
             qSubmit="question-submit-1", cSubmit='creation-submit-1', radioChoices=True, amount_of_questions = amount_of_questions)
         elif qType == 'true-false':
-            return render_template('test_creation.html', questionType="radio", questionClass="true-false", my_list=['True', 'False'], 
+            session['question_type'] = 'true-false'
+            return render_template('test_creation.html', questionType="radio", questionClass="true-false", my_list=['True', 'False'],
             correctAnswer='correct-answer', qSubmit="question-submit-2", cSubmit='creation-submit-2', amount_of_questions = amount_of_questions)
         elif qType == 'short-answer':
-            return render_template('test_creation.html', questionType="text", questionClass="short-answer", my_list=[], 
+            session['question_type'] = 'short-answer'
+            return render_template('test_creation.html', questionType="text", questionClass="short-answer", my_list=[],
             qSubmit="question-submit-3", cSubmit='creation-submit-3', amount_of_questions = amount_of_questions)
+
+        # same things for essay, rank and match
+
 
         if request.form['submit'] == 'next-question':
 
@@ -286,7 +297,7 @@ def test_creation():
                         answers = answers + [info[i]]
                 except KeyError:
                     break
-            
+
             try:
                 question_num = str(len(amount_of_questions) + 1)
                 if len(question_num) == 1:
@@ -300,6 +311,7 @@ def test_creation():
                 curr.set({
                     'Questions': {
                         'question' + question_num: {
+                            'question_type' : session['question_type'],
                             'question' : info['question'],
                             'answers' : answers,
                             'correct_answer' : c_answer
