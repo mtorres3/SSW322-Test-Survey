@@ -399,6 +399,13 @@ def open_file():
         return redirect(url_for('login'))
     return render_template('open_file.html')
 
+#edge case route
+@app.route('/no_test_survey')
+def no_test_survey():
+    if not g.user:
+        return redirect(url_for('login'))
+    return render_template('no_test_survey.html')
+
 @app.route('/test_list', methods=['GET', 'POST'])
 def test_list():
     if not g.user:
@@ -406,10 +413,15 @@ def test_list():
     if request.method == 'GET':
         testListings = [] 
         tests = ref.document(session['user_id']).collection('Tests').stream()
+        test_counter = 0
         for test in tests:
-            testListings.append(f'{test.id}')
-        print(testListings)
-        return render_template('test_list.html', testListings = testListings)
+            test_counter = test_counter + 1
+            testListings.append(f'{test.id}') 
+        #print(testListings)
+        if(test_counter > 0):
+            return render_template('test_list.html', testListings = testListings)
+        else:
+            return render_template('no_test_survey.html')
     elif request.method == "POST":
         print(request.form.get('test-list'))
         session['test-name'] = request.form.get('test-list')
@@ -422,15 +434,22 @@ def survey_list():
     if request.method == 'GET':
         surveyListings = [] 
         surveys = ref.document(session['user_id']).collection('Surveys').stream()
+        test_counter = 0
         for survey in surveys:
+            test_counter = test_counter + 1
             surveyListings.append(f'{survey.id}')
-        print(surveyListings)
-        return render_template('survey_list.html', surveyListings = surveyListings)
+        #print(surveyListings)
+        if(test_counter > 0): 
+            return render_template('survey_list.html', surveyListings = surveyListings)
+        else:
+            return render_template('no_test_survey.html')
+        
     elif request.method == "POST":
         print(request.form.get('survey-list'))
         session['survey-name'] = request.form.get('survey-list')
         return redirect(url_for('survey_open')) 
     return render_template('survey_list.html')
+
 
 
 @app.route('/test_open', methods=['GET','POST'])
