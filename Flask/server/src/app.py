@@ -161,11 +161,28 @@ def take_survey_or_test():
 
 ############################## GOTTA GET DONE STILL #############################
 
-@app.route('/taker_test_select')
+@app.route('/taker_test_select',  methods=['GET','POST'])
 def taker_test_select():
     if not g.user:
         return redirect(url_for('login'))
     #TODO: Display tests in dropdown 
+    if request.method == 'GET':
+        testListings = [] 
+        tests = ref.document(session['user_id']).collection('Tests').stream()
+        test_counter = 0
+        for test in tests:
+            test_counter = test_counter + 1
+            testListings.append(f'{test.id}') 
+        #print(testListings)
+        if(test_counter > 0):
+            return render_template('taker_test_select.html', testListings = testListings)
+        else:
+            return render_template('taker_no_test_survey.html')
+    elif request.method == "POST":
+        #print(request.form.get('test-list'))
+        session['test-name'] = request.form.get('test-list')
+        print("This is the get request " + request.form.get('test-list').items())
+        return redirect(url_for('take_test')) 
     return render_template('taker_test_select.html')
 
 @app.route('/take_test')
@@ -175,11 +192,28 @@ def take_test():
     #TODO: Display test info
     return render_template('take_test.html')
 
-@app.route('/taker_survey_select')
+@app.route('/taker_survey_select', methods=['GET','POST'])
 def taker_survey_select():
     if not g.user:
         return redirect(url_for('login'))
     #TODO: Display surveys in dropdown
+    if request.method == 'GET':
+        surveyListings = [] 
+        surveys = ref.document(session['user_id']).collection('Surveys').stream()
+        test_counter = 0
+        for survey in surveys:
+            test_counter = test_counter + 1
+            surveyListings.append(f'{survey.id}')
+        #print(surveyListings)
+        if(test_counter > 0): 
+            return render_template('survey_list.html', surveyListings = surveyListings)
+        else:
+            return render_template('no_test_survey.html')
+        
+    elif request.method == "POST":
+        print(request.form.get('survey-list'))
+        session['survey-name'] = request.form.get('survey-list')
+        return redirect(url_for('take_survey')) 
     return render_template('taker_survey_select.html')
 
 @app.route('/take_survey')
@@ -423,34 +457,11 @@ def test_list():
         else:
             return render_template('no_test_survey.html')
     elif request.method == "POST":
-        print(request.form.get('test-list'))
+        #print(request.form.get('test-list'))
         session['test-name'] = request.form.get('test-list')
+        print("This is the get request " + request.form.get('test-list').items())
+
         return redirect(url_for('test_open')) 
-
-@app.route('/survey_list', methods=['GET', 'POST'])
-def survey_list():
-    if not g.user:
-        return redirect(url_for('login'))
-    if request.method == 'GET':
-        surveyListings = [] 
-        surveys = ref.document(session['user_id']).collection('Surveys').stream()
-        test_counter = 0
-        for survey in surveys:
-            test_counter = test_counter + 1
-            surveyListings.append(f'{survey.id}')
-        #print(surveyListings)
-        if(test_counter > 0): 
-            return render_template('survey_list.html', surveyListings = surveyListings)
-        else:
-            return render_template('no_test_survey.html')
-        
-    elif request.method == "POST":
-        print(request.form.get('survey-list'))
-        session['survey-name'] = request.form.get('survey-list')
-        return redirect(url_for('survey_open')) 
-    return render_template('survey_list.html')
-
-
 
 @app.route('/test_open', methods=['GET','POST'])
 def test_open():
@@ -458,8 +469,8 @@ def test_open():
         return redirect(url_for('login'))
     
     testName = session.get('test-name') #receive test Name from Test_List
-    print(testName)
-    print(type(testName))
+    #print(testName)
+    #print(type(testName))
     #testName = ref.document(session['user_id']).collection('Tests').document('fuck this').get().to_dict()['Name']#Test Name
     length = (len(ref.document(session['user_id']).collection('Tests').document(testName).get().to_dict()['Questions'])) #amt of questions
     counter = 1
@@ -500,7 +511,28 @@ def test_open():
         answers = answers, question_amount = length, answerLength = answerLength,
         questionArray = questionArray, correct = correct)
 
-
+@app.route('/survey_list', methods=['GET', 'POST'])
+def survey_list():
+    if not g.user:
+        return redirect(url_for('login'))
+    if request.method == 'GET':
+        surveyListings = [] 
+        surveys = ref.document(session['user_id']).collection('Surveys').stream()
+        test_counter = 0
+        for survey in surveys:
+            test_counter = test_counter + 1
+            surveyListings.append(f'{survey.id}')
+        #print(surveyListings)
+        if(test_counter > 0): 
+            return render_template('survey_list.html', surveyListings = surveyListings)
+        else:
+            return render_template('no_test_survey.html')
+        
+    elif request.method == "POST":
+        print(request.form.get('survey-list'))
+        session['survey-name'] = request.form.get('survey-list')
+        return redirect(url_for('survey_open')) 
+    return render_template('survey_list.html')
 
 @app.route('/survey_open', methods=['GET','POST'])
 def survey_open():
