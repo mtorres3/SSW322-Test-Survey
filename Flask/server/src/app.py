@@ -28,8 +28,9 @@ ref = db.collection('Users')
 
 # DB Query Documentation
 '''
+Small changes to the code below will get you everything you need
 
-
+ref.document(session['user_id']).collection('Surveys').document(session['survey_name']).get().to_dict()
 '''
 
 global users, usernames
