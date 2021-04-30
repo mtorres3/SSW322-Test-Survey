@@ -1,9 +1,23 @@
+'''
+Authors: Jon Cucci, Joe Letizia, Markell Torres, Will Baltus
+Started on: March 28th 2021
+'''
+
+# Assorted imports
 import os
+import hashlib
+from dotenv import load_dotenv
+
+load_dotenv()
+SALT = os.getenv('SALT')
+
+# Flask frameworking
 from flask import Flask, render_template, request, session, redirect, url_for, g, abort, jsonify, flash
 
 app = Flask(__name__)
 app.secret_key = 'okay'
 
+# Fire Store and databasing
 import firebase_admin
 from firebase_admin import credentials, firestore, initialize_app
 
@@ -98,6 +112,7 @@ def login():
         session.pop('user_id', None)
         username = request.form['username']
         password = request.form['password']
+        password = hashlib.sha256((password+SALT).encode()).hexdigest()
 
         try:
             user = [x for x in users if x.username == username][0]
@@ -117,13 +132,14 @@ def register():
         redefine()
         username = request.form['username']
         password = request.form['password']
+        hashed_password = hashlib.sha256((password+SALT).encode())
 
         if username in usernames:
             return redirect(url_for('register'))
         else:
             ref.document(username).set({
                 'username': username,
-                'password': password
+                'password': hashed_password.hexdigest()
             })
 
         return redirect(url_for('login'))
