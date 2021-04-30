@@ -286,7 +286,8 @@ def new_test():
         session['test_name'] = name
         ref.document(session['user_id']).collection('Tests').document(session['test_name']).set(
             {
-                'Name' : name
+                'Name' : name,
+                'ID' : str(len(ref.document(session['user_id']).collection('Tests').get()) + 1)
             })
         return(redirect(url_for('test_creation')))
 
@@ -302,7 +303,8 @@ def new_survey():
         session['survey_name'] = name
         ref.document(session['user_id']).collection('Surveys').document(session['survey_name']).set(
             {
-                'Name' : name
+                'Name' : name,
+                'ID' : str(len(ref.document(session['user_id']).collection('Surveys').get()) + 1)
             })
         return(redirect(url_for('survey_creation')))
 
@@ -549,7 +551,6 @@ def survey_open():
     #surveyName = ref.document(session['user_id']).collection('Surveys').document('NameOfDocumentGoesHere').get().to_dict()['Name']#collection of Tests
     #surveyQuestions = ref.document('test').collection('Surveys').document('NameOfDocumentGoesHere').get().to_dict()['Questions']['question01']['question']
     return render_template('survey_open.html') # Name = surveyName
-
 
 if __name__ == "__main__":
     app.run(port=5019, debug=True)
