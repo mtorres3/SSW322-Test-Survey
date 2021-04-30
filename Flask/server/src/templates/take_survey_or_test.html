@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Take Test or Survey</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+
+<body>
+    <div class='main-box'>
+        <a class='back-button' href="/taker_or_creator"><img src="{{url_for('static', filename='images/back-button.png')}}" width='50' height='50'></a>
+        <div class='button-div-2'>
+            <a href='/taker_test_select'><button class='button-one'>Take Test</button></a>
+            <br>
+            <a href='/taker_survey_select'><button class='button-one'>Take Survey</button></a>
+        </div>
+        <img class="logo-button-pages" width='300' height='75' src="{{url_for('static', filename='images/greggs_a-team.png')}}">
+    </div>
+</body>
+
+</html>

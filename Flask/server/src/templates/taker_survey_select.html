@@ -4,24 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test List</title>
+    <title>Survey Selection</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
  
 <body>
     <div class='main-box'>        
-        <h1 class = 'header-list'>Select Test</h1>
+        <h1 class = 'header-list'>Select Survey</h1>
         <hr>
-        <a href='/open_file'><img src="{{ url_for('static', filename='images/back-button.png') }}" height='50' width='50' class='back'></a>
+        <a href='/take_survey_or_test'><img src="{{ url_for('static', filename='images/back-button.png') }}" height='50' width='50' class='back'></a>
 
         <div class='list-div'>
         <form id='test-list-form' method='POST'>
             <select class='test-selection' name="test-list" id='test-list' form="test-list-form">
-                {% for test in testListings %}
-                    <option value={{test}}>{{test}}</option>
+                {% for survey in surveyListings %}
+                    <option value={{survey}}>{{survey}}</option>
                 {% endfor %}
             </select>
-            <button type='submit' class='test-selection-submit'>Select Test</button>
+            <button type='submit' class='test-selection-submit'>Take Survey</button>
         </form> 
         </div>
 

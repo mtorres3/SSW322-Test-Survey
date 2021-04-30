@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taking Survey</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+
+<body>
+    <div class='main-box'>
+      <h1 class='survey-test-title'>{{surveyName}}</h1>
+      <hr>
+      <h3 class='survey-test-question'>{{surveyQuestion}}</h3>
+      <form id='survey-take-form' method='POST'>
+
+        {% if multiple-choice == True %}
+          {% for choice in questionChoices %}
+            <label for='mc-answer-response'>{{choice}}
+              <input type='radio' class='mc-answer-response' name='mc-answer-response' value='{{choice}}'/>
+            </label>
+          {% endfor %}
+        {% endif %}
+
+        {% if true-false == True %}
+          <label for='tf-answer-choices'>True
+            <input type='radio' class='tf-answer-response' name='tf-answer-response' value='True'/>
+          </label>
+          <label for='tf-answer-choices'>False
+            <input type='radio' class='tf-answer-response' name='tf-answer-response' value='False'/>
+          </label>
+        {% endif %}
+
+        {% if short-answer == True %}
+          <input type='text' class='short-answer-response' value='short-answer-response'>
+        {% endif %}
+
+        <button id='questionSubmit' type='submit' name='submit' value='next-question'>Next Question</button>
+      </form>
+    </div>
+</body>
+
+</html>

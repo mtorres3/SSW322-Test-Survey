@@ -136,6 +136,46 @@ def taker_or_creator():
         return redirect(url_for('login'))
     return render_template('taker_or_creator.html')
 
+#For Taker
+@app.route('/take_survey_or_test')
+def take_survey_or_test():
+    if not g.user:
+        return redirect(url_for('login'))
+    return render_template('take_survey_or_test.html')
+
+############################## GOTTA GET DONE STILL #############################
+
+@app.route('/taker_test_select')
+def taker_test_select():
+    if not g.user:
+        return redirect(url_for('login'))
+    #TODO: Display tests in dropdown 
+    return render_template('taker_test_select.html')
+
+@app.route('/take_test')
+def take_test():
+    if not g.user:
+        return redirect(url_for('login'))
+    #TODO: Display test info
+    return render_template('take_test.html')
+
+@app.route('/taker_survey_select')
+def taker_survey_select():
+    if not g.user:
+        return redirect(url_for('login'))
+    #TODO: Display surveys in dropdown
+    return render_template('taker_survey_select.html')
+
+@app.route('/take_survey')
+def take_survey():
+    if not g.user:
+        return redirect(url_for('login'))
+    #TODO: Display survey info
+    return render_template('take_survey.html')
+
+##################################################################################
+
+#For Creator
 @app.route('/create_or_open')
 def create_or_open():
     if not g.user:
@@ -477,4 +517,4 @@ def survey_open():
 
 
 if __name__ == "__main__":
-    app.run(port=5017, debug=True)
+    app.run(port=5019, debug=True)

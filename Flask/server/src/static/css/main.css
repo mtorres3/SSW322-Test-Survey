@@ -268,7 +268,7 @@ hr{
 #question-submit-2{
     float: right;
     margin-right: 5em;
-    margin-top: 33em; 
+    margin-top: 33em;
     margin-left: 1em;
     color: #61B3FF;
     background-color: white;
@@ -342,7 +342,7 @@ hr{
 #submit{
     margin-top: 2em;
     color: #A3D3FF;
-    border-color: white; 
+    border-color: white;
     border-radius: 10px;
     background-color: white;
     width: 4em;
@@ -425,14 +425,15 @@ hr{
 
 /* Load Survey/Test Page */
 .question-block{
+    width: 80%;
     margin-top: 10%;
-    margin-left: 20%;
+    margin: auto;
     font-size: 28px;
 }
 #question-of-block{
     font-size: 24px;
     margin: auto;
-    font-weight: normal;    
+    font-weight: normal;
 }
 
 #logo-load{
@@ -512,7 +513,7 @@ hr{
     font-size: 16px;
     padding: 1em;
     border-color: white;
-    border-style: solid; 
+    border-style: solid;
     color: #61B3FF;
     background-color: white;
     margin: auto;
@@ -523,4 +524,29 @@ hr{
     display: block;
     font-size: 24px;
     margin: auto;
+}
+
+/* Test/Survey Take Styles */
+
+.survey-test-title{
+    text-align: center;
+}
+
+.taker-question-block{
+    margin:auto;
+    margin-top: 3em;
+    text-align: center;
+}
+
+#questionSubmit{
+    position: absolute;
+    font-size: 18px;
+    padding: 1.25em;
+    border-color: white;
+    border-style: solid;
+    color: #61B3FF;
+    background-color: white;
+    border-radius: 15px;
+    margin-top: 30%;
+    margin-left: 75%
 }
