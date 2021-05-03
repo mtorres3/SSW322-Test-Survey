@@ -10,17 +10,13 @@
  
 <body>
     <div class='main-box'>        
-        <h1 class = 'header-list'>Select Test</h1>
+        <h1 class = 'header-list'>Enter Test Name</h1>
         <hr>
         <a href='/take_survey_or_test'><img src="{{ url_for('static', filename='images/back-button.png') }}" height='50' width='50' class='back'></a>
 
         <div class='list-div'>
         <form id='test-list-form' method='POST'>
-            <select class='test-selection' name="test-list" id='test-list' form="test-list-form">
-                {% for test in testListings %}
-                    <option value={{test}}>{{test}}</option>
-                {% endfor %}
-            </select>
+            <input type='text' class='form-text-input' name='test-lookup'>
             <button type='submit' class='test-selection-submit'>Take Test</button>
         </form> 
         </div>

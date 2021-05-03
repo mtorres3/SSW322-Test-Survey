@@ -615,4 +615,4 @@ def survey_open():
     return render_template('survey_open.html') # Name = surveyName
 
 if __name__ == "__main__":
-    app.run(port=5019, debug=True)
+    app.run(port=5025, debug=True)
