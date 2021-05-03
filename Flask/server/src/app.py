@@ -452,12 +452,33 @@ def grade_test_select():
     #TODO: Get Test ID to open
     return render_template('grade_test_select.html')
 
+@app.route('/taker_selection_for_grading')
+def taker_selection_for_grading():
+    if not g.user:
+        return redirect(url_for('login'))
+    #TODO: Get user ID for grading
+    return render_template('taker_selection_for_grading.html')
+
+@app.route('/view_grade')
+def view_grade():
+    if not g.user:
+        return redirect(url_for('login'))
+    #TODO: Give data for user's so creator can grade it
+    return render_template('view_grade.html')
+
 @app.route('/tabulate_survey_select')
 def tabulate_survey_select():
     if not g.user:
         return redirect(url_for('login'))
     #TODO: Get Survey ID to open
     return render_template('tabulate_survey_select.html')
+
+@app.route('/survey_tabulation')
+def survey_tabulation():
+    if not g.user:
+        return redirect(url_for('login'))
+    #TODO: Give data for top/avg answers for each question
+    return render_template('survey_tabulation.html')
 #########################################################################################
 
 @app.route('/open_file')
@@ -637,4 +658,4 @@ def survey_open():
     return render_template('survey_open.html') # Name = surveyName
 
 if __name__ == "__main__":
-    app.run(port=5026, debug=True)
+    app.run(port=5027, debug=True)

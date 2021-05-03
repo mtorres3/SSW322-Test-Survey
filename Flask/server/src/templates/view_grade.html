@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade View</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+ 
+<body>
+    <div class='main-box'>        
+        <h1 class = 'header-list'>{{takerName}}</h1>
+        <hr>
+        <a href='/taker_selection_for_grading'><img src="{{ url_for('static', filename='images/back-button.png') }}" height='50' width='50' class='back'></a>
+
+        <div class='list-div'>
+            {% for question in gradedQuestions %}
+                <!-- Show all MC and T/F questions and if they're correct or not -->
+            {% endfor %}
+            <form id='short-answer-grading-form' method='POST'>
+                {% for answer in shortAnswers %}
+                    <!-- Show all short answer questions for grading -->
+                    {{answer}}<input type='number' class='sa-grade' min='0' max='10'>
+                {% endfor %}
+                <button type='submit' class='test-selection-submit'>Submit Grades</button>
+            </form> 
+        </div>
+
+    </div>
+</body>
+
+</html>

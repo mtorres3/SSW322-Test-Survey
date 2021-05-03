@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey Tabulation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+ 
+<body>
+    <div class='main-box'>        
+        <h1 class = 'header-list'>{{surveyName}}</h1>
+        <hr>
+        <a href='/tabulate_survey_select'><img src="{{ url_for('static', filename='images/back-button.png') }}" height='50' width='50' class='back'></a>
+
+        <div class='list-div'>
+            {% for question in questions %}
+                <!-- Show top/avg answer for each question in survey -->
+            {% endfor %}
+        </div>
+
+    </div>
+</body>
+
+</html>
