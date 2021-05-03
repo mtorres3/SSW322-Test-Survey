@@ -211,8 +211,11 @@ def taker_survey_select():
     elif request.method == "POST":
         
         #TODO: Display survey info
-        the_survey = request.form.get('survey-list-submit')
+        the_survey = request.form.get('survey-lookup')
+        print(the_survey)
         s = the_survey.split("S")
+        print(s[0])
+        print(s[1])
         surveys = ref.document(s[0]).collection('Surveys').stream()
         info = {}
 
