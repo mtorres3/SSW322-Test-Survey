@@ -469,6 +469,40 @@ hr{
     border-radius: 10px;
 }
 
+.correct-answer-display{
+    display: inline;
+    width: 3em;
+    height: 3em;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: white;
+}
+
+#q{
+    display: inline;
+    width: 50em;
+    height: 3em;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: white;
+    margin-bottom: 1em;
+}
+
+.modify-submit{
+    display: block;
+    float: right;
+    font-size: 16px;
+    padding: 1em;
+    border-color: white;
+    border-style: solid;
+    color: #61B3FF;
+    background-color: white;
+    margin: auto;
+    border-radius: 15px;
+    margin-right: -3em;
+    margin-top: 6em;
+}
+
 /* Survey/Test List Styles
  * places light blue rectangle in center
  * places h1 in center above it

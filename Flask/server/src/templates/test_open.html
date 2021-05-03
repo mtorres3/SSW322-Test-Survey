@@ -36,26 +36,28 @@
             <h3 id = 'question-of-block'>2. False </h3>
             <h3 id = 'question-of-block'> Correct Answer: {{correct}} </h3>
             {%else %}
+
                 {% for n in answers %} <!-- Feed answer array here to display the questions and their respective number-->
-                    <h3 id = 'question-of-block'>Answer #{{loop.index}}</h3>
+                    <h3 id = 'question-of-block'>{{loop.index}}.</h3>
                     <input type='text' name = 'q' id='q' value='{{n}}'>
-                {% endfor %}  
+                {% endfor %}
+
+                <h3 id = 'question-of-block'> Correct Answer:</h3>
                 {% if correct == 'A' %}
-                    <h3 id = 'question-of-block'> Correct Answer: 1 </h3>
+                    <input type='number' min='1' max='4' class='correct-answer-display' name='correct-answer-display' value='1'>
                 {% elif correct == 'B' %}
-                    <h3 id = 'question-of-block'> Correct Answer: 2 </h3>
+                    <input type='number' min='1' max='4' class='correct-answer-display' name='correct-answer-display' value='2'>
                 {% elif correct == 'C' %}
-                    <h3 id = 'question-of-block'> Correct Answer: 3 </h3>
+                    <input type='number' min='1' max='4' class='correct-answer-display' name='correct-answer-display' value='3'>
                 {% elif correct == 'D' %}
-                    <h3 id = 'question-of-block'> Correct Answer: 4 </h3>
+                    <input type='number' min='1' max='4' class='correct-answer-display' name='correct-answer-display' value='4'>
                 {%endif%}
+                
             {%endif%}
-            <button type='submit' class='test-selection-submit' name='modify-question'>Save Changes</button>
+            <button type='submit' class='modify-submit' name='modify-question'>Save Changes</button>
             </form>
         </div>
         
-        <!-- <button type='submit' id='question-submit-load'>Next Question</button> -->
-        <img id= 'logo-load' width='300' height='75' src="{{url_for('static', filename='images/greggs_a-team.png')}}">
     </div>   
 
 </body>
