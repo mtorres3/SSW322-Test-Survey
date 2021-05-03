@@ -204,7 +204,7 @@ def taker_survey_select():
             surveyListings.append(f'{survey.id}')
 
         if(test_counter > 0): 
-            return render_template('survey_list.html', surveyListings = surveyListings)
+            return render_template('taker_survey_select.html', surveyListings = surveyListings)
         else:
             return render_template('no_test_survey.html')
         
@@ -615,4 +615,4 @@ def survey_open():
     return render_template('survey_open.html') # Name = surveyName
 
 if __name__ == "__main__":
-    app.run(port=5025, debug=True)
+    app.run(port=5026, debug=True)
