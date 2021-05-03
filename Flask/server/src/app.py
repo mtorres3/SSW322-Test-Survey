@@ -215,13 +215,12 @@ def taker_survey_select():
         print("testing1")
         s = the_survey.split("S")
         surveys = ref.document(s[0]).collection('Surveys').stream()
+        info = {}
 
         for survey in surveys:
-            print("testing2")
-            if s[1] == survey.get().to_dict()['ID']:
-                print("bleh")
-                print("testing3")
-                return f'{survey.id}'.get().to_dict()['Questions']
+
+            if s[1] == survey.to_dict()['ID']:
+                info = survey.to_dict()
         
         request.form.get('survey-list-submit')
         print(request.form.get('survey-list-submit'))
@@ -649,6 +648,11 @@ def survey_open():
         questionArray = questionArray)
     
     return render_template('survey_open.html') # Name = surveyName
+
+surveys = ref.document("test").collection("Surveys").stream()
+for survey in surveys:
+    if survey.to_dict()["ID"] == "1":
+        # print(survey.to_dict())
 
 if __name__ == "__main__":
     app.run(port=5026, debug=True)
