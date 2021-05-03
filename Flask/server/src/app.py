@@ -452,6 +452,28 @@ def upload_or_grade():
         return redirect(url_for('login'))
     return render_template('upload_or_grade.html')
 
+@app.route('/grade_test_or_survey')
+def grade_test_or_survey():
+    if not g.user:
+        return redirect(url_for('login'))
+    return render_template('grade_test_or_survey.html')
+
+#################################### TODO STILL #########################################
+@app.route('/grade_test_select')
+def grade_test_select():
+    if not g.user:
+        return redirect(url_for('login'))
+    #TODO: Get Test ID to open
+    return render_template('grade_test_select.html')
+
+@app.route('/tabulate_survey_select')
+def tabulate_survey_select():
+    if not g.user:
+        return redirect(url_for('login'))
+    #TODO: Get Survey ID to open
+    return render_template('tabulate_survey_select.html')
+#########################################################################################
+
 @app.route('/open_file')
 def open_file():
     if not g.user:
