@@ -15,9 +15,9 @@
         <a href='/take_survey_or_test'><img src="{{ url_for('static', filename='images/back-button.png') }}" height='50' width='50' class='back'></a>
 
         <div class='list-div'>
-            <form id='test-list-form' method='POST'>
+            <form id='survey-list' method='POST'>
                 <input type='text' class='form-text-input' name='survey-lookup' >
-                <button type='submit' class='test-selection-submit'>Take Survey</button>
+                <button type='submit' class='test-selection-submit' name='survey-list-submit'>Take Survey</button>
             </form>
         </div>
 
