@@ -209,17 +209,31 @@ def taker_survey_select():
             return render_template('no_test_survey.html')
         
     elif request.method == "POST":
-        print(request.form.get('survey-list'))
-        session['survey-name'] = request.form.get('survey-list')
+        
+        #TODO: Display survey info
+        the_survey = request.form.get('survey-list-submit')
+        print("testing1")
+        s = the_survey.split("S")
+        surveys = ref.document(s[0]).collection('Surveys').stream()
+
+        for survey in surveys:
+            print("testing2")
+            if s[1] == survey.get().to_dict()['ID']:
+                print("bleh")
+                print("testing3")
+                return f'{survey.id}'.get().to_dict()['Questions']
+        
+        request.form.get('survey-list-submit')
+        print(request.form.get('survey-list-submit'))
         return redirect(url_for('take_survey')) 
 
     return render_template('taker_survey_select.html')
 
-@app.route('/take_survey')
+@app.route('/take_survey', methods=['GET', 'POST'])
 def take_survey():
     if not g.user:
         return redirect(url_for('login'))
-    #TODO: Display survey info
+
     return render_template('take_survey.html')
 
 ##################################################################################
@@ -474,7 +488,7 @@ def test_list():
     elif request.method == "POST":
 
         session['test-name'] = request.form.get('test-list')
-        print("This is the get request " + request.form.get('test-list').items())
+        #print("This is the get request " + request.form.get('test-list').items())
 
         return redirect(url_for('test_open')) 
 
