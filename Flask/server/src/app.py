@@ -213,7 +213,7 @@ def taker_survey_select():
         #TODO: Display survey info
         the_survey = request.form.get('survey-lookup')
         print(the_survey)
-        s = the_survey.split("S")
+        s = the_survey.split("-")
         print(s[0])
         print(s[1])
         surveys = ref.document(s[0]).collection('Surveys').stream()
@@ -590,6 +590,28 @@ def test_open():
         answers = answers, question_amount = length, answerLength = answerLength,
         questionArray = questionArray, correct = correct)
 
+    elif request.method == 'PUT':
+        print(request.form.get('question'))
+        
+        # curr_ref.set({
+        #              'Questions': {
+        #                  'question' + question_num: {
+        #                      'question_type' : session['question_type'],
+        #                      'question' : info['question'],
+        #                     'answers' : answers,
+        #                      'correct_answer' : c_answer
+        #                  }
+        #              }
+        #          })
+
+
+        return render_template('test_open.html', Name = surveyName, question = question,
+        answers = answers, question_amount = length, answerLength = answerLength,
+        questionArray = questionArray)
+
+
+
+
 @app.route('/survey_list', methods=['GET', 'POST'])
 def survey_list():
 
@@ -655,6 +677,7 @@ def survey_open():
     elif request.method == 'POST':
 
         #get question0# or question# from button
+
         number = int(request.form.get('submit')) 
 
         if(number >= 10):
@@ -669,6 +692,30 @@ def survey_open():
         answers = answers, question_amount = length, answerLength = answerLength,
         questionArray = questionArray)
     
+    elif request.method == 'PUT':
+        print(request.form.get('question'))
+        
+        # curr_ref.set({
+        #              'Questions': {
+        #                  'question' + question_num: {
+        #                      'question_type' : session['question_type'],
+        #                      'question' : info['question'],
+        #                     'answers' : answers,
+        #                      'correct_answer' : c_answer
+        #                  }
+        #              }
+        #          })
+
+
+        return render_template('survey_open.html', Name = surveyName, question = question,
+        answers = answers, question_amount = length, answerLength = answerLength,
+        questionArray = questionArray)
+
+
+
+
+
+
     return render_template('survey_open.html') # Name = surveyName
 
 # surveys = ref.document("test").collection("Surveys").stream()

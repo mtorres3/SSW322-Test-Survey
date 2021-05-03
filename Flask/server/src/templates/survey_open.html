@@ -25,7 +25,7 @@
         <hr>        
         <a href='/open_file'><img src="{{url_for('static', filename='images/back-button.png')}}" height='50' width='50' class='back'></a>
         <div class = 'question-block'>
-            <form id='questions' method='POST'>
+            <form id='answer-form' method='PUT'>
                 <h2 > Question: {{question}} </h2> <!-- Feed question(number) here to display question name-->
                 {% if answerLength == 2 %}
                 <h3 id = 'question-of-block'>1. True </h3>
@@ -33,7 +33,7 @@
                 {% else %}
                     {% for n in answers %} <!-- Feed answer array here to display the questions and their respective number-->
                         <h3 id = 'question-of-block'>Answer #{{loop.index}}</h3>
-                        <input type='text' name = "q" id='q' value='{{n}}'>
+                        <input type='text' name = "answer" id='q' value='{{n}}'>
                     {% endfor %} 
                 {% endif %}
                 <button type='submit' class='modify-submit' name='modify-question'>Save Changes</button>
