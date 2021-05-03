@@ -211,9 +211,11 @@ def taker_survey_select():
     elif request.method == "POST":
         
         #TODO: Display survey info
-        the_survey = request.form.get('survey-list-submit')
-        print("testing1")
+        the_survey = request.form.get('survey-lookup')
+        print(the_survey)
         s = the_survey.split("S")
+        print(s[0])
+        print(s[1])
         surveys = ref.document(s[0]).collection('Surveys').stream()
         info = {}
 
@@ -649,10 +651,10 @@ def survey_open():
     
     return render_template('survey_open.html') # Name = surveyName
 
-surveys = ref.document("test").collection("Surveys").stream()
-for survey in surveys:
-    if survey.to_dict()["ID"] == "1":
-        # print(survey.to_dict())
+# surveys = ref.document("test").collection("Surveys").stream()
+# for survey in surveys:
+#     if survey.to_dict()["ID"] == "1":
+#         # print(survey.to_dict())
 
 if __name__ == "__main__":
     app.run(port=5026, debug=True)
