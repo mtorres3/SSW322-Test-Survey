@@ -1,66 +1,52 @@
 <!DOCTYPE html>
 <html>
-  
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Name -- input here</title>
+    <title>Taking Test</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
- 
+
 <body>
-    <div class='finished-questions'>
-        <h2>Questions</h2>
-        <hr>
-        <form id='questions-list-form' method='POST'>
-            {% for those in questionArray %}<!-- Displays all Q #'s-->
-           </div>  <button type='submit' class='question-link' name='submit' value='{{loop.index}}'><p> Q{{loop.index}}: {{those}}</p></button>
-            <hr>
-            {% endfor %}
+  <!-- DARK BLUE RECTANGLE-->
+  <div class='finished-questions'>
+    <h2>Questions</h2>
+    <hr>
+    <form id='questions-list-form' method='POST'>
+      <!-- Displays all Q #'s-->
+      {% for those in questionArray %}
+      <button type='submit' class='question-link' name='submit' value='{{loop.index}}'><p> Q{{loop.index}}: {{those}}</p></button>
+      <hr>
+      {% endfor %}
+    </form>
+  </div> <!-- End Div-->
+
+  <div class='next-question'> <!-- Light blue square -->
+    <h1 class = 'header-list'>{{testName}}</h1> <!-- Name of Test-->
+    <hr>        
+    <a href='/taker_survey_select'><img src="{{url_for('static', filename='images/back-button.png')}}" height='50' width='50' class='back'></a>
+    <div class = 'question-block'>
+        <form id='questions' method='POST'>
+        <!-- Feed question(number) here to display question name-->
+        <h2 > Question: {{testQuestion}} </h2> 
+        <!-- Feed answer array here to display the questions and their respective number-->
+        {% if questionType == 'multiple-choice' %}
+          {% for n in answers %} 
+          <h3 id = 'question-of-block'>{{loop.index}}.  {{n}}</h3>
+          <input type='radio' class='mc-answer-response' name='mc-answer-response' value='{{n}}'/>
+          {% endfor %}
+        {%elif questionType == 'short-answer' %}
+            <input type='text' class='short-answer-response' name='short-answer-response'>
+        {%elif questionType == 'true-false' %}
+            <h3 id = 'question-of-block'>1.  True</h3>
+            <input type='radio' class='mc-answer-response' name='tf-answer-response' value='True'/>
+            <h3 id = 'question-of-block'>2.  False</h3>
+            <input type='radio' class='mc-answer-response' name='tf-answer-response' value='False'/>      
+        {% endif %}
+
+        <button type='submit' class='modify-submit' name='modify-question'>Save Changes</button>
         </form>
-    </div>
-
-    <div class='next-question'> <!-- Light blue square -->
-        <h1 class = 'header-list'>{{Name}}</h1>
-        <hr>        
-        <a href='/open_file'><img src="{{url_for('static', filename='images/back-button.png')}}" height='50' width='50' class='back'></a>
-        <div class = 'question-block'>
-            <form id='questions' method='POST'>
-            <h2 > Question: {{question}} </h2> <!-- Feed question(number) here to display question name-->
-            {% if correct == 'True' %}
-            <h3 id = 'question-of-block'>1. True </h3>
-            <h3 id = 'question-of-block'>2. False </h3>
-            <h3 id = 'question-of-block'> Correct Answer: {{correct}} </h3>
-            {% elif correct == 'False' %}
-            <h3 id = 'question-of-block'>1. True </h3>
-            <h3 id = 'question-of-block'>2. False </h3>
-            <h3 id = 'question-of-block'> Correct Answer: {{correct}} </h3>
-            {%else %}
-
-                {% for n in answers %} <!-- Feed answer array here to display the questions and their respective number-->
-                    <h3 id = 'question-of-block'>{{loop.index}}.</h3>
-                    <input type='text' name = 'q' id='q' value='{{n}}'>
-                {% endfor %}
-
-                <h3 id = 'question-of-block'> Correct Answer:</h3>
-                {% if correct == 'A' %}
-                    <input type='number' min='1' max='4' class='correct-answer-display' name='correct-answer-display' value='1'>
-                {% elif correct == 'B' %}
-                    <input type='number' min='1' max='4' class='correct-answer-display' name='correct-answer-display' value='2'>
-                {% elif correct == 'C' %}
-                    <input type='number' min='1' max='4' class='correct-answer-display' name='correct-answer-display' value='3'>
-                {% elif correct == 'D' %}
-                    <input type='number' min='1' max='4' class='correct-answer-display' name='correct-answer-display' value='4'>
-                {%endif%}
-                
-            {%endif%}
-            <button type='submit' class='modify-submit' name='modify-question'>Save Changes</button>
-            </form>
-        </div>
-        
-    </div>   
-
+    </div>  
+</div>  <!-- End Div-->  
 </body>
-
-</html>
-
