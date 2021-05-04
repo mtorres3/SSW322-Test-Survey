@@ -507,11 +507,33 @@ def grade_test_or_survey():
     return render_template('grade_test_or_survey.html')
 
 #################################### TODO STILL #########################################
-@app.route('/grade_test_select')
+@app.route('/grade_test_select', methods=['GET','POST'])
 def grade_test_select():
     if not g.user:
         return redirect(url_for('login'))
     #TODO: Get Test ID to open
+    if request.method == 'GET':
+
+        testListings = [] 
+        tests = ref.document(session['user_id']).collection('Tests').stream()
+        test_counter = 0
+
+        for test in tests:
+            test_counter = test_counter + 1
+            testListings.append(f'{test.id}') 
+
+        if(test_counter > 0):
+            return render_template('test_list.html', testListings = testListings)
+        else:
+            return render_template('no_test_survey.html')
+
+    elif request.method == "POST":
+
+        session['test-name'] = request.form.get('test-list')
+        #print("This is the get request " + request.form.get('test-list').items())
+
+        return redirect(url_for('test_open')) 
+
     return render_template('grade_test_select.html')
 
 @app.route('/taker_selection_for_grading')
@@ -617,9 +639,9 @@ def test_open():
         session['correct'] = curr_ref['question01']['correct_answer']
         session['answerLength'] = len(session['answers'])
 
-        return render_template('test_open.html', Name = testName, question = session['question'], 
-        answers = session['answers'], question_amount = length, answerLength = session['answerLength'], 
-        questionArray = questionArray, correct = session['correct'] )
+        # return render_template('test_open.html', Name = testName, question = session['question'], 
+        # answers = session['answers'], question_amount = length, answerLength = session['answerLength'], 
+        # questionArray = questionArray, correct = session['correct'] )
 
     elif request.method == 'POST':
 
@@ -641,9 +663,9 @@ def test_open():
             session['correct'] = curr_ref[string]['correct_answer']
             session['answerLength'] = len(session['answers'])
 
-            return render_template('test_open.html', Name = testName, question = session['question'], 
-            answers = session['answers'], question_amount = length, answerLength = session['answerLength'], 
-            questionArray = questionArray, correct = session['correct'] )
+            # return render_template('test_open.html', Name = testName, question = session['question'], 
+            # answers = session['answers'], question_amount = length, answerLength = session['answerLength'], 
+            # questionArray = questionArray, correct = session['correct'] )
 
         elif request.form['submit'] == 'modify-submit':
 
@@ -668,7 +690,7 @@ def test_open():
             session['answers'] = answers
             session['correct'] = num_to_let[info['correct-answer-display']]
 
-            return render_template('test_open.html', Name = testName, question = session['question'], 
+    return render_template('test_open.html', Name = testName, question = session['question'], 
             answers = session['answers'], question_amount = length, answerLength = session['answerLength'], 
             questionArray = questionArray, correct = session['correct'] )
 
