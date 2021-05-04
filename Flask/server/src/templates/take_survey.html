@@ -31,18 +31,18 @@
         <!-- Feed question(number) here to display question name-->
         <h2 > Question: {{surveyQuestion}} </h2> 
         <!-- Feed answer array here to display the questions and their respective number-->
-        {%if questionType == 'short-answer' %}
+        {% if questionType == 'multiple-choice' %}
+          {% for n in answers %} 
+          <h3 id = 'question-of-block'>{{loop.index}}.  {{n}}</h3>
+          <input type='radio' class='mc-answer-response' name='mc-answer-response' value='{{n}}'/>
+          {% endfor %}
+        {%elif questionType == 'short-answer' %}
             <input type='text' class='short-answer-response' name='short-answer-response'>
         {%elif questionType == 'true-false' %}
             <h3 id = 'question-of-block'>1.  True</h3>
             <input type='radio' class='mc-answer-response' name='tf-answer-response' value='True'/>
             <h3 id = 'question-of-block'>2.  False</h3>
-            <input type='radio' class='mc-answer-response' name='tf-answer-response' value='False'/>
-        {% else %}
-          {% for n in answers %} 
-            <h3 id = 'question-of-block'>{{loop.index}}.  {{n}}</h3>
-            <input type='radio' class='mc-answer-response' name='mc-answer-response' value='{{n}}'/>
-          {% endfor %}
+            <input type='radio' class='mc-answer-response' name='tf-answer-response' value='False'/>      
         {% endif %}
 
         <button type='submit' class='modify-submit' name='modify-question'>Save Changes</button>
