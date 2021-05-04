@@ -536,7 +536,7 @@ def grade_test_select():
 
     return render_template('grade_test_select.html')
 
-@app.route('/taker_selection_for_grading')
+@app.route('/taker_selection_for_grading', methods=['GET','POST'])
 def taker_selection_for_grading():
     if not g.user:
         return redirect(url_for('login'))
@@ -558,17 +558,19 @@ def taker_selection_for_grading():
 
     elif request.method == "POST":
 
-        session['taker-name'] = request.form.get('test-list')
+        session['taker-name'] = request.form.get('taker-list')
+        return redirect(url_for('view_grade'))
 
-        return redirect(url_for('test_open')) 
     return render_template('taker_selection_for_grading.html')
 
-@app.route('/view_grade')
+@app.route('/view_grade', methods=['GET','POST'])
 def view_grade():
     if not g.user:
         return redirect(url_for('login'))
     #TODO: Give data for user's so creator can grade it
-    return render_template('view_grade.html')
+    gradedQuestions = ref.document(session['user_id']).collection('Tests').document(session['test-name']).collection('Takers').document(session['taker-name']).get().to_dict()
+    
+    return render_template('view_grade.html', gradedQuestions = gradedQuestions)
 
 @app.route('/tabulate_survey_select')
 def tabulate_survey_select():

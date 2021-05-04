@@ -15,13 +15,19 @@
         <a href='/taker_selection_for_grading'><img src="{{ url_for('static', filename='images/back-button.png') }}" height='50' width='50' class='back'></a>
 
         <div class='list-div'>
-            {% for question in gradedQuestions %}
+            {{gradedQuestions}}
+            {% for question in gradedQuestions['Questions']|dictsort %}
                 <!-- Show all MC and T/F questions and if they're correct or not -->
+                <hr>
+                {{question}}
+                <hr>
+                <!--
                 {% if correct == True %}
-                    <p>{{question[name]}}  Correct!</p>
-                {% elif correct = False %}
-                    <p>{{question[name]}}  Incorrect.</p>
+                    <p>{{question}}  Correct!</p>
+                {% elif correct == False %}
+                    <p>{{question}}  Incorrect.</p>
                 {% endif %}
+                -->
             {% endfor %}
             <form id='short-answer-grading-form' method='POST'>
                 {% for answer in shortAnswers %}
