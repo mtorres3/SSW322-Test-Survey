@@ -677,7 +677,7 @@ def view_grade():
 
         curr_ref.update({
 
-            u'grade' : (points / total) * 100
+            u'grade' : round((points / total) * 100, 2)
 
         })
 
