@@ -754,14 +754,36 @@ def view_grade():
     gradedQuestions = curr_ref.get().to_dict()
     return render_template('view_grade.html', test_name = session['test-name'], gradedQuestions = gradedQuestions, takerName = session['taker-name'])
 
-@app.route('/tabulate_survey_select')
+@app.route('/tabulate_survey_select', methods=['GET','POST'])
 def tabulate_survey_select():
     if not g.user:
         return redirect(url_for('login'))
     #TODO: Get Survey ID to open
-    return render_template('tabulate_survey_select.html')
+    if request.method == 'GET':
+    
+        surveyListings = [] 
+        surveys = ref.document(session['user_id']).collection('Surveys').stream()
+        survey_counter = 0
 
-@app.route('/survey_tabulation')
+        for survey in surveys:
+            survey_counter = survey_counter + 1
+            surveyListings.append(f'{survey.id}') 
+
+        if(survey_counter > 0):
+            return render_template('survey_list.html', surveyListings = surveyListings)
+        else:
+            return render_template('no_test_survey.html')
+
+    elif request.method == "POST":
+
+        session['survey-name'] = request.form.get('survey-list')
+        #print("This is the get request " + request.form.get('survey-list').items())
+
+        return redirect(url_for('survey_tabulation')) 
+
+    return render_template('survey_tabulation.html')
+
+@app.route('/survey_tabulation', methods=['GET','POST'])
 def survey_tabulation():
     if not g.user:
         return redirect(url_for('login'))
@@ -818,7 +840,6 @@ def test_open():
     testName = session.get('test-name') #receive test Name from Test_List
     curr_ref = ref.document(session['user_id']).collection('Tests').document(testName).get().to_dict()['Questions']
     length = len(curr_ref) #amt of questions
-    
     counter = 1
     questionArray = []
 
@@ -963,57 +984,75 @@ def survey_open():
 
     if request.method == 'GET':
 
-        question = curr_ref['question01']['question']
-        answers = curr_ref['question01']['answers']
-        answerLength = len(answers)
+        # question = curr_ref['question01']['question']
+        # answers = curr_ref['question01']['answers']
+        # answerLength = len(answers)
 
-        return render_template('survey_open.html', Name = surveyName, question = question, 
-        answers = answers, question_amount = length, answerLength = answerLength, 
-        questionArray = questionArray)
+        # return render_template('survey_open.html', Name = surveyName, question = question, 
+        # answers = answers, question_amount = length, answerLength = answerLength, 
+        # questionArray = questionArray)
+
+        session['question_num'] = 'question01'
+        session['question'] = curr_ref['question01']['question']
+        session['answers'] = curr_ref['question01']['answers']
+        session['question_type'] = curr_ref[string]['question_type']
+        session['answerLength'] = len(session['answers'])
 
     elif request.method == 'POST':
 
+        info = request.form
+        print(info)
         #get question0# or question# from button
 
-        number = int(request.form.get('submit')) 
+        if 'question' in request.form['submit']:
 
-        if(number >= 10):
-            string = "question" + str(number)
+            number = int(request.form['submit'].split('n')[1])
+            
+            if(number >= 10):
+                string = "question" + str(number)
+            else:
+                string = "question0" +str(number)
 
-        string = "question0" + str(number)
-        question = curr_ref[string]['question']
-        answers = curr_ref[string]['answers']
-        answerLength = len(answers)
+            session['question_num'] = string
+            session['question'] = curr_ref[string]['question']
+            session['answers'] = curr_ref[string]['answers']
+            session['question_type'] = curr_ref[string]['question_type']
+            session['answerLength'] = len(session['answers'])
 
-        return render_template('survey_open.html', Name = surveyName, question = question,
-        answers = answers, question_amount = length, answerLength = answerLength,
-        questionArray = questionArray)
+            # return render_template('survey_open.html', Name = surveyName, question = question,
+            # answers = answers, question_amount = length, answerLength = answerLength,
+            # questionArray = questionArray)
     
-    elif request.method == 'PUT':
-        print(request.form.get('question'))
+        elif request.form['submit'] == 'modify-submit':
         
-        # curr_ref.set({
-        #              'Questions': {
-        #                  'question' + question_num: {
-        #                      'question_type' : session['question_type'],
-        #                      'question' : info['question'],
-        #                     'answers' : answers,
-        #                      'correct_answer' : c_answer
-        #                  }
-        #              }
-        #          })
+            info = request.form
+            print(info)
+            
+            answers = []
+            for num in range(1, len(session['answers'])+1):
+                answers.append(info['q' + str(num)])
 
+            num_to_let = {'1' : 'A',
+                        '2' : 'B',
+                        '3' : 'C', 
+                        '4' : 'D'}
 
-        return render_template('survey_open.html', Name = surveyName, question = question,
-        answers = answers, question_amount = length, answerLength = answerLength,
-        questionArray = questionArray)
+        # try:
+        #     new_answer = num_to_let[info['correct-answer-display']]
+        # except KeyError:
+        #     try:
+        #         new_answer = info['correct-answer-display']
+        #     except KeyError:
+        #         new_answer = ''
 
+            ref.document(session['user_id']).collection('Surveys').document(surveyName).update({
+                    u'Questions.{}.answers'.format(session['question_num']) : answers})
 
+            session['answers'] = answers
 
-
-
-
-    return render_template('survey_open.html') # Name = surveyName
+    return render_template('survey_open.html', Name = surveyName, question = session['question'], 
+        answers = session['answers'], question_amount = length, answerLength = session['answerLength'], 
+        questionArray = questionArray, question_type = session['question_type'])
 
 # surveys = ref.document("test").collection("Surveys").stream()
 # for survey in surveys:
@@ -1021,4 +1060,4 @@ def survey_open():
 #         # print(survey.to_dict())
 
 if __name__ == "__main__":
-    app.run(port=5048, debug=True)
+    app.run(port=5049, debug=True)
