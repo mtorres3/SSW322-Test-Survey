@@ -193,7 +193,7 @@ def taker_survey_select():
     if not g.user:
         return redirect(url_for('login'))
     #TODO: Display surveys in dropdown
-    ##################################### USELESS BC NO DROP DOWN ANYMORE, But I feel bad to delete #######################
+
     if request.method == 'GET':
 
         surveyListings = [] 
@@ -208,7 +208,7 @@ def taker_survey_select():
             return render_template('taker_survey_select.html', surveyListings = surveyListings)
         else:
             return render_template('no_test_survey.html')
-    ######################################################################################################      
+       
     elif request.method == "POST":
         
         #TODO: Display survey info
@@ -254,14 +254,14 @@ def take_survey():
     if request.method == 'GET':
         question = Qmap['question01']['question']
         answers = Qmap['question01']['answers']
-        correct = Qmap['question01']['correct_answer']
+        #correct = Qmap['question01']['correct_answer']
         answerLength = len(answers)
         name = info['Name']
         questionType = Qmap[string]['question_type']
         
         return render_template(('take_survey.html'), surveyName = name, surveyQuestion = question, 
             answers = answers, question_amount = length, answerLength = answerLength, 
-            questionArray = questionArray, correct = correct, questionType = questionType) 
+            questionArray = questionArray,  questionType = questionType) 
 
     elif request.method == 'POST':
         #get question0# or question# from buttons on left
@@ -271,16 +271,16 @@ def take_survey():
         if(number >= 10):
             string = "question" + str(number)
 
-        questionName = Qmap[string]['question']
+        question = Qmap[string]['question']
         answers = Qmap[string]['answers']
-        correct = Qmap[string]['correct_answer']
+        #correct = Qmap[string]['correct_answer']
         name = info['Name']
         answerLength = len(answers)
         questionType = Qmap[string]['question_type']
 
-        return render_template('test_open.html', surveyName = name, surveyQuestion = questionName,
+        return render_template('take_survey.html', surveyName = name, surveyQuestion = question,
         answers = answers, question_amount = length, answerLength = answerLength,
-        questionArray = questionArray, correct = correct, questionType = questionType)
+        questionArray = questionArray,  questionType = questionType)
 
     return render_template('take_survey.html')
 
@@ -809,4 +809,4 @@ def survey_open():
 #         # print(survey.to_dict())
 
 if __name__ == "__main__":
-    app.run(port=5033, debug=True)
+    app.run(port=5035, debug=True)

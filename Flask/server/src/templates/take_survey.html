@@ -9,36 +9,46 @@
 </head>
 
 <body>
-    <div class='main-box'>
-      <h1 class='survey-test-title'>{{surveyName}}</h1>
+  <!-- DARK BLUE RECTANGLE-->
+  <div class='finished-questions'>
+    <h2>Questions</h2>
+    <hr>
+    <form id='questions-list-form' method='POST'>
+      <!-- Displays all Q #'s-->
+      {% for those in questionArray %}
+      <button type='submit' class='question-link' name='submit' value='{{loop.index}}'><p> Q{{loop.index}}: {{those}}</p></button>
       <hr>
-      <h3 class='survey-test-question'>{{surveyQuestion}}</h3>
-      <form id='survey-take-form' method='POST'>
+      {% endfor %}
+    </form>
+  </div> <!-- End Div-->
 
-        {% if multiple-choice == True %}
-          {% for choice in questionChoices %}
-            <label for='mc-answer-response'>{{choice}}
-              <input type='radio' class='mc-answer-response' name='mc-answer-response' value='{{choice}}'/>
-            </label>
+  <div class='next-question'> <!-- Light blue square -->
+    <h1 class = 'header-list'>{{surveyName}}</h1> <!-- Name of Survey-->
+    <hr>        
+    <a href='/open_file'><img src="{{url_for('static', filename='images/back-button.png')}}" height='50' width='50' class='back'></a>
+    <div class = 'question-block'>
+        <form id='questions' method='POST'>
+        <!-- Feed question(number) here to display question name-->
+        <h2 > Question: {{surveyQuestion}} </h2> 
+        <!-- Feed answer array here to display the questions and their respective number-->
+        {%if questionType == 'short-answer' %}
+            <input type='text' class='short-answer-response' name='short-answer-response'>
+        {%elif questionType == 'true-false' %}
+            <h3 id = 'question-of-block'>1.  True</h3>
+            <input type='radio' class='mc-answer-response' name='tf-answer-response' value='True'/>
+            <h3 id = 'question-of-block'>2.  False</h3>
+            <input type='radio' class='mc-answer-response' name='tf-answer-response' value='False'/>
+        {% else %}
+          {% for n in answers %} 
+            <h3 id = 'question-of-block'>{{loop.index}}.  {{n}}</h3>
+            <input type='radio' class='mc-answer-response' name='mc-answer-response' value='{{n}}'/>
           {% endfor %}
         {% endif %}
 
-        {% if true-false == True %}
-          <label for='tf-answer-choices'>True
-            <input type='radio' class='tf-answer-response' name='tf-answer-response' value='True'/>
-          </label>
-          <label for='tf-answer-choices'>False
-            <input type='radio' class='tf-answer-response' name='tf-answer-response' value='False'/>
-          </label>
-        {% endif %}
-
-        {% if short-answer == True %}
-          <input type='text' class='short-answer-response' value='short-answer-response'>
-        {% endif %}
-
-        <button id='questionSubmit' type='submit' name='submit' value='next-question'>Next Question</button>
-      </form>
-    </div>
+        <button type='submit' class='modify-submit' name='modify-question'>Save Changes</button>
+        </form>
+    </div>  
+</div>  <!-- End Div-->  
 </body>
 
 </html>
