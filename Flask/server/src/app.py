@@ -179,6 +179,7 @@ def take_test():
     if not g.user:
         return redirect(url_for('login'))
     #TODO: Display test info
+    
     test_name_ID = session.get('test_name_ID') #receive survey (type: str) search form data
     t = test_name_ID.split("-")
     tests = ref.document(t[0]).collection('Tests').stream()
@@ -191,7 +192,7 @@ def take_test():
             info = test.to_dict()
             #print(info)
         else:
-            print("Invalid ID: " + test.to_dict()['ID'])
+            print("Different ID than input: " + test.to_dict()['ID'])
 
     #Build question array. Code gets all question names from question map from database
     Qmap= info['Questions'] #get questions of the test
@@ -205,9 +206,12 @@ def take_test():
             string = "question" + str(counter)
         counter = counter + 1
         questionArray.append(Qmap[string]['question'])
-
+    #end array build
     #print(questionArray)
+
+    #Default, on load, show first question
     if request.method == 'GET':
+        print("GET ACTIVATED!")
         question = Qmap['question01']['question']
         answers = Qmap['question01']['answers']
         #correct = Qmap['question01']['correct_answer']
@@ -217,26 +221,55 @@ def take_test():
         
         return render_template(('take_test.html'), testName = name, testQuestion = question, 
             answers = answers, question_amount = length, answerLength = answerLength, 
-            questionArray = questionArray,  questionType = questionType) 
+            questionArray = questionArray,  questionType = questionType, Qstring = string) 
 
+    #any posts, such as next question, code executes this 
     elif request.method == 'POST':
+        print("POST ACTIVATED")
+        
+        #check if 'submit' form is 'next-question' and if it is, then increment question # value and return all necessary values to template
+        if(len(str(request.form['submit'])) > 3):
+            print("Next Question was clicked")
+            stringSubmit = request.form['submit']
+            substring = stringSubmit[8:]
+            number = int(substring)
+            nextQuestion = number + 1
+            #only try to open while the nextQuestion doesn't go out of bounds
+            if (nextQuestion <= len(questionArray)):
+                Qstring = 'question0' + str(nextQuestion)
+                if(nextQuestion >= 10):
+                    Qstring = 'question' + str(nextQuestion)
+               
+                question = Qmap[Qstring]['question']
+                answers = Qmap[Qstring]['answers']
+                #correct = Qmap[Qstring]['correct_answer']
+                name = info['Name']
+                answerLength = len(answers)
+                questionType = Qmap[Qstring]['question_type']  
+                return render_template('take_test.html', testName = name, testQuestion = question,
+                answers = answers, question_amount = length, answerLength = answerLength,
+                questionArray = questionArray,  questionType = questionType, Qstring = Qstring)
+            else:
+                print("Figure out how to submit bruv")
         #get question0# or question# from buttons on left
-        number = int(request.form.get('submit'))
-        if (number <= 10): 
-            string = "question0" + str(number)
-        if(number >= 10):
-            string = "question" + str(number)
+        elif isinstance(int(request.form['submit']),int): #is a digit, clicked on dark rectangle
+            number = int(request.form.get('submit'))
+            print(number)
+            if (number <= 10): 
+                Qstring = "question0" + str(number)
+            if(number >= 10):
+                Qstring = "question" + str(number)
 
-        question = Qmap[string]['question']
-        answers = Qmap[string]['answers']
-        #correct = Qmap[string]['correct_answer']
-        name = info['Name']
-        answerLength = len(answers)
-        questionType = Qmap[string]['question_type']
+            question = Qmap[Qstring]['question']
+            answers = Qmap[Qstring]['answers']
+            #correct = Qmap[Qstring]['correct_answer']
+            name = info['Name']
+            answerLength = len(answers)
+            questionType = Qmap[Qstring]['question_type']  
 
-        return render_template('take_test.html', testName = name, testQuestion = question,
-        answers = answers, question_amount = length, answerLength = answerLength,
-        questionArray = questionArray,  questionType = questionType)
+            return render_template('take_test.html', testName = name, testQuestion = question,
+            answers = answers, question_amount = length, answerLength = answerLength,
+            questionArray = questionArray,  questionType = questionType, Qstring = Qstring)
 
     return render_template('take_test.html')
 
