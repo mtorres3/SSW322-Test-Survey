@@ -562,52 +562,67 @@ def test_open():
 
 
     if request.method == 'GET':
-        
-        question = curr_ref['question01']['question']
-        answers = curr_ref['question01']['answers']
-        correct = curr_ref['question01']['correct_answer']
-        answerLength = len(answers)
 
-        return render_template('test_open.html', Name = testName, question = question, 
-        answers = answers, question_amount = length, answerLength = answerLength, 
-        questionArray = questionArray, correct = correct)
+        session['question_num'] = 'question01'
+        session['question'] = curr_ref['question01']['question']
+        session['answers'] = curr_ref['question01']['answers']
+        session['correct'] = curr_ref['question01']['correct_answer']
+        session['answerLength'] = len(session['answers'])
+
+        return render_template('test_open.html', Name = testName, question = session['question'], 
+        answers = session['answers'], question_amount = length, answerLength = session['answerLength'], 
+        questionArray = questionArray, correct = session['correct'] )
 
     elif request.method == 'POST':
 
-        #get question0# or question# from button
-        number = int(request.form.get('submit'))
+        info = request.form
+        print(info)
 
-        if(number >= 10):
-            string = "question" + str(number)
+        if 'question' in request.form['submit']:
 
-        string = "question0" + str(number)
-        question = curr_ref[string]['question']
-        answers = curr_ref[string]['answers']
-        correct = curr_ref[string]['correct_answer']
-        answerLength = len(answers)
+            number = int(request.form['submit'].split('n')[1])
 
-        return render_template('test_open.html', Name = testName, question = question,
-        answers = answers, question_amount = length, answerLength = answerLength,
-        questionArray = questionArray, correct = correct)
+            if(number >= 10):
+                string = "question" + str(number)
+            else:
+                string = "question0" + str(number)
 
-    elif request.method == 'PUT':
-        print(request.form.get('question'))
-        
-        # curr_ref.set({
-        #              'Questions': {
-        #                  'question' + question_num: {
-        #                      'question_type' : session['question_type'],
-        #                      'question' : info['question'],
-        #                     'answers' : answers,
-        #                      'correct_answer' : c_answer
-        #                  }
-        #              }
-        #          })
+            session['question_num'] = string
+            session['question'] = curr_ref[string]['question']
+            session['answers'] = curr_ref[string]['answers']
+            session['correct'] = curr_ref[string]['correct_answer']
+            session['answerLength'] = len(session['answers'])
 
+            return render_template('test_open.html', Name = testName, question = session['question'], 
+            answers = session['answers'], question_amount = length, answerLength = session['answerLength'], 
+            questionArray = questionArray, correct = session['correct'] )
 
-        return render_template('test_open.html', Name = surveyName, question = question,
-        answers = answers, question_amount = length, answerLength = answerLength,
-        questionArray = questionArray)
+        elif request.form['submit'] == 'modify-submit':
+
+            info = request.form
+            print(info)
+
+            # Getting new answers
+            answers = []
+            for num in range(1, len(session['answers'])+1):
+                answers.append(info['q' + str(num)])
+
+            num_to_let = {'1' : 'A',
+                        '2' : 'B',
+                        '3' : 'C', 
+                        '4' : 'D'}
+
+            ref.document(session['user_id']).collection('Tests').document(testName).update({
+                        u'Questions.{}.answers'.format(session['question_num']) : answers,
+                        u'Questions.{}.correct_answer'.format(session['question_num']) : num_to_let[info['correct-answer-display']]
+            })
+
+            session['answers'] = answers
+            session['correct'] = num_to_let[info['correct-answer-display']]
+
+            return render_template('test_open.html', Name = testName, question = session['question'], 
+            answers = session['answers'], question_amount = length, answerLength = session['answerLength'], 
+            questionArray = questionArray, correct = session['correct'] )
 
 
 

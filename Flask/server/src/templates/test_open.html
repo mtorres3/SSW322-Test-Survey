@@ -14,7 +14,7 @@
         <hr>
         <form id='questions-list-form' method='POST'>
             {% for those in questionArray %}<!-- Displays all Q #'s-->
-            <button type='submit' class='question-link' name='submit' value='{{loop.index}}'><p> Q{{loop.index}}: {{those}}</p></button>
+            <button type='submit' class='question-link' name='submit' value='question{{loop.index}}'><p> Q{{loop.index}}: {{those}}</p></button>
             <hr>
             {% endfor %}
         </form>
@@ -25,7 +25,7 @@
         <hr>        
         <a href='/open_file'><img src="{{url_for('static', filename='images/back-button.png')}}" height='50' width='50' class='back'></a>
         <div class = 'question-block'>
-            <form id='questions' method='PUT'>
+            <form id='questions' method='POST'>
             <h2 > Question: {{question}} </h2> <!-- Feed question(number) here to display question name-->
             {% if correct == 'True' %}
             <h3 id = 'question-of-block'>1. True </h3>
@@ -39,7 +39,7 @@
 
                 {% for n in answers %} <!-- Feed answer array here to display the questions and their respective number-->
                     <h3 id = 'question-of-block'>{{loop.index}}.</h3>
-                    <input type='text' name = 'q' id='q' value='{{n}}'>
+                    <input type='text' name = 'q{{loop.index}}' id='q' value='{{n}}'>
                 {% endfor %}
 
                 <h3 id = 'question-of-block'> Correct Answer:</h3>
@@ -54,7 +54,7 @@
                 {%endif%}
                 
             {%endif%}
-            <button type='submit' class='modify-submit' name='modify-question'>Save Question</button>
+            <button type='submit' class='modify-submit' name='submit' value = 'modify-submit'>Save Question</button>
             </form>
         </div>
         
