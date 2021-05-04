@@ -10,15 +10,15 @@
  
 <body>
     <div class='main-box'>        
-        <h1 class = 'header-list'>Enter Test Name </h1>
+        <h1 class = 'header-list'>Select Taker </h1>
         <hr>
         <a href='/grade_test_or_survey'><img src="{{ url_for('static', filename='images/back-button.png') }}" height='50' width='50' class='back'></a>
 
         <div class='list-div'>
             <form id='test-grade-form' method='POST'>
                 <select class='test-selection' name="test-grading-list" id='test-grading-list' form="test-grade-form">
-                    {% for test in test_listing %}
-                        <option value={{test}}>{{user}}</option>
+                    {% for user in user_listing %}
+                        <option value={{user}}>{{user}}</option>
                     {% endfor %}
                 </select>
                 <button type='submit' class='test-selection-submit' name='submit'>Grade Test</button>

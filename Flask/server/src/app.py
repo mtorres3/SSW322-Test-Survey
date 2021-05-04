@@ -532,7 +532,7 @@ def grade_test_select():
         session['test-name'] = request.form.get('test-list')
         #print("This is the get request " + request.form.get('test-list').items())
 
-        return redirect(url_for('test_open')) 
+        return redirect(url_for('taker_selection_for_grading')) 
 
     return render_template('grade_test_select.html')
 
@@ -540,7 +540,27 @@ def grade_test_select():
 def taker_selection_for_grading():
     if not g.user:
         return redirect(url_for('login'))
-    #TODO: Get user ID for grading
+
+    if request.method == 'GET':
+
+        takerListings = [] 
+        takers = ref.document(session['user_id']).collection('Tests').document(session['test-name']).collection('Takers').stream()
+        taker_counter = 0
+
+        for taker in takers:
+            taker_counter += 1
+            takerListings.append(taker.to_dict()['username']) 
+
+        if(taker_counter > 0):
+            return render_template('taker_selection_for_grading.html', takerListings = takerListings)
+        else:
+            return render_template('no_test_survey.html')
+
+    elif request.method == "POST":
+
+        session['taker-name'] = request.form.get('test-list')
+
+        return redirect(url_for('test_open')) 
     return render_template('taker_selection_for_grading.html')
 
 @app.route('/view_grade')
@@ -685,7 +705,10 @@ def test_open():
             try:
                 new_answer = num_to_let[info['correct-answer-display']]
             except KeyError:
-                new_answer = info['correct-answer-display']
+                try:
+                    new_answer = info['correct-answer-display']
+                except KeyError:
+                    new_answer = ''
 
             ref.document(session['user_id']).collection('Tests').document(testName).update({
                         u'Questions.{}.answers'.format(session['question_num']) : answers,
