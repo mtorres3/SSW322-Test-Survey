@@ -909,19 +909,26 @@ def test_open():
 
             try:
                 new_answer = num_to_let[info['correct-answer-display']]
+                new_question = info['asked-question']
             except KeyError:
                 try:
-                    new_answer = info['correct-answer-display']
+                    new_answer = info['correct-answer-display']   
+                    new_question = info['asked-question']   
                 except KeyError:
                     new_answer = ''
+                    new_question = ''       
+            
+            #new_question = info['asked-question']
 
             ref.document(session['user_id']).collection('Tests').document(testName).update({
                         u'Questions.{}.answers'.format(session['question_num']) : answers,
-                        u'Questions.{}.correct_answer'.format(session['question_num']) : new_answer
+                        u'Questions.{}.correct_answer'.format(session['question_num']) : new_answer,
+                        u'Questions.{}.question'.format(session['question_num']) : new_question
             })
 
             session['answers'] = answers
             session['correct'] = new_answer
+            session['question'] = new_question
 
     return render_template('test_open.html', Name = testName, question = session['question'], 
             answers = session['answers'], question_amount = length, answerLength = session['answerLength'], 
@@ -1030,25 +1037,29 @@ def survey_open():
             
             answers = []
             for num in range(1, len(session['answers'])+1):
-                answers.append(info['q' + str(num)])
+                if len(info) > 2:
+                    answers.append(info['q' + str(num)])
 
             num_to_let = {'1' : 'A',
                         '2' : 'B',
                         '3' : 'C', 
                         '4' : 'D'}
 
-        # try:
-        #     new_answer = num_to_let[info['correct-answer-display']]
-        # except KeyError:
-        #     try:
-        #         new_answer = info['correct-answer-display']
-        #     except KeyError:
-        #         new_answer = ''
+            try:
+                new_question = info['asked-question']
+            except KeyError:
+                try:
+                    new_question = info['asked-question']
+                except:
+                    new_question = ''
 
             ref.document(session['user_id']).collection('Surveys').document(surveyName).update({
-                    u'Questions.{}.answers'.format(session['question_num']) : answers})
+                        u'Questions.{}.answers'.format(session['question_num']) : answers,
+                        u'Questions.{}.question'.format(session['question_num']) : new_question
+            })
 
             session['answers'] = answers
+            session['question'] = new_question
 
     return render_template('survey_open.html', Name = surveyName, question = session['question'], 
         answers = session['answers'], question_amount = length, answerLength = session['answerLength'], 
