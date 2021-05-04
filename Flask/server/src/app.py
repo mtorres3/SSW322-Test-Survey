@@ -141,51 +141,103 @@ def taker_or_creator():
         return redirect(url_for('login'))
     return render_template('taker_or_creator.html')
 
-#For Taker
+#########################################For Taker#################################################
 @app.route('/take_survey_or_test')
 def take_survey_or_test():
     if not g.user:
         return redirect(url_for('login'))
     return render_template('take_survey_or_test.html')
 
-############################## GOTTA GET DONE STILL #############################
-
 @app.route('/taker_test_select',  methods=['GET','POST'])
 def taker_test_select():
-
     if not g.user:
         return redirect(url_for('login'))
 
-    #TODO: Display tests in dropdown 
     if request.method == 'GET':
-
         testListings = [] 
         tests = ref.document(session['user_id']).collection('Tests').stream()
         test_counter = 0
 
         for test in tests:
             test_counter = test_counter + 1
-            testListings.append(f'{test.id}') 
-        #print(testListings)
+            testListings.append(f'{test.id}')
 
-        if(test_counter > 0):
+        if(test_counter > 0): 
             return render_template('taker_test_select.html', testListings = testListings)
         else:
-            return render_template('taker_no_test_survey.html')
-
+            return render_template('no_test_survey.html')
+       
     elif request.method == "POST":
-        #print(request.form.get('test-list'))
-        session['test-name'] = request.form.get('test-list')
-        print("This is the get request " + request.form.get('test-list').items())
-        return redirect(url_for('take_test')) 
+        the_test = request.form.get('test-lookup')
+        #### PASS DATA TO TAKE_SURVEY
+        session['test_name_ID'] = the_test
+        #print(the_survey)
+        return redirect(url_for('take_test'))
 
-    return render_template('taker_test_select.html')
-
-@app.route('/take_test')
+@app.route('/take_test', methods = ['GET', 'POST'])
 def take_test():
     if not g.user:
         return redirect(url_for('login'))
     #TODO: Display test info
+    test_name_ID = session.get('test_name_ID') #receive survey (type: str) search form data
+    t = test_name_ID.split("-")
+    tests = ref.document(t[0]).collection('Tests').stream()
+    info = {}
+    #testing split method, separates string and deletes split token
+    #print("0th " + t[0])
+    #print("1st " + t[1])
+    for test in tests:
+        if t[1] == test.to_dict()['ID']:
+            info = test.to_dict()
+            #print(info)
+        else:
+            print("Invalid ID: " + test.to_dict()['ID'])
+
+    #Build question array. Code gets all question names from question map from database
+    Qmap= info['Questions'] #get questions of the test
+    length = len(Qmap) #amt of questions
+    #print(length)
+    counter = 1
+    questionArray = []
+    for counter in range (1, length + 1):
+        string = "question0" + str(counter)
+        if(counter >= 10):
+            string = "question" + str(counter)
+        counter = counter + 1
+        questionArray.append(Qmap[string]['question'])
+
+    #print(questionArray)
+    if request.method == 'GET':
+        question = Qmap['question01']['question']
+        answers = Qmap['question01']['answers']
+        #correct = Qmap['question01']['correct_answer']
+        answerLength = len(answers)
+        name = info['Name']
+        questionType = Qmap[string]['question_type']
+        
+        return render_template(('take_test.html'), testName = name, testQuestion = question, 
+            answers = answers, question_amount = length, answerLength = answerLength, 
+            questionArray = questionArray,  questionType = questionType) 
+
+    elif request.method == 'POST':
+        #get question0# or question# from buttons on left
+        number = int(request.form.get('submit'))
+        if (number <= 10): 
+            string = "question0" + str(number)
+        if(number >= 10):
+            string = "question" + str(number)
+
+        question = Qmap[string]['question']
+        answers = Qmap[string]['answers']
+        #correct = Qmap[string]['correct_answer']
+        name = info['Name']
+        answerLength = len(answers)
+        questionType = Qmap[string]['question_type']
+
+        return render_template('take_test.html', testName = name, testQuestion = question,
+        answers = answers, question_amount = length, answerLength = answerLength,
+        questionArray = questionArray,  questionType = questionType)
+
     return render_template('take_test.html')
 
 @app.route('/taker_survey_select', methods=['GET','POST'])
@@ -210,13 +262,10 @@ def taker_survey_select():
             return render_template('no_test_survey.html')
        
     elif request.method == "POST":
-        
-        #TODO: Display survey info
         the_survey = request.form.get('survey-lookup')
         #### PASS DATA TO TAKE_SURVEY
         session['survey_name_ID'] = the_survey
         #print(the_survey)
-        
         return redirect(url_for('take_survey'))
 
 @app.route('/take_survey', methods=['GET', 'POST'])
@@ -285,7 +334,6 @@ def take_survey():
     return render_template('take_survey.html')
 
 ##################################################################################
-
 #For Creator
 @app.route('/create_or_open')
 def create_or_open():
