@@ -339,7 +339,7 @@ def take_survey():
         #correct = Qmap['question01']['correct_answer']
         answerLength = len(answers)
         name = info['Name']
-        questionType = Qmap[string]['question_type']
+        questionType = Qmap['question01']['question_type']
         
         return render_template(('take_survey.html'), surveyName = name, surveyQuestion = question, 
             answers = answers, question_amount = length, answerLength = answerLength, 
@@ -920,4 +920,4 @@ def survey_open():
 #         # print(survey.to_dict())
 
 if __name__ == "__main__":
-    app.run(port=5044, debug=True)
+    app.run(port=5048, debug=True)
