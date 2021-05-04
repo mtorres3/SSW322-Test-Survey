@@ -9,11 +9,18 @@
 </head>
  
 <body>
-    <div class='main-box'>        
+    <div class='main-box'>
         <h1 class = 'header-list'>{{takerName}} - {{test_name}}</h1>
         {% if 'grade' in gradedQuestions.keys() %}
         <h4 class='overall-grade'>Overall Grade: {{gradedQuestions['grade']}}%</h4>
         {% endif %}
+
+        <!--
+        {% if temp != ''%}
+        {{temp}}
+        {% endif %}
+        -->
+
         <hr>
         <a href='/taker_selection_for_grading'><img src="{{ url_for('static', filename='images/back-button.png') }}" height='50' width='50' class='back'></a>
 
@@ -28,7 +35,7 @@
                     {% if question[1]["correct_answer"] != '' %}
                     <p>Correct Answer: {{question[1]["correct_answer"]}}</p>
                     {% endif %}
-                    <p>Grade: <input type='number' class='grade-view' min='0' max='1' value="{{question[1]['points']}}"> / 1</p>
+                    <p>Grade: <input type='number' class='grade-view' min='0' max='1' name = p{{loop.index}} value="{{question[1]['points']}}"> / 1</p>
                     <hr>
                 {% endfor %}
                 </div>

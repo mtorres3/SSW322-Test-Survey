@@ -649,8 +649,39 @@ def view_grade():
     if not g.user:
         return redirect(url_for('login'))
     #TODO: Give data for user's so creator can grade it
-    gradedQuestions = ref.document(session['user_id']).collection('Tests').document(session['test-name']).collection('Takers').document(session['taker-name']).get().to_dict()
+    curr_ref = ref.document(session['user_id']).collection('Tests').document(session['test-name']).collection('Takers').document(session['taker-name'])
+    gradedQuestions = curr_ref.get().to_dict()
 
+    if request.method == "POST":
+
+        info = request.form
+        points = 0
+        total = 0
+
+
+        for num in range(1, len(gradedQuestions['Questions'])+1):
+
+            points += int(info['p'+str(num)])
+            total += 1
+
+            if num < 10:
+                string = "question0" + str(num)
+            else:
+                string = "question" + str(num)
+
+            curr_ref.update({
+
+                u'Questions.{}.points'.format(string) : info['p'+str(num)]
+
+            })
+
+        curr_ref.update({
+
+            u'grade' : (points / total) * 100
+
+        })
+
+    gradedQuestions = curr_ref.get().to_dict()
     return render_template('view_grade.html', test_name = session['test-name'], gradedQuestions = gradedQuestions, takerName = session['taker-name'])
 
 @app.route('/tabulate_survey_select')
