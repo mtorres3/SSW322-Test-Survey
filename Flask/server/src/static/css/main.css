@@ -503,6 +503,32 @@ hr{
     margin-top: 6em;
 }
 
+.modify-submit-tf{
+    display: block;
+    float: right;
+    font-size: 16px;
+    padding: 1em;
+    border-color: white;
+    border-style: solid;
+    color: #61B3FF;
+    background-color: white;
+    margin: auto;
+    border-radius: 15px;
+    margin-right: -3em;
+    margin-top: 25em;
+}
+
+.tf-modify{
+    display: inline;
+    width: 10em;
+    height: 3em;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: white;
+    font-size: 12px;
+    margin-top: 2em;
+}
+
 /* Survey/Test List Styles
  * places light blue rectangle in center
  * places h1 in center above it

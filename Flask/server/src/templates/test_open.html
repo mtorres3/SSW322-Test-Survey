@@ -27,14 +27,21 @@
         <div class = 'question-block'>
             <form id='questions' method='POST'>
             <h2 > Question: {{question}} </h2> <!-- Feed question(number) here to display question name-->
+
             {% if correct == 'True' %}
-            <h3 id = 'question-of-block'>1. True </h3>
-            <h3 id = 'question-of-block'>2. False </h3>
-            <h3 id = 'question-of-block'> Correct Answer: {{correct}} </h3>
+                <h3 id = 'question-of-block'> Correct Answer:</h3>
+                <select class='tf-modify' name="correct-answer-display" id='tf-options' form="questions">
+                    <option value='True' name='correct-answer-display'>True</option>
+                    <option value='False' name='correct-answer-display'>False</option>
+                </select>
+                <button type='submit' class='modify-submit-tf' name='submit' value = 'modify-submit'>Save Question</button>
             {% elif correct == 'False' %}
-            <h3 id = 'question-of-block'>1. True </h3>
-            <h3 id = 'question-of-block'>2. False </h3>
-            <h3 id = 'question-of-block'> Correct Answer: {{correct}} </h3>
+                <h3 id = 'question-of-block'> Correct Answer:</h3>
+                <select class='tf-modify' name="correct-answer-display" id='tf-options' form="questions">
+                    <option value='False' name='correct-answer-display'>False</option>
+                    <option value='True' name='correct-answer-display'>True</option>
+                </select>
+                <button type='submit' class='modify-submit-tf' name='submit' value = 'modify-submit'>Save Question</button>
             {%else %}
 
                 {% for n in answers %} <!-- Feed answer array here to display the questions and their respective number-->
@@ -52,9 +59,8 @@
                 {% elif correct == 'D' %}
                     <input type='number' min='1' max='4' class='correct-answer-display' name='correct-answer-display' value='4'>
                 {%endif%}
-                
+                <button type='submit' class='modify-submit' name='submit' value = 'modify-submit'>Save Question</button>
             {%endif%}
-            <button type='submit' class='modify-submit' name='submit' value = 'modify-submit'>Save Question</button>
             </form>
         </div>
         
