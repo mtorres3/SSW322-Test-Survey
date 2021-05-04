@@ -637,3 +637,25 @@ hr{
 #test-grade-form{
     margin-top: 5em;
 }
+
+/* View Grade Styles */
+
+.grades-div{
+    width: 50%;
+    margin: auto;
+    text-align: center;
+}
+
+.grade-view{
+    width: 3em;
+}
+.scroll{
+    overflow: scroll;
+    overflow-x: hidden;
+    height: 32em;
+    background-color: #A3D3FF;
+}
+
+.overall-grade{
+    text-align: center;
+}

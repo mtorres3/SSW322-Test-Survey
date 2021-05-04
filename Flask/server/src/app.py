@@ -651,7 +651,7 @@ def view_grade():
     #TODO: Give data for user's so creator can grade it
     gradedQuestions = ref.document(session['user_id']).collection('Tests').document(session['test-name']).collection('Takers').document(session['taker-name']).get().to_dict()
 
-    return render_template('view_grade.html', test_name = session['test-name'], gradedQuestions = gradedQuestions)
+    return render_template('view_grade.html', test_name = session['test-name'], gradedQuestions = gradedQuestions, takerName = session['taker-name'])
 
 @app.route('/tabulate_survey_select')
 def tabulate_survey_select():
@@ -920,4 +920,4 @@ def survey_open():
 #         # print(survey.to_dict())
 
 if __name__ == "__main__":
-    app.run(port=5035, debug=True)
+    app.run(port=5044, debug=True)
