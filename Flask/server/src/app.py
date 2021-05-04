@@ -754,14 +754,36 @@ def view_grade():
     gradedQuestions = curr_ref.get().to_dict()
     return render_template('view_grade.html', test_name = session['test-name'], gradedQuestions = gradedQuestions, takerName = session['taker-name'])
 
-@app.route('/tabulate_survey_select')
+@app.route('/tabulate_survey_select', methods=['GET','POST'])
 def tabulate_survey_select():
     if not g.user:
         return redirect(url_for('login'))
     #TODO: Get Survey ID to open
-    return render_template('tabulate_survey_select.html')
+    if request.method == 'GET':
+    
+        surveyListings = [] 
+        surveys = ref.document(session['user_id']).collection('Surveys').stream()
+        survey_counter = 0
 
-@app.route('/survey_tabulation')
+        for survey in surveys:
+            survey_counter = survey_counter + 1
+            surveyListings.append(f'{survey.id}') 
+
+        if(survey_counter > 0):
+            return render_template('survey_list.html', surveyListings = surveyListings)
+        else:
+            return render_template('no_test_survey.html')
+
+    elif request.method == "POST":
+
+        session['survey-name'] = request.form.get('survey-list')
+        #print("This is the get request " + request.form.get('survey-list').items())
+
+        return redirect(url_for('survey_tabulation')) 
+
+    return render_template('survey_tabulation.html')
+
+@app.route('/survey_tabulation', methods=['GET','POST'])
 def survey_tabulation():
     if not g.user:
         return redirect(url_for('login'))
