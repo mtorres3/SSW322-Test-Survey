@@ -648,7 +648,7 @@ def taker_selection_for_grading():
 def view_grade():
     if not g.user:
         return redirect(url_for('login'))
-    #TODO: Give data for user's so creator can grade it
+
     curr_ref = ref.document(session['user_id']).collection('Tests').document(session['test-name']).collection('Takers').document(session['taker-name'])
     gradedQuestions = curr_ref.get().to_dict()
 
