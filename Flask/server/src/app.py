@@ -682,13 +682,18 @@ def test_open():
                         '3' : 'C', 
                         '4' : 'D'}
 
+            try:
+                new_answer = num_to_let[info['correct-answer-display']]
+            except KeyError:
+                new_answer = info['correct-answer-display']
+
             ref.document(session['user_id']).collection('Tests').document(testName).update({
                         u'Questions.{}.answers'.format(session['question_num']) : answers,
-                        u'Questions.{}.correct_answer'.format(session['question_num']) : num_to_let[info['correct-answer-display']]
+                        u'Questions.{}.correct_answer'.format(session['question_num']) : new_answer
             })
 
             session['answers'] = answers
-            session['correct'] = num_to_let[info['correct-answer-display']]
+            session['correct'] = new_answer
 
     return render_template('test_open.html', Name = testName, question = session['question'], 
             answers = session['answers'], question_amount = length, answerLength = session['answerLength'], 
