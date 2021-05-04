@@ -193,6 +193,7 @@ def taker_survey_select():
     if not g.user:
         return redirect(url_for('login'))
     #TODO: Display surveys in dropdown
+    ##################################### USELESS BC NO DROP DOWN ANYMORE, But I feel bad to delete #######################
     if request.method == 'GET':
 
         surveyListings = [] 
@@ -207,32 +208,79 @@ def taker_survey_select():
             return render_template('taker_survey_select.html', surveyListings = surveyListings)
         else:
             return render_template('no_test_survey.html')
-        
+    ######################################################################################################      
     elif request.method == "POST":
         
         #TODO: Display survey info
         the_survey = request.form.get('survey-lookup')
-        print(the_survey)
-        s = the_survey.split("-")
-        print(s[0])
-        print(s[1])
-        surveys = ref.document(s[0]).collection('Surveys').stream()
-        info = {}
-
-        for survey in surveys:
-            if s[1] == survey.to_dict()['ID']:
-                info = survey.to_dict()
+        #### PASS DATA TO TAKE_SURVEY
+        session['survey_name_ID'] = the_survey
+        #print(the_survey)
         
-        request.form.get('survey-list-submit')
-        print(request.form.get('survey-list-submit'))
-        return redirect(url_for('take_survey')) 
-
-    return render_template('taker_survey_select.html')
+        return redirect(url_for('take_survey'))
 
 @app.route('/take_survey', methods=['GET', 'POST'])
 def take_survey():
     if not g.user:
         return redirect(url_for('login'))
+
+    survey_name_ID = session.get('survey_name_ID') #receive survey (type: str) search form data
+    s = survey_name_ID.split("-")
+    surveys = ref.document(s[0]).collection('Surveys').stream()
+    info = {}
+    #testing split method, separates string and deletes split token
+    #print("0th " + s[0])
+    #print("1st " + s[1])
+    for survey in surveys:
+        if s[1] == survey.to_dict()['ID']:
+            info = survey.to_dict()
+            print(info)
+    else:
+        print("Invalid ID: " + survey.to_dict()['ID'])
+
+    Qmap= info['Questions'] #get questions of the survey
+    length = len(Qmap) #amt of questions
+    #print(length)
+    counter = 1
+    questionArray = []
+    for counter in range (1, length + 1):
+        string = "question0" + str(counter)
+        if(counter >= 10):
+            string = "question" + str(counter)
+        counter = counter + 1
+        questionArray.append(Qmap[string]['question'])
+
+    #print(questionArray)
+    if request.method == 'GET':
+        question = Qmap['question01']['question']
+        answers = Qmap['question01']['answers']
+        correct = Qmap['question01']['correct_answer']
+        answerLength = len(answers)
+        name = info['Name']
+        questionType = Qmap[string]['question_type']
+        
+        return render_template(('take_survey.html'), surveyName = name, surveyQuestion = question, 
+            answers = answers, question_amount = length, answerLength = answerLength, 
+            questionArray = questionArray, correct = correct, questionType = questionType) 
+
+    elif request.method == 'POST':
+        #get question0# or question# from buttons on left
+        number = int(request.form.get('submit'))
+        if (number <= 10): 
+            string = "question0" + str(number)
+        if(number >= 10):
+            string = "question" + str(number)
+
+        questionName = Qmap[string]['question']
+        answers = Qmap[string]['answers']
+        correct = Qmap[string]['correct_answer']
+        name = info['Name']
+        answerLength = len(answers)
+        questionType = Qmap[string]['question_type']
+
+        return render_template('test_open.html', surveyName = name, surveyQuestion = questionName,
+        answers = answers, question_amount = length, answerLength = answerLength,
+        questionArray = questionArray, correct = correct, questionType = questionType)
 
     return render_template('take_survey.html')
 

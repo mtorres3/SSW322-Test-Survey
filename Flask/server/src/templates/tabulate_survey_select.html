@@ -16,7 +16,11 @@
 
         <div class='list-div'>
             <form id='survey-tabulate-form' method='POST'>
-                <input type='text' class='form-text-input' name='survey-lookup' >
+                <select class='test-selection' name="survey-tabulate-list" id='survey-tabulate-list' form="survey-tabulate-form">
+                    {% for survey in surveyListings %}
+                        <option value={{survey}}>{{survey}}</option>
+                    {% endfor %}
+                </select>
                 <button type='submit' class='test-selection-submit'>Tabulate Survey</button>
             </form>
         </div>

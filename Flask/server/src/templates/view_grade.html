@@ -17,6 +17,11 @@
         <div class='list-div'>
             {% for question in gradedQuestions %}
                 <!-- Show all MC and T/F questions and if they're correct or not -->
+                {% if correct == True %}
+                    <p>{{question[name]}}  Correct!</p>
+                {% elif correct = False %}
+                    <p>{{question[name]}}  Incorrect.</p>
+                {% endif %}
             {% endfor %}
             <form id='short-answer-grading-form' method='POST'>
                 {% for answer in shortAnswers %}
