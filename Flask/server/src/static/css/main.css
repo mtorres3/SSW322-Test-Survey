@@ -622,18 +622,32 @@ hr{
     margin-bottom: 3em;
 }
 
-#test-list-form{
+#test-list-form, #survey-list, #survey-tabulate-form, #test-grade-form{
     margin-top: 5em;
 }
 
-#survey-list{
-    margin-top: 5em;
+.submit-spacing{
+    height: 15em;
 }
 
-#survey-tabulate-form{
-    margin-top: 5em;
+/* View Grade Styles */
+
+.grades-div{
+    width: 50%;
+    margin: auto;
+    text-align: center;
 }
 
-#test-grade-form{
-    margin-top: 5em;
+.grade-view{
+    width: 3em;
+}
+.scroll{
+    overflow: scroll;
+    overflow-x: hidden;
+    height: 32em;
+    background-color: #A3D3FF;
+}
+
+.overall-grade{
+    text-align: center;
 }
