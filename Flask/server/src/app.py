@@ -617,8 +617,8 @@ def view_grade():
         return redirect(url_for('login'))
     #TODO: Give data for user's so creator can grade it
     gradedQuestions = ref.document(session['user_id']).collection('Tests').document(session['test-name']).collection('Takers').document(session['taker-name']).get().to_dict()
-    
-    return render_template('view_grade.html', gradedQuestions = gradedQuestions)
+
+    return render_template('view_grade.html', test_name = session['test-name'], gradedQuestions = gradedQuestions)
 
 @app.route('/tabulate_survey_select')
 def tabulate_survey_select():
