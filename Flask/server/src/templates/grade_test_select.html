@@ -16,8 +16,12 @@
 
         <div class='list-div'>
             <form id='test-grade-form' method='POST'>
-                <input type='text' class='form-text-input' name='test-lookup' >
-                <button type='submit' class='test-selection-submit'>Grade Test</button>
+                <select class='test-selection' name="test-grading-list" id='test-grading-list' form="test-grade-form">
+                    {% for test in testListings %}
+                        <option value={{test}}>{{test}}</option>
+                    {% endfor %}
+                </select>
+                <button type='submit' class='test-selection-submit' name='test-grading-submit'>Grade Test</button>
             </form>
         </div>
 

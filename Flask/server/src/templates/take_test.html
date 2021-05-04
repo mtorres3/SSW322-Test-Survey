@@ -12,30 +12,31 @@
     <div class='main-box'>
       <h1 class='survey-test-title'>{{testName}}</h1>
       <hr>
-      <h3 class='survey-test-question'>{{testQuestion}}</h3>
       <form id='test-take-form' method='POST'>
 
-        {% if multiple-choice == True %}
+      {% for question in test %}
+        <h3 class='survey-test-question'>{{question[name]}}</h3>
+        {% if question_type == 'multiple-choice' %}
+
           {% for choice in questionChoices %}
             <label for='mc-answer-response'>{{choice}}
               <input type='radio' class='mc-answer-response' name='mc-answer-response' value='{{choice}}'/>
             </label>
           {% endfor %}
-        {% endif %}
 
-        {% if true-false == True %}
+        {% elif question_type == 'true-false' %}
           <label for='tf-answer-choices'>True
             <input type='radio' class='tf-answer-response' name='tf-answer-response' value='True'/>
           </label>
           <label for='tf-answer-choices'>False
             <input type='radio' class='tf-answer-response' name='tf-answer-response' value='False'/>
           </label>
-        {% endif %}
 
-        {% if short-answer == True %}
+        {% elif question_type == 'short-answer' %}
           <input type='text' class='short-answer-response' value='short-answer-response'>
         {% endif %}
 
+      {% endfor %}
         <button id='questionSubmit' type='submit' name='submit' value='next-question'>Next Question</button>
       </form>
     </div>
