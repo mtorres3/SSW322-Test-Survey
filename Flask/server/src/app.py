@@ -449,18 +449,15 @@ def take_survey():
 
         info = request.form
         answers = curr_ref.collection('Answers').document('info')
-        print(request.form.get('submit'))
 
         if "question" in request.form.get('submit'):
-            
-            print(info['answer'])
 
-            # if info['answer'] in answers.get().to_dict()['Questions'][session['current_question']]['answers'].keys():
             try:
                 answers.update({
                     u'Questions.{}.{}.{}'.format(session['current_question'],'answers',info['answer']): answers.get().to_dict()['Questions'][session['current_question']]['answers'][info['answer']] + 1,
                     u'Questions.{}.{}'.format(session['current_question'],'question'): curr_ref.get().to_dict()['Questions'][session['current_question']]['question']
                     })
+
             except KeyError:
                 answers.update({
                     u'Questions.{}.{}.{}'.format(session['current_question'],'answers',info['answer']): 1,
@@ -484,143 +481,6 @@ def take_survey():
         return redirect(url_for('take_survey_or_test'))
     else:
         return render_template('take_survey.html', questionArray = curr_ref.get().to_dict(), survey_creator = session['survey_creator'], survey_id = session['survey_id'], current_question = session['current_question'])
-
-    # #TODO: Display test info
-    # survey_name_ID = session.get('survey_name_ID') #receive test (type: str) search form data
-    # firstTake2 = session.get('firstTake2')
-    # surveyName = ' ' 
-    # survey_question = ' '
-    # s = survey_name_ID.split("-")
-    # surveys = ref.document(s[0]).collection('Surveys').stream()
-    # info = {}
-    # #testing split method, separates string and deletes split token
-
-    # for survey in surveys:
-    #     if s[1] == survey.to_dict()['ID']:
-    #         surveyID = s[1]
-    #         surveyName = survey.to_dict()['Name']
-    #         info = survey.to_dict()
-    #         #print(info)
-
-    # #Build question array. Code gets all question names from question map from database
-    # Qmap= info['Questions'] #get questions of the test
-    # length = len(Qmap) #amt of questions
-    # #print(length)
-    # counter = 1
-    # questionArray = []
-    # for counter in range (1, length + 1):
-    #     string = "question0" + str(counter)
-    #     if(counter >= 10):
-    #         string = "question" + str(counter)
-    #     counter = counter + 1
-    #     questionArray.append(Qmap[string]['question'])
-    # #end array build
-
-    #  ##REFERENCE FOR POSTING DATA TO DB
-    # user_name = session['user_id']
-    # curr_refStream = ref.document(s[0]).collection('Surveys').document(surveyName).collection('Answers').stream()
-    # for stream in curr_refStream:
-    #     data = stream.to_dict()
-    # print(data)
-
-    # #Default, on load, show first question
-    # if request.method == 'GET':
-    #     print("GET ACTIVATED!")
-    #     question = Qmap['question01']['question']
-    #     answers = Qmap['question01']['answers']
-    #     #correct = Qmap['question01']['correct_answer']
-    #     answerLength = len(answers)
-    #     name = info['Name']
-    #     questionType = Qmap['question01']['question_type']
-        
-    #     return render_template(('take_survey.html'), surveyName = name, surveyQuestion = question, 
-    #         answers = answers, question_amount = length, answerLength = answerLength, ID = surveyID,
-    #         questionArray = questionArray,  questionType = questionType, Qstring = string,
-    #         nextQuestionNumber = 2, surveyLength = length) 
-
-    # #any posts, such as next question, code executes this 
-    # elif request.method == 'POST':
-    #     print("POST ACTIVATED")
-    #     #when user first opens test, the 'next question' should bring up the second question.
-    #     if(len(str(request.form['submit'])) > 3 and firstTake2 == 1):
-            
-    #         #Acquire data from first question
-    #         questionFirst = 'question01'
-    #         answersF = Qmap[questionFirst]['answers'] #return arrays of map <string, integer>
-    #         questionF = Qmap[questionFirst]['question']
-    #         totalTaker = data['total_takers']
-
-    #         ### multiple-choice form request
-    #         chosen = request.form['radio']
-    #         print(chosen)
-
-    #         print("Next Question was clicked for the first time. ")
-    #         Qstring = 'question02'
-    #         question = Qmap[Qstring]['question']
-    #         answers = Qmap[Qstring]['answers']
-    #         name = info['Name']
-    #         answerLength = len(answers)
-    #         questionType = Qmap[Qstring]['question_type']  
-    #         session['firstTake2'] = firstTake2 + 1 #increment so this isnt called again after first question
-
-    #         return render_template('take_survey.html', surveyName = name, surveyQuestion = question,
-    #         answers = answers, question_amount = length, answerLength = answerLength, ID = surveyID,
-    #         questionArray = questionArray,  questionType = questionType, Qstring = Qstring,
-    #         nextQuestionNumber = 2, surveyLength = length)
-
-    #     #check if 'submit' form is 'next-question' and if it is, then increment question # value and return all necessary values to template
-    #     elif(len(str(request.form['submit'])) > 3):
-    #         #### multiple-choice form request ####
-    #         chosen = request.form['radio']
-    #         print(chosen)
-    #         print("Next Question was clicked")
-    #         stringSubmit = request.form['submit']
-    #         substring = stringSubmit[8:]
-    #         number = int(substring)
-    #         nextQuestion = number + 1
-    #         #only try to open while the nextQuestion doesn't go out of bounds
-    #         if (nextQuestion <= len(questionArray)):
-    #             Qstring = 'question0' + str(nextQuestion)
-    #             if(nextQuestion >= 10):
-    #                 Qstring = 'question' + str(nextQuestion)
-               
-    #             question = Qmap[Qstring]['question']
-    #             answers = Qmap[Qstring]['answers']
-    #             #correct = Qmap[Qstring]['correct_answer']
-    #             name = info['Name']
-    #             answerLength = len(answers)
-    #             questionType = Qmap[Qstring]['question_type']  
-    #             return render_template('take_survey.html', surveyName = name, surveyQuestion = question,
-    #             answers = answers, question_amount = length, answerLength = answerLength, ID = surveyID,
-    #             questionArray = questionArray,  questionType = questionType, Qstring = Qstring,
-    #             nextQuestionNumber = nextQuestion, surveyLength = length)
-    #         else:
-    #             print("COMPLETE")
-    #             name = info['Name']
-    #             return render_template('take_survey.html', surveyName = name, ID = surveyID, 
-    #                 userName = session['user_id'], questionArray = questionArray,
-    #                 nextQuestionNumber= int(nextQuestion), surveyLength = int(length))
-    #     #get question0# or question# from buttons on left
-    #     elif isinstance(int(request.form['submit']),int): #is a digit, clicked on dark rectangle
-    #         number = int(request.form.get('submit'))
-    #         if (number <= 10): 
-    #             Qstring = "question0" + str(number)
-    #         if(number >= 10):
-    #             Qstring = "question" + str(number)
-
-    #         question = Qmap[Qstring]['question']
-    #         answers = Qmap[Qstring]['answers']
-    #         #correct = Qmap[Qstring]['correct_answer']
-    #         name = info['Name']
-    #         answerLength = len(answers)
-    #         questionType = Qmap[Qstring]['question_type']  
-
-    #         return render_template('take_survey.html', surveyName = name, surveyQuestion = question,
-    #         answers = answers, question_amount = length, answerLength = answerLength,
-    #         questionArray = questionArray,  questionType = questionType, Qstring = Qstring,
-    #         nextQuestionNumber = number, surveyLength = length)
-
-    #return render_template('take_survey.html')
 
 ##################################################################################
 #For Creator
