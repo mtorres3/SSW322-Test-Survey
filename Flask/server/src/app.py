@@ -186,9 +186,7 @@ def take_test():
     t = test_name_ID.split("-")
     tests = ref.document(t[0]).collection('Tests').stream()
     info = {}
-    #testing split method, separates string and deletes split token
-    #print("0th " + t[0])
-    #print("1st " + t[1])
+
     for test in tests:
         if t[1] == test.to_dict()['ID']:
             info = test.to_dict()
@@ -199,7 +197,6 @@ def take_test():
     #Build question array. Code gets all question names from question map from database
     Qmap= info['Questions'] #get questions of the test
     length = len(Qmap) #amt of questions
-    #print(length)
     counter = 1
     questionArray = []
     for counter in range (1, length + 1):
@@ -209,16 +206,11 @@ def take_test():
         counter = counter + 1
         questionArray.append(Qmap[string]['question'])
     #end array build
-    #print(questionArray)
 
     ##REFERENCE FOR POSTING DATA TO DB
-    #curr_refStream = ref.document(t[0]).collection('Tests').document(testName).collection('Takers').stream()
-    #curr_temp = ref.document(t[0]).collection('Tests').document(testName).collection('Takers')
     user_name = session['user_id']
     curr_ref = ref.document(t[0]).collection('Tests').document(testName).collection('Takers').document(user_name)
-    # for taker in curr_refStream:
-    #     if (session['user_id'] == taker.to_dict()['username']):
-    #         counter = counter + 1
+
 
     #Default, on load, show first question
     if request.method == 'GET':
@@ -237,69 +229,128 @@ def take_test():
     #any posts, such as next question, code executes this 
     elif request.method == 'POST':
         print("POST ACTIVATED")
-        #print("FirstTake Value: ")
-        #print(firstTake)
         #when user first opens test, the 'next question' should bring up the second question.
         if(len(str(request.form['submit'])) > 3 and firstTake == 1):
 
-            #Acquire necessary data for template and for DB set
-            print("Next Question was clicked for the first time. ")
-            Qstring = 'question02'
-            question = Qmap[Qstring]['question']
-            answers = Qmap[Qstring]['answers']
-            name = info['Name']
-            answerLength = len(answers)
-            questionType = Qmap[Qstring]['question_type']  
-            session['firstTake'] = firstTake + 1 #increment so this isnt called again after first question
+            #Acquire necessary data for Db to push question01
+            questionFirst = 'question01'
+            answersF = Qmap[questionFirst]['answers'] #return array of strings containing answers
+            questionF = Qmap[questionFirst]['question']
+            correctF = Qmap[questionFirst]['correct_answer']
+            correctString = ' '
 
-            #### multiple-choice form request ####
+            #### multiple-choice form request and points calculation ####
             chosen = request.form['radio']
-            print(chosen)
+
+            #find the correct answer string
+            if(correctF == 'A' ):
+                correctString = answersF[0]
+            elif(correctF == 'B' ):
+                correctString = answersF[1]
+            elif(correctF == 'C' ):
+                correctString = answersF[2]
+            elif(correctF == 'D' ):
+                correctString = answersF[3]
+
+            if(chosen == correctString):
+                points = 1
+            else:
+                points = 0            
+            #### end request and calculation ####
 
             #Push these to Db
             curr_ref.set({
                 'Questions': {
-                    Qstring: {
-                        'Question': question,
-                        'answer': choice
+                    questionFirst: {
+                        'Question': questionF,
+                        'answer': chosen,
+                        'correct_answer': correctString,
+                        'points': points,
                     }
                 }
-            })
+            }, merge = True)
+
+            #Acquire necessary data for template and for next question to show
+            print("Next Question was clicked for the first time. ")        
+            Qstring = 'question02'
+            question = Qmap[Qstring]['question']
+            answers = Qmap[Qstring]['answers'] #return array of strings containing answers
+            name = info['Name']
+            answerLength = len(answers)
+            questionType = Qmap[Qstring]['question_type'] 
+            #correct = Qmap[Qstring]['correct_answer'] 
+            session['firstTake'] = firstTake + 1 #increment so this isnt called again after first question
+
+
 
             return render_template('take_test.html', testName = name, testQuestion = question,
             answers = answers, question_amount = length, answerLength = answerLength,
             questionArray = questionArray,  questionType = questionType, Qstring = Qstring)
 
+
         #check if 'submit' form is 'next-question' and if it is, then increment question # value and return all necessary values to template
         elif(len(str(request.form['submit'])) > 3):
             print("Next Question was clicked")
+
             stringSubmit = request.form['submit']
-            substring = stringSubmit[8:]
-            number = int(substring)
-            #print("current question number: " + str(number))
+            substring = stringSubmit[8:] #remove 'question' from 'question##'
+            number = int(substring) #current question number
             nextQuestion = number + 1
-            #only try to open while the nextQuestion doesn't go out of bounds
-            #print(str(nextQuestion))
-            #print(str(len(questionArray)))
+
+            #### multiple-choice form request and points calculation ####
+            chosen = request.form['radio']
+            currentQ = 'question0' + str(number) 
+            if(number >= 10):
+                    currentQ = 'question' + str(number)
+            questionC = Qmap[currentQ]['question']
+            correctC = Qmap[currentQ]['correct_answer']
+            answersC = Qmap[currentQ]['answers']
+
+            #find the correct answer string
+            if(correctC == 'A' ):
+                correctString = answersC[0]
+            elif(correctC == 'B' ):
+                correctString = answersC[1]
+            elif(correctC == 'C' ):
+                correctString = answersC[2]
+            elif(correctC == 'D' ):
+                correctString = answersC[3]
+
+            if(chosen == correctString):
+                points = 1
+            else:
+                points = 0            
+            #### end request and calculation ####
+            #Push these to Db
+            curr_ref.set({
+                'Questions': {
+                    currentQ: {
+                        'Question': questionC,
+                        'answer': chosen,
+                        'correct_answer': correctString,
+                        'points': points,
+                    }
+                }
+            }, merge = True)
+
+            #Get all necessary data for next question 
             if (nextQuestion <= len(questionArray)):
                 Qstring = 'question0' + str(nextQuestion)
                 if(nextQuestion >= 10):
                     Qstring = 'question' + str(nextQuestion)
-               
                 question = Qmap[Qstring]['question']
                 answers = Qmap[Qstring]['answers']
                 #correct = Qmap[Qstring]['correct_answer']
                 name = info['Name']
                 answerLength = len(answers)
-                questionType = Qmap[Qstring]['question_type']  
-                return render_template('take_test.html', testName = name, testQuestion = question,
-                answers = answers, question_amount = length, answerLength = answerLength,
-                questionArray = questionArray,  questionType = questionType, Qstring = Qstring)
+                questionType = Qmap[Qstring]['question_type'] 
 
-                ############################################################################################################ SUBMIT BUTTON AND EXIT PAGE
+                return render_template('take_test.html', testName = name, testQuestion = question,
+            answers = answers, question_amount = length, answerLength = answerLength,
+            questionArray = questionArray,  questionType = questionType, Qstring = Qstring) 
             else:
-                print("Figure out how to submit bruv")
-                ############################################################################################################# SUBMIT BUTTON AND EXIT PAGE
+                print("COMPLETE")
+
         #get question0# or question# from buttons on left
         elif isinstance(int(request.form['submit']),int): #is a digit, clicked on dark rectangle
             number = int(request.form.get('submit'))
@@ -969,26 +1020,19 @@ def test_open():
 
             try:
                 new_answer = num_to_let[info['correct-answer-display']]
-                new_question = info['asked-question']
             except KeyError:
                 try:
-                    new_answer = info['correct-answer-display']   
-                    new_question = info['asked-question']   
+                    new_answer = info['correct-answer-display']
                 except KeyError:
                     new_answer = ''
-                    new_question = ''       
-            
-            #new_question = info['asked-question']
 
             ref.document(session['user_id']).collection('Tests').document(testName).update({
                         u'Questions.{}.answers'.format(session['question_num']) : answers,
-                        u'Questions.{}.correct_answer'.format(session['question_num']) : new_answer,
-                        u'Questions.{}.question'.format(session['question_num']) : new_question
+                        u'Questions.{}.correct_answer'.format(session['question_num']) : new_answer
             })
 
             session['answers'] = answers
             session['correct'] = new_answer
-            session['question'] = new_question
 
     return render_template('test_open.html', Name = testName, question = session['question'], 
             answers = session['answers'], question_amount = length, answerLength = session['answerLength'], 
@@ -1097,29 +1141,25 @@ def survey_open():
             
             answers = []
             for num in range(1, len(session['answers'])+1):
-                if len(info) > 2:
-                    answers.append(info['q' + str(num)])
+                answers.append(info['q' + str(num)])
 
             num_to_let = {'1' : 'A',
                         '2' : 'B',
                         '3' : 'C', 
                         '4' : 'D'}
 
-            try:
-                new_question = info['asked-question']
-            except KeyError:
-                try:
-                    new_question = info['asked-question']
-                except:
-                    new_question = ''
+        # try:
+        #     new_answer = num_to_let[info['correct-answer-display']]
+        # except KeyError:
+        #     try:
+        #         new_answer = info['correct-answer-display']
+        #     except KeyError:
+        #         new_answer = ''
 
             ref.document(session['user_id']).collection('Surveys').document(surveyName).update({
-                        u'Questions.{}.answers'.format(session['question_num']) : answers,
-                        u'Questions.{}.question'.format(session['question_num']) : new_question
-            })
+                    u'Questions.{}.answers'.format(session['question_num']) : answers})
 
             session['answers'] = answers
-            session['question'] = new_question
 
     return render_template('survey_open.html', Name = surveyName, question = session['question'], 
         answers = session['answers'], question_amount = length, answerLength = session['answerLength'], 
