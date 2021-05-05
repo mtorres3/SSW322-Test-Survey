@@ -28,7 +28,8 @@
     <a href='/taker_survey_select'><img src="{{url_for('static', filename='images/back-button.png')}}" height='50' width='50' class='back'></a>
     
     <div class = 'question-block'>
-      
+
+      {% if currentQuestionNumber < surveyLength %}
         <div class='submit-spacing'>
         <form id='questions' method='POST'>
         <!-- Feed question(number) here to display question name-->
@@ -36,21 +37,28 @@
         <!-- Feed answer array here to display the questions and their respective number-->
         {% if questionType == 'multiple-choice' %}
           {% for n in answers %} 
-          <h3 id = 'question-of-block'>{{loop.index}}.  {{n}}</h3>
-          <input type='radio' class='mc-answer-response' name='radio' value='{{n}}'/>
+            <h3 id = 'question-of-block'>{{loop.index}}.  {{n}}</h3>
+            <input type='radio' class='mc-answer-response' name='radio' value='{{n}}'/>
           {% endfor %}
-        {%elif questionType == 'short-answer' %}
-          <input type='text' class='short-answer-response' name='text'>
-        {%elif questionType == 'true-false' %}
-          <h3 id = 'question-of-block'>1.  True</h3>
-          <input type='radio' class='mc-answer-response' name='radio' value='True'/>
-          <h3 id = 'question-of-block'>2.  False</h3>
-          <input type='radio' class='mc-answer-response' name='radio' value='False'/>
+          {%elif questionType == 'short-answer' %}
+            <input type='text' class='short-answer-response' name='text'>
+          {%elif questionType == 'true-false' %}
+            <h3 id = 'question-of-block'>1.  True</h3>
+            <input type='radio' class='mc-answer-response' name='radio' value='True'/>
+            <h3 id = 'question-of-block'>2.  False</h3>
+            <input type='radio' class='mc-answer-response' name='radio' value='False'/>
         {% endif %}
         </div>
-
-        <button type='submit' class='modify-submit' name='submit' value = '{{Qstring}}'>Next Question</button>
+        <button type='submit' class='modify-submit' name='submit' value ='{{Qstring}}'>Next Question</button>
         </form>
+      {% else %}
+      <div class='submit-spacing'>
+        <h2>Your survey has been created.</h2>
+        <h3>Survey Code: {{userName}}-{{ID}}</h3>
+      </div>
+      <a href='taker_or_creator'><button type='submit' class='modify-submit' name='submit'>Submit Survey</button></a>
+      {% endif %}
+
     </div>
 </div>  <!-- End Div-->  
 </body>
