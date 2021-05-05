@@ -182,6 +182,7 @@ def take_test():
     #TODO: Display test info
     test_name_ID = session.get('test_name_ID') #receive test (type: str) search form data
     firstTake = session.get('firstTake') 
+    testName = ' '
     t = test_name_ID.split("-")
     tests = ref.document(t[0]).collection('Tests').stream()
     info = {}
@@ -191,7 +192,9 @@ def take_test():
     for test in tests:
         if t[1] == test.to_dict()['ID']:
             info = test.to_dict()
+            testName = test.to_dict()['Name']
             #print(info)
+            #print(testName)
 
     #Build question array. Code gets all question names from question map from database
     Qmap= info['Questions'] #get questions of the test
@@ -207,6 +210,15 @@ def take_test():
         questionArray.append(Qmap[string]['question'])
     #end array build
     #print(questionArray)
+
+    ##REFERENCE FOR POSTING DATA TO DB
+    #curr_refStream = ref.document(t[0]).collection('Tests').document(testName).collection('Takers').stream()
+    #curr_temp = ref.document(t[0]).collection('Tests').document(testName).collection('Takers')
+    user_name = session['user_id']
+    curr_ref = ref.document(t[0]).collection('Tests').document(testName).collection('Takers').document(user_name)
+    # for taker in curr_refStream:
+    #     if (session['user_id'] == taker.to_dict()['username']):
+    #         counter = counter + 1
 
     #Default, on load, show first question
     if request.method == 'GET':
@@ -229,6 +241,8 @@ def take_test():
         #print(firstTake)
         #when user first opens test, the 'next question' should bring up the second question.
         if(len(str(request.form['submit'])) > 3 and firstTake == 1):
+
+            #Acquire necessary data for template and for DB set
             print("Next Question was clicked for the first time. ")
             Qstring = 'question02'
             question = Qmap[Qstring]['question']
@@ -237,9 +251,25 @@ def take_test():
             answerLength = len(answers)
             questionType = Qmap[Qstring]['question_type']  
             session['firstTake'] = firstTake + 1 #increment so this isnt called again after first question
+
+            #### multiple-choice form request ####
+            chosen = request.form['radio']
+            print(chosen)
+
+            #Push these to Db
+            curr_ref.set({
+                'Questions': {
+                    Qstring: {
+                        'Question': question,
+                        'answer': choice
+                    }
+                }
+            })
+
             return render_template('take_test.html', testName = name, testQuestion = question,
             answers = answers, question_amount = length, answerLength = answerLength,
             questionArray = questionArray,  questionType = questionType, Qstring = Qstring)
+
         #check if 'submit' form is 'next-question' and if it is, then increment question # value and return all necessary values to template
         elif(len(str(request.form['submit'])) > 3):
             print("Next Question was clicked")
@@ -265,8 +295,11 @@ def take_test():
                 return render_template('take_test.html', testName = name, testQuestion = question,
                 answers = answers, question_amount = length, answerLength = answerLength,
                 questionArray = questionArray,  questionType = questionType, Qstring = Qstring)
+
+                ############################################################################################################ SUBMIT BUTTON AND EXIT PAGE
             else:
                 print("Figure out how to submit bruv")
+                ############################################################################################################# SUBMIT BUTTON AND EXIT PAGE
         #get question0# or question# from buttons on left
         elif isinstance(int(request.form['submit']),int): #is a digit, clicked on dark rectangle
             number = int(request.form.get('submit'))
@@ -323,7 +356,9 @@ def take_survey():
         return redirect(url_for('login'))
     #TODO: Display test info
     survey_name_ID = session.get('survey_name_ID') #receive test (type: str) search form data
-    firstTake2 = session.get('firstTake2') 
+    firstTake2 = session.get('firstTake2')
+    survey_name = ' ' 
+    survey_question = ' '
     s = survey_name_ID.split("-")
     surveys = ref.document(s[0]).collection('Surveys').stream()
     info = {}
@@ -332,8 +367,26 @@ def take_survey():
     #print("1st " + s[1])
     for survey in surveys:
         if s[1] == survey.to_dict()['ID']:
+            survey_name = survey.to_dict()['Name']
             info = survey.to_dict()
             #print(info)
+    
+   
+    print(survey_name)
+    surveyQuestions = []
+    docs = ref.document(s[0]).collection('Surveys').document(str(survey_name)).collection('Answers').stream()
+    for doc in docs:
+        surveyQuestions.append(doc.to_dict())
+        if('question_name' == doc.to_dict()['Name']):
+            print("MATCH FOUND!")
+            survey_question = doc.to_dict()['Name']
+        
+    curr_ref = ref.document(s[0]).collection('Surveys').document(survey_name).collection('Answers').document(survey_question)
+    previousAmount = curr_ref.get().to_dict()['amount']
+    curr_ref.update({u'amount': int(previousAmount) + 1 })
+
+    
+    print(surveyQuestions)
 
     #Build question array. Code gets all question names from question map from database
     Qmap= info['Questions'] #get questions of the test
@@ -371,6 +424,10 @@ def take_survey():
         #print(firstTake)
         #when user first opens test, the 'next question' should bring up the second question.
         if(len(str(request.form['submit'])) > 3 and firstTake2 == 1):
+            #### multiple-choice form request ####
+            chosen = request.form['radio']
+            print(chosen)
+            
             print("Next Question was clicked for the first time. ")
             Qstring = 'question02'
             question = Qmap[Qstring]['question']
@@ -384,6 +441,9 @@ def take_survey():
             questionArray = questionArray,  questionType = questionType, Qstring = Qstring)
         #check if 'submit' form is 'next-question' and if it is, then increment question # value and return all necessary values to template
         elif(len(str(request.form['submit'])) > 3):
+            #### multiple-choice form request ####
+            chosen = request.form['radio']
+            print(chosen)
             print("Next Question was clicked")
             stringSubmit = request.form['submit']
             #print("String retrieved from submit button: ")
