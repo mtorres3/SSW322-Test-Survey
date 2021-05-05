@@ -960,13 +960,15 @@ def test_open():
             try:
                 new_answer = num_to_let[info['correct-answer-display']]
                 new_question = info['asked-question']
+                print("printtttin")
             except KeyError:
                 try:
+                    print("bye")
                     new_answer = info['correct-answer-display']   
-                    new_question = info['asked-question']  
                 except KeyError:
+                    print("hello")
                     new_answer = ''
-                    new_question = ''   
+            new_question = info['asked-question']  
 
             ref.document(session['user_id']).collection('Tests').document(testName).update({
                         u'Questions.{}.answers'.format(session['question_num']) : answers,
