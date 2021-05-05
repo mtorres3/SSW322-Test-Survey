@@ -29,7 +29,7 @@
     
     <div class = 'question-block'>
 
-      {% if currentQuestionNumber < surveyLength %}
+      {% if nextQuestionNumber <= surveyLength %}
         <div class='submit-spacing'>
         <form id='questions' method='POST'>
         <!-- Feed question(number) here to display question name-->
