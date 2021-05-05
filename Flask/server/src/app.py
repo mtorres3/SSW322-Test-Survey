@@ -898,8 +898,20 @@ def tabulate_survey_select():
 def survey_tabulation():
     if not g.user:
         return redirect(url_for('login'))
+
+    curr_ref = ref.document(session['user_id']).collection('Surveys').document(session['survey-name']).collection('Answers').document('info')
+    surveyQuestions = curr_ref.get().to_dict()
+
+
+    # for num in range(1, len(surveyQuestions['Questions'])+1):
+
+    #     if num < 10:
+    #         string = "question0" + str(num)
+    #     else:
+    #         string = "question" + str(num)
+
     #TODO: Give data for top/avg answers for each question
-    return render_template('survey_tabulation.html')
+    return render_template('survey_tabulation.html', survey_name = session['survey-name'], surveyQuestions = surveyQuestions)
 #########################################################################################
 
 @app.route('/open_file')

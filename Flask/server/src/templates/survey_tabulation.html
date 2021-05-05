@@ -11,6 +11,7 @@
 <body>
     <div class='main-box'>
         <h1 class = 'header-list'>{{survey_name}}</h1>
+        <p>Total Takers: {{surveyQuestions['total_takers']}}</p>
 
         <hr>
         <a href='/tabulate_survey_select'><img src="{{ url_for('static', filename='images/back-button.png') }}" height='50' width='50' class='back'></a>
@@ -19,8 +20,21 @@
             <!-- {{gradedQuestions}} -->
                 {% for question in surveyQuestions['Questions']|dictsort %}
                     <!-- Show all questions their top answers -->
-                    <p>{{loop.index}}.) {{question[1]["Question"]}} </p>
-                    <p>Top Answer: {{question[1]['answer']}}</p> <!-- LINE 23 NEEDS TO BE EDITED-->
+                    <h1>{{loop.index}}.) {{question[1]["question"]}} </h1>
+
+                    {% for key, value in question[1]['answers'].items()|sort(attribute='1', reverse = True) %}
+                        {% if loop.index == 1 %}
+
+                            <h2> Top Answer: {{ key }}, with {{ value }} answers ({{(value / surveyQuestions['total_takers']) * 100}}%)</h1>
+
+                        {% else %}
+
+                        <p>{{ key }}, with {{ value }} answers ({{(value / surveyQuestions['total_takers']) * 100}}%)</p>
+
+                        {% endif %}
+                    {% endfor %}
+                    <!--  <p>Top Answer: {{question[1]['answer']}}</p> LINE 23 NEEDS TO BE EDITED-->
+
                     <hr>
                 {% endfor %}
         </div>
