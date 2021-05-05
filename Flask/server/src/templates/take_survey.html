@@ -16,11 +16,13 @@
     <form id='questions-list-form' method='POST'>
       <!-- Displays all Q #'s-->
       {% for those in questionArray['Questions'] %}
-      <button type='submit' class='question-link' name='submit' value='{{loop.index}}'><p> Q{{loop.index}}: {{those['question']}}</p></button>
+      <button type='submit' class='question-link' name='submit' value='{{loop.index}}'><p> Q{{loop.index}} {{those['question']}}</p></button>
       <hr>
       {% endfor %}
+      <!--
       <p>{{questionArray}}</p>
       <p>{{survey_creator}}-{{survey_id}}</p>
+      -->
     </form>
   </div> <!-- End Div-->
 
