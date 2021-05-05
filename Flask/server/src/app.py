@@ -183,12 +183,15 @@ def take_test():
     test_name_ID = session.get('test_name_ID') #receive test (type: str) search form data
     firstTake = session.get('firstTake') 
     testName = ' '
+    testID = ' '
     t = test_name_ID.split("-")
     tests = ref.document(t[0]).collection('Tests').stream()
     info = {}
 
     for test in tests:
         if t[1] == test.to_dict()['ID']:
+            testID = test.to_dict()['ID']
+            print(testID)
             info = test.to_dict()
             testName = test.to_dict()['Name']
             #print(info)
@@ -224,7 +227,8 @@ def take_test():
         
         return render_template(('take_test.html'), testName = name, testQuestion = question, 
             answers = answers, question_amount = length, answerLength = answerLength, 
-            questionArray = questionArray,  questionType = questionType, Qstring = string) 
+            questionArray = questionArray,  questionType = questionType, Qstring = string,
+            nextQuestionNumber= 2, testLength = int(length)) 
 
     #any posts, such as next question, code executes this 
     elif request.method == 'POST':
@@ -285,7 +289,8 @@ def take_test():
 
             return render_template('take_test.html', testName = name, testQuestion = question,
             answers = answers, question_amount = length, answerLength = answerLength,
-            questionArray = questionArray,  questionType = questionType, Qstring = Qstring)
+            questionArray = questionArray,  questionType = questionType, Qstring = Qstring,
+            nextQuestionNumber= 2, testLength = int(length))
 
 
         #check if 'submit' form is 'next-question' and if it is, then increment question # value and return all necessary values to template
@@ -330,10 +335,12 @@ def take_test():
                         'correct_answer': correctString,
                         'points': points,
                     }
-                }
+                },
+                'grade': 0,
+                'username': session['user_id'],
             }, merge = True)
 
-            #Get all necessary data for next question 
+            #Get all necessary data for next question, while there is next question
             if (nextQuestion <= len(questionArray)):
                 Qstring = 'question0' + str(nextQuestion)
                 if(nextQuestion >= 10):
@@ -346,10 +353,15 @@ def take_test():
                 questionType = Qmap[Qstring]['question_type'] 
 
                 return render_template('take_test.html', testName = name, testQuestion = question,
-            answers = answers, question_amount = length, answerLength = answerLength,
-            questionArray = questionArray,  questionType = questionType, Qstring = Qstring) 
+                answers = answers, question_amount = length, answerLength = answerLength,
+                questionArray = questionArray,  questionType = questionType, Qstring = Qstring,
+                nextQuestionNumber= int(nextQuestion), testLength = int(length)) 
             else:
                 print("COMPLETE")
+                name = info['Name']
+                return render_template('take_test.html', testName = name, ID = testID, 
+                    userName = session['user_id'], questionArray = questionArray,
+                    nextQuestionNumber= int(nextQuestion), testLength = int(length))
 
         #get question0# or question# from buttons on left
         elif isinstance(int(request.form['submit']),int): #is a digit, clicked on dark rectangle
