@@ -28,8 +28,8 @@
             <form id='questions' method='POST'>
             <h2> Question: <input type='text' id='q' name='asked-question' value='{{question}}'></h2><!-- Feed question(number) here to display question name-->    
             {% if question_type == "true-false" %}
-                <h3 id = 'question-of-block'>1.  True</h3>
-                <h3 id = 'question-of-block'>2.  False</h3>
+                <h3 id = 'question-of-block'>True/False</h3>
+                
                 <button type='submit' class='modify-submit-tf' name='submit' value = 'modify-submit'>Save Question</button>
             {% else %}
                 {% for n in answers %} <!-- Feed answer array here to display the questions and their respective number -->
