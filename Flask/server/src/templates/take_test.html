@@ -35,15 +35,15 @@
         {% if questionType == 'multiple-choice' %}
           {% for n in answers %} 
           <h3 id = 'question-of-block'>{{loop.index}}.  {{n}}</h3>
-          <input type='radio' class='mc-answer-response' name='mc-answer-response' value='{{n}}'/>
+          <input type='radio' class='mc-answer-response' name='radio' value='{{n}}'/>
           {% endfor %}
         {%elif questionType == 'short-answer' %}
-            <input type='text' class='short-answer-response' name='short-answer-response'>
+            <input type='text' class='short-answer-response' name='text'>
         {%elif questionType == 'true-false' %}
             <h3 id = 'question-of-block'>1.  True</h3>
-            <input type='radio' class='mc-answer-response' name='tf-answer-response' value='True'/>
+            <input type='radio' class='mc-answer-response' name='radio' value='True'/>
             <h3 id = 'question-of-block'>2.  False</h3>
-            <input type='radio' class='mc-answer-response' name='tf-answer-response' value='False'/>      
+            <input type='radio' class='mc-answer-response' name='radio' value='False'/>      
         {% endif %}
         </div>
         
