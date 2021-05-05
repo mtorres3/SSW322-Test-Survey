@@ -641,7 +641,7 @@ hr{
     margin-bottom: 3em;
 }
 
-/* View Grade Styles */
+/* View Grade/Tabulate Styles */
 
 .grades-div{
     width: 50%;
@@ -661,4 +661,13 @@ hr{
 
 .overall-grade{
     text-align: center;
+}
+
+.top-answer{
+    text-decoration: underline;
+}
+
+.inline{
+    display: inline;
+    margin-bottom: 1em;
 }
