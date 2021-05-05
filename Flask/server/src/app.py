@@ -909,8 +909,20 @@ def tabulate_survey_select():
 def survey_tabulation():
     if not g.user:
         return redirect(url_for('login'))
+
+    curr_ref = ref.document(session['user_id']).collection('Surveys').document(session['survey-name']).collection('Answers').document('info')
+    surveyQuestions = curr_ref.get().to_dict()
+
+
+    # for num in range(1, len(surveyQuestions['Questions'])+1):
+
+    #     if num < 10:
+    #         string = "question0" + str(num)
+    #     else:
+    #         string = "question" + str(num)
+
     #TODO: Give data for top/avg answers for each question
-    return render_template('survey_tabulation.html')
+    return render_template('survey_tabulation.html', survey_name = session['survey-name'], surveyQuestions = surveyQuestions)
 #########################################################################################
 
 @app.route('/open_file')
@@ -1031,19 +1043,24 @@ def test_open():
 
             try:
                 new_answer = num_to_let[info['correct-answer-display']]
+                new_question = info['asked-question']
             except KeyError:
                 try:
-                    new_answer = info['correct-answer-display']
+                    new_answer = info['correct-answer-display']   
+                    new_question = info['asked-question']  
                 except KeyError:
                     new_answer = ''
+                    new_question = ''   
 
             ref.document(session['user_id']).collection('Tests').document(testName).update({
                         u'Questions.{}.answers'.format(session['question_num']) : answers,
-                        u'Questions.{}.correct_answer'.format(session['question_num']) : new_answer
+                        u'Questions.{}.correct_answer'.format(session['question_num']) : new_answer,
+                        u'Questions.{}.question'.format(session['question_num']) : new_question
             })
 
             session['answers'] = answers
             session['correct'] = new_answer
+            session['question'] = new_question
 
     return render_template('test_open.html', Name = testName, question = session['question'], 
             answers = session['answers'], question_amount = length, answerLength = session['answerLength'], 
@@ -1152,25 +1169,29 @@ def survey_open():
             
             answers = []
             for num in range(1, len(session['answers'])+1):
-                answers.append(info['q' + str(num)])
+                if len(info) > 2:
+                    answers.append(info['q' + str(num)])
 
             num_to_let = {'1' : 'A',
                         '2' : 'B',
                         '3' : 'C', 
                         '4' : 'D'}
 
-        # try:
-        #     new_answer = num_to_let[info['correct-answer-display']]
-        # except KeyError:
-        #     try:
-        #         new_answer = info['correct-answer-display']
-        #     except KeyError:
-        #         new_answer = ''
+            try:
+                new_question = info['asked-question']
+            except KeyError:
+                try:
+                    new_question = info['asked-question']
+                except:
+                    new_question = ''
 
             ref.document(session['user_id']).collection('Surveys').document(surveyName).update({
-                    u'Questions.{}.answers'.format(session['question_num']) : answers})
+                    u'Questions.{}.answers'.format(session['question_num']) : answers,
+                    u'Questions.{}.question'.format(session['question_num']) : new_question
+            })
 
             session['answers'] = answers
+            session['question'] = new_question
 
     return render_template('survey_open.html', Name = surveyName, question = session['question'], 
         answers = session['answers'], question_amount = length, answerLength = session['answerLength'], 
@@ -1182,4 +1203,4 @@ def survey_open():
 #         # print(survey.to_dict())
 
 if __name__ == "__main__":
-    app.run(port=5049, debug=True)
+    app.run(port=5055, debug=True)
