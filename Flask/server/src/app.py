@@ -320,6 +320,10 @@ def take_test():
                 correctString = answersC[2]
             elif(correctC == 'D' ):
                 correctString = answersC[3]
+            elif(correctC == 'True' ):
+                correctString = 'True'
+            elif(correctC == 'False' ):
+                correctString = 'False'
 
             if(chosen == correctString):
                 points = 1
